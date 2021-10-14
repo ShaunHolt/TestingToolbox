@@ -1,0 +1,1073 @@
+<scrollview width="100%" height="100%" contentWidth="100%" style="border-size:0;background-color: white;">
+    <vbox id="main" width="100%" style="padding: 5px;">
+        <style source="main.css" />
+        
+        <script>
+            main.registerEvent("resize", function() {
+                headerLabel.text = "The Perspective Corner - (" + main.width + "x" + main.height + ")";
+            });
+        </script>
+        
+        <box styleName="header" width="100%">
+            <label id="headerLabel" text="The Perspective Corner" verticalAlign="center" />
+            <image id="logo" verticalAlign="center" horizontalAlign="right" />
+        </box>
+        
+<tabview width="100%">
+
+        <hbox text="Home" width="100%" continuous="true">
+            <vbox styleName="image" verticalAlign="center" horizontalAlign="center">
+        <image resource="haxeui-core/styles/default/haxeui.png" width="200" height="400" scaleMode="fitwidth" style="border:1px solid #ababab" />
+            </vbox>
+            
+            <vbox styleName="content" width="100%">
+
+
+                
+                <label id="lorem1" width="100%" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam lacinia, ipsum id egestas pulvinar, ex metus ultricies lacus, vitae blandit urna sapien id ex. Curabitur finibus tempor ex, et pulvinar nunc interdum egestas. Proin dapibus tincidunt massa eget efficitur. Mauris sagittis non ante non rutrum. Sed gravida nunc vel blandit tempor. Curabitur consequat cursus metus malesuada varius. Suspendisse blandit tempor mattis. Duis sed diam sollicitudin ipsum interdum pellentesque." />
+                <label id="lorem2" width="100%" text="Proin vitae pharetra sem. Nunc sit amet urna eget sapien molestie rhoncus. Phasellus nec facilisis nibh. Aenean congue, orci ut luctus aliquam, augue ipsum ullamcorper leo, at blandit urna justo id odio. Etiam aliquam, neque pretium euismod pharetra, tortor orci efficitur justo, nec auctor metus orci at lectus. Nam quis fermentum tellus, at tempor eros. Integer faucibus elementum cursus. Aliquam eu lobortis purus. Nullam et elit vitae arcu tempor tristique ut eget metus. Nam sagittis mi eu enim tempus dignissim. Suspendisse id massa sit amet urna sollicitudin cursus. Ut fringilla tortor et elementum ultricies. Donec euismod tortor sit amet porttitor consectetur. Ut non nibh quis ipsum eleifend vulputate. Nunc interdum non enim in efficitur." />
+            </vbox>
+            
+        </hbox>
+
+
+        <hbox text="Apps" width="100%" continuous="true">
+
+        <image resource="haxeui-core/styles/default/haxeui.png" width="200" height="200" style="border:1px solid #ababab" />
+        <image resource="haxeui-core/styles/default/haxeui.png" width="100" height="200" style="border:1px solid #ababab" />
+        <image resource="haxeui-core/styles/default/haxeui.png" width="100" height="200" scaleMode="fitwidth" style="border:1px solid #ababab" />
+
+
+		</hbox>
+
+        <hbox text="Audio" width="100%" continuous="true">
+
+        <accordion width="200" height="400">
+            <vbox text="Page 1" width="100%">
+                <button text="Button 1" width="100%" height="20%" />
+                <button text="Button 2" width="100%" height="20%" />
+                <button text="Button 3" width="100%" height="20%" />
+                <button text="Button 4" width="100%" height="20%" />
+                <button text="Button 5" width="100%" height="20%" />
+            </vbox>   
+            <vbox id="page2" text="Page 2" width="100%" style="padding: 0px;">
+                <scrollview width="100%" height="100%" contentWidth="100%">
+                    <button text="Button 1" width="100%" />
+                    <button text="Button 2" width="100%" />
+                    <button text="Button 3" width="100%" />
+                    <button text="Button 4" width="100%" />
+                    <button text="Button 5" width="100%" />
+                    <button text="Button 6" width="100%" />
+                    <button text="Button 7" width="100%" />
+                    <button text="Button 8" width="100%" />
+                    <button text="Button 9" width="100%" />
+                    <button text="Button 10" width="100%" />
+                    <button text="Button 11" width="100%" />
+                    <button text="Button 12" width="100%" />
+                    <button text="Button 13" width="100%" />
+                    <button text="Button 14" width="100%" />
+                    <button text="Button 15" width="100%" />
+                    <button text="Button 16" width="100%" />
+                    <button text="Button 18" width="100%" />
+                    <button text="Button 19" width="100%" />
+                    <button text="Button 20" width="100%" />
+                </scrollview>    
+            </vbox>   
+            <vbox text="Page 3" width="100%">
+                <button text="Button 1" width="100%" height="20%" />
+                <button text="Button 2" width="100%" height="20%" />
+                <button text="Button 3" width="100%" height="20%" />
+                <button text="Button 4" width="100%" height="20%" />
+                <button text="Button 5" width="100%" height="20%" />
+            </vbox>   
+            <vbox text="Page 4" width="100%" style="padding: 0;padding-bottom: 1px;">
+                <listview width="100%" height="100%">
+                    <data>
+                        <item value="Item 1" />
+                        <item value="Item 2" />
+                        <item value="Item 3" />
+                        <item value="Item 4" />
+                        <item value="Item 5" />
+                        <item value="Item 6" />
+                        <item value="Item 7" />
+                        <item value="Item 8" />
+                        <item value="Item 9" />
+                        <item value="Item 10" />
+                        <item value="Item 11" />
+                        <item value="Item 12" />
+                        <item value="Item 13" />
+                        <item value="Item 14" />
+                        <item value="Item 15" />
+                        <item value="Item 16" />
+                        <item value="Item 17" />
+                        <item value="Item 18" />
+                        <item value="Item 19" />
+                        <item value="Item 20" />
+                    </data>
+                </listview>
+            </vbox>   
+            <vbox text="Page 5" width="100%" style="padding: 0;padding-bottom: 1px;">
+                <tableview width="100%" height="100%">
+                    <header>
+                        <column id="colA" text="Col A" width="70" />
+                        <column id="colB" text="Col B" width="70" />
+                        <column id="colC" text="Col C" width="100" />
+                    </header>
+                    <data>
+                        <item colA="Item 1A" colB="Item 1B" colC="Item 1C" />
+                        <item colA="Item 2A" colB="Item 2B" colC="Item 2C" />
+                        <item colA="Item 3A" colB="Item 3B" colC="Item 3C" />
+                        <item colA="Item 4A" colB="Item 4B" colC="Item 4C" />
+                        <item colA="Item 5A" colB="Item 5B" colC="Item 5C" />
+                        <item colA="Item 6A" colB="Item 6B" colC="Item 6C" />
+                        <item colA="Item 7A" colB="Item 7B" colC="Item 7C" />
+                        <item colA="Item 8A" colB="Item 8B" colC="Item 8C" />
+                        <item colA="Item 9A" colB="Item 9B" colC="Item 9C" />
+                        <item colA="Item 10A" colB="Item 10B" colC="Item 10C" />
+                        <item colA="Item 11A" colB="Item 11B" colC="Item 11C" />
+                        <item colA="Item 12A" colB="Item 12B" colC="Item 12C" />
+                        <item colA="Item 13A" colB="Item 13B" colC="Item 13C" />
+                        <item colA="Item 14A" colB="Item 14B" colC="Item 14C" />
+                        <item colA="Item 15A" colB="Item 15B" colC="Item 15C" />
+                        <item colA="Item 16A" colB="Item 16B" colC="Item 16C" />
+                        <item colA="Item 17A" colB="Item 17B" colC="Item 17C" />
+                        <item colA="Item 18A" colB="Item 18B" colC="Item 18C" />
+                        <item colA="Item 19A" colB="Item 19B" colC="Item 19C" />
+                        <item colA="Item 20A" colB="Item 20B" colC="Item 20C" />
+                    </data>
+                </tableview>
+            </vbox>   
+        </accordion>
+        
+        <accordion width="200" height="400">
+            <vbox text="Page 1" width="100%">
+                <button text="Button 1" width="100%" height="20%" />
+                <button text="Button 2" width="100%" height="20%" />
+                <button text="Button 3" width="100%" height="20%" />
+                <button text="Button 4" width="100%" height="20%" />
+                <button text="Button 5" width="100%" height="20%" />
+            </vbox>   
+            <vbox id="page2" text="Page 2" width="100%" style="padding: 0px;">
+                <scrollview width="100%" height="100%" contentWidth="100%">
+                    <button text="Button 1" width="100%" />
+                    <button text="Button 2" width="100%" />
+                    <button text="Button 3" width="100%" />
+                    <button text="Button 4" width="100%" />
+                    <button text="Button 5" width="100%" />
+                    <button text="Button 6" width="100%" />
+                    <button text="Button 7" width="100%" />
+                    <button text="Button 8" width="100%" />
+                    <button text="Button 9" width="100%" />
+                    <button text="Button 10" width="100%" />
+                    <button text="Button 11" width="100%" />
+                    <button text="Button 12" width="100%" />
+                    <button text="Button 13" width="100%" />
+                    <button text="Button 14" width="100%" />
+                    <button text="Button 15" width="100%" />
+                    <button text="Button 16" width="100%" />
+                    <button text="Button 18" width="100%" />
+                    <button text="Button 19" width="100%" />
+                    <button text="Button 20" width="100%" />
+                </scrollview>    
+            </vbox>   
+            <vbox text="Page 3" width="100%">
+                <button text="Button 1" width="100%" height="20%" />
+                <button text="Button 2" width="100%" height="20%" />
+                <button text="Button 3" width="100%" height="20%" />
+                <button text="Button 4" width="100%" height="20%" />
+                <button text="Button 5" width="100%" height="20%" />
+            </vbox>   
+            <vbox text="Page 4" width="100%" style="padding: 0;padding-bottom: 1px;">
+                <listview width="100%" height="100%">
+                    <data>
+                        <item value="Item 1" />
+                        <item value="Item 2" />
+                        <item value="Item 3" />
+                        <item value="Item 4" />
+                        <item value="Item 5" />
+                        <item value="Item 6" />
+                        <item value="Item 7" />
+                        <item value="Item 8" />
+                        <item value="Item 9" />
+                        <item value="Item 10" />
+                        <item value="Item 11" />
+                        <item value="Item 12" />
+                        <item value="Item 13" />
+                        <item value="Item 14" />
+                        <item value="Item 15" />
+                        <item value="Item 16" />
+                        <item value="Item 17" />
+                        <item value="Item 18" />
+                        <item value="Item 19" />
+                        <item value="Item 20" />
+                    </data>
+                </listview>
+            </vbox>   
+            <vbox text="Page 5" width="100%" style="padding: 0;padding-bottom: 1px;">
+                <tableview width="100%" height="100%">
+                    <header>
+                        <column id="colA" text="Col A" width="70" />
+                        <column id="colB" text="Col B" width="70" />
+                        <column id="colC" text="Col C" width="100" />
+                    </header>
+                    <data>
+                        <item colA="Item 1A" colB="Item 1B" colC="Item 1C" />
+                        <item colA="Item 2A" colB="Item 2B" colC="Item 2C" />
+                        <item colA="Item 3A" colB="Item 3B" colC="Item 3C" />
+                        <item colA="Item 4A" colB="Item 4B" colC="Item 4C" />
+                        <item colA="Item 5A" colB="Item 5B" colC="Item 5C" />
+                        <item colA="Item 6A" colB="Item 6B" colC="Item 6C" />
+                        <item colA="Item 7A" colB="Item 7B" colC="Item 7C" />
+                        <item colA="Item 8A" colB="Item 8B" colC="Item 8C" />
+                        <item colA="Item 9A" colB="Item 9B" colC="Item 9C" />
+                        <item colA="Item 10A" colB="Item 10B" colC="Item 10C" />
+                        <item colA="Item 11A" colB="Item 11B" colC="Item 11C" />
+                        <item colA="Item 12A" colB="Item 12B" colC="Item 12C" />
+                        <item colA="Item 13A" colB="Item 13B" colC="Item 13C" />
+                        <item colA="Item 14A" colB="Item 14B" colC="Item 14C" />
+                        <item colA="Item 15A" colB="Item 15B" colC="Item 15C" />
+                        <item colA="Item 16A" colB="Item 16B" colC="Item 16C" />
+                        <item colA="Item 17A" colB="Item 17B" colC="Item 17C" />
+                        <item colA="Item 18A" colB="Item 18B" colC="Item 18C" />
+                        <item colA="Item 19A" colB="Item 19B" colC="Item 19C" />
+                        <item colA="Item 20A" colB="Item 20B" colC="Item 20C" />
+                    </data>
+                </tableview>
+            </vbox>   
+        </accordion>
+
+        <accordion width="200" height="400">
+            <vbox text="Page 1" width="100%">
+                <button text="Button 1" width="100%" height="20%" />
+                <button text="Button 2" width="100%" height="20%" />
+                <button text="Button 3" width="100%" height="20%" />
+                <button text="Button 4" width="100%" height="20%" />
+                <button text="Button 5" width="100%" height="20%" />
+            </vbox>   
+            <vbox id="page2" text="Page 2" width="100%" style="padding: 0px;">
+                <scrollview width="100%" height="100%" contentWidth="100%">
+                    <button text="Button 1" width="100%" />
+                    <button text="Button 2" width="100%" />
+                    <button text="Button 3" width="100%" />
+                    <button text="Button 4" width="100%" />
+                    <button text="Button 5" width="100%" />
+                    <button text="Button 6" width="100%" />
+                    <button text="Button 7" width="100%" />
+                    <button text="Button 8" width="100%" />
+                    <button text="Button 9" width="100%" />
+                    <button text="Button 10" width="100%" />
+                    <button text="Button 11" width="100%" />
+                    <button text="Button 12" width="100%" />
+                    <button text="Button 13" width="100%" />
+                    <button text="Button 14" width="100%" />
+                    <button text="Button 15" width="100%" />
+                    <button text="Button 16" width="100%" />
+                    <button text="Button 18" width="100%" />
+                    <button text="Button 19" width="100%" />
+                    <button text="Button 20" width="100%" />
+                </scrollview>    
+            </vbox>   
+            <vbox text="Page 3" width="100%">
+                <button text="Button 1" width="100%" height="20%" />
+                <button text="Button 2" width="100%" height="20%" />
+                <button text="Button 3" width="100%" height="20%" />
+                <button text="Button 4" width="100%" height="20%" />
+                <button text="Button 5" width="100%" height="20%" />
+            </vbox>   
+            <vbox text="Page 4" width="100%" style="padding: 0;padding-bottom: 1px;">
+                <listview width="100%" height="100%">
+                    <data>
+                        <item value="Item 1" />
+                        <item value="Item 2" />
+                        <item value="Item 3" />
+                        <item value="Item 4" />
+                        <item value="Item 5" />
+                        <item value="Item 6" />
+                        <item value="Item 7" />
+                        <item value="Item 8" />
+                        <item value="Item 9" />
+                        <item value="Item 10" />
+                        <item value="Item 11" />
+                        <item value="Item 12" />
+                        <item value="Item 13" />
+                        <item value="Item 14" />
+                        <item value="Item 15" />
+                        <item value="Item 16" />
+                        <item value="Item 17" />
+                        <item value="Item 18" />
+                        <item value="Item 19" />
+                        <item value="Item 20" />
+                    </data>
+                </listview>
+            </vbox>   
+            <vbox text="Page 5" width="100%" style="padding: 0;padding-bottom: 1px;">
+                <tableview width="100%" height="100%">
+                    <header>
+                        <column id="colA" text="Col A" width="70" />
+                        <column id="colB" text="Col B" width="70" />
+                        <column id="colC" text="Col C" width="100" />
+                    </header>
+                    <data>
+                        <item colA="Item 1A" colB="Item 1B" colC="Item 1C" />
+                        <item colA="Item 2A" colB="Item 2B" colC="Item 2C" />
+                        <item colA="Item 3A" colB="Item 3B" colC="Item 3C" />
+                        <item colA="Item 4A" colB="Item 4B" colC="Item 4C" />
+                        <item colA="Item 5A" colB="Item 5B" colC="Item 5C" />
+                        <item colA="Item 6A" colB="Item 6B" colC="Item 6C" />
+                        <item colA="Item 7A" colB="Item 7B" colC="Item 7C" />
+                        <item colA="Item 8A" colB="Item 8B" colC="Item 8C" />
+                        <item colA="Item 9A" colB="Item 9B" colC="Item 9C" />
+                        <item colA="Item 10A" colB="Item 10B" colC="Item 10C" />
+                        <item colA="Item 11A" colB="Item 11B" colC="Item 11C" />
+                        <item colA="Item 12A" colB="Item 12B" colC="Item 12C" />
+                        <item colA="Item 13A" colB="Item 13B" colC="Item 13C" />
+                        <item colA="Item 14A" colB="Item 14B" colC="Item 14C" />
+                        <item colA="Item 15A" colB="Item 15B" colC="Item 15C" />
+                        <item colA="Item 16A" colB="Item 16B" colC="Item 16C" />
+                        <item colA="Item 17A" colB="Item 17B" colC="Item 17C" />
+                        <item colA="Item 18A" colB="Item 18B" colC="Item 18C" />
+                        <item colA="Item 19A" colB="Item 19B" colC="Item 19C" />
+                        <item colA="Item 20A" colB="Item 20B" colC="Item 20C" />
+                    </data>
+                </tableview>
+            </vbox>   
+        </accordion>
+
+        <accordion width="200" height="400">
+            <vbox text="Page 1" width="100%">
+                <button text="Button 1" width="100%" height="20%" />
+                <button text="Button 2" width="100%" height="20%" />
+                <button text="Button 3" width="100%" height="20%" />
+                <button text="Button 4" width="100%" height="20%" />
+                <button text="Button 5" width="100%" height="20%" />
+            </vbox>   
+            <vbox id="page2" text="Page 2" width="100%" style="padding: 0px;">
+                <scrollview width="100%" height="100%" contentWidth="100%">
+                    <button text="Button 1" width="100%" />
+                    <button text="Button 2" width="100%" />
+                    <button text="Button 3" width="100%" />
+                    <button text="Button 4" width="100%" />
+                    <button text="Button 5" width="100%" />
+                    <button text="Button 6" width="100%" />
+                    <button text="Button 7" width="100%" />
+                    <button text="Button 8" width="100%" />
+                    <button text="Button 9" width="100%" />
+                    <button text="Button 10" width="100%" />
+                    <button text="Button 11" width="100%" />
+                    <button text="Button 12" width="100%" />
+                    <button text="Button 13" width="100%" />
+                    <button text="Button 14" width="100%" />
+                    <button text="Button 15" width="100%" />
+                    <button text="Button 16" width="100%" />
+                    <button text="Button 18" width="100%" />
+                    <button text="Button 19" width="100%" />
+                    <button text="Button 20" width="100%" />
+                </scrollview>    
+            </vbox>   
+            <vbox text="Page 3" width="100%">
+                <button text="Button 1" width="100%" height="20%" />
+                <button text="Button 2" width="100%" height="20%" />
+                <button text="Button 3" width="100%" height="20%" />
+                <button text="Button 4" width="100%" height="20%" />
+                <button text="Button 5" width="100%" height="20%" />
+            </vbox>   
+            <vbox text="Page 4" width="100%" style="padding: 0;padding-bottom: 1px;">
+                <listview width="100%" height="100%">
+                    <data>
+                        <item value="Item 1" />
+                        <item value="Item 2" />
+                        <item value="Item 3" />
+                        <item value="Item 4" />
+                        <item value="Item 5" />
+                        <item value="Item 6" />
+                        <item value="Item 7" />
+                        <item value="Item 8" />
+                        <item value="Item 9" />
+                        <item value="Item 10" />
+                        <item value="Item 11" />
+                        <item value="Item 12" />
+                        <item value="Item 13" />
+                        <item value="Item 14" />
+                        <item value="Item 15" />
+                        <item value="Item 16" />
+                        <item value="Item 17" />
+                        <item value="Item 18" />
+                        <item value="Item 19" />
+                        <item value="Item 20" />
+                    </data>
+                </listview>
+            </vbox>   
+            <vbox text="Page 5" width="100%" style="padding: 0;padding-bottom: 1px;">
+                <tableview width="100%" height="100%">
+                    <header>
+                        <column id="colA" text="Col A" width="70" />
+                        <column id="colB" text="Col B" width="70" />
+                        <column id="colC" text="Col C" width="100" />
+                    </header>
+                    <data>
+                        <item colA="Item 1A" colB="Item 1B" colC="Item 1C" />
+                        <item colA="Item 2A" colB="Item 2B" colC="Item 2C" />
+                        <item colA="Item 3A" colB="Item 3B" colC="Item 3C" />
+                        <item colA="Item 4A" colB="Item 4B" colC="Item 4C" />
+                        <item colA="Item 5A" colB="Item 5B" colC="Item 5C" />
+                        <item colA="Item 6A" colB="Item 6B" colC="Item 6C" />
+                        <item colA="Item 7A" colB="Item 7B" colC="Item 7C" />
+                        <item colA="Item 8A" colB="Item 8B" colC="Item 8C" />
+                        <item colA="Item 9A" colB="Item 9B" colC="Item 9C" />
+                        <item colA="Item 10A" colB="Item 10B" colC="Item 10C" />
+                        <item colA="Item 11A" colB="Item 11B" colC="Item 11C" />
+                        <item colA="Item 12A" colB="Item 12B" colC="Item 12C" />
+                        <item colA="Item 13A" colB="Item 13B" colC="Item 13C" />
+                        <item colA="Item 14A" colB="Item 14B" colC="Item 14C" />
+                        <item colA="Item 15A" colB="Item 15B" colC="Item 15C" />
+                        <item colA="Item 16A" colB="Item 16B" colC="Item 16C" />
+                        <item colA="Item 17A" colB="Item 17B" colC="Item 17C" />
+                        <item colA="Item 18A" colB="Item 18B" colC="Item 18C" />
+                        <item colA="Item 19A" colB="Item 19B" colC="Item 19C" />
+                        <item colA="Item 20A" colB="Item 20B" colC="Item 20C" />
+                    </data>
+                </tableview>
+            </vbox>   
+        </accordion>
+
+        <accordion width="200" height="400">
+            <vbox text="Page 1" width="100%">
+                <button text="Button 1" width="100%" height="20%" />
+                <button text="Button 2" width="100%" height="20%" />
+                <button text="Button 3" width="100%" height="20%" />
+                <button text="Button 4" width="100%" height="20%" />
+                <button text="Button 5" width="100%" height="20%" />
+            </vbox>   
+            <vbox id="page2" text="Page 2" width="100%" style="padding: 0px;">
+                <scrollview width="100%" height="100%" contentWidth="100%">
+                    <button text="Button 1" width="100%" />
+                    <button text="Button 2" width="100%" />
+                    <button text="Button 3" width="100%" />
+                    <button text="Button 4" width="100%" />
+                    <button text="Button 5" width="100%" />
+                    <button text="Button 6" width="100%" />
+                    <button text="Button 7" width="100%" />
+                    <button text="Button 8" width="100%" />
+                    <button text="Button 9" width="100%" />
+                    <button text="Button 10" width="100%" />
+                    <button text="Button 11" width="100%" />
+                    <button text="Button 12" width="100%" />
+                    <button text="Button 13" width="100%" />
+                    <button text="Button 14" width="100%" />
+                    <button text="Button 15" width="100%" />
+                    <button text="Button 16" width="100%" />
+                    <button text="Button 18" width="100%" />
+                    <button text="Button 19" width="100%" />
+                    <button text="Button 20" width="100%" />
+                </scrollview>    
+            </vbox>   
+            <vbox text="Page 3" width="100%">
+                <button text="Button 1" width="100%" height="20%" />
+                <button text="Button 2" width="100%" height="20%" />
+                <button text="Button 3" width="100%" height="20%" />
+                <button text="Button 4" width="100%" height="20%" />
+                <button text="Button 5" width="100%" height="20%" />
+            </vbox>   
+            <vbox text="Page 4" width="100%" style="padding: 0;padding-bottom: 1px;">
+                <listview width="100%" height="100%">
+                    <data>
+                        <item value="Item 1" />
+                        <item value="Item 2" />
+                        <item value="Item 3" />
+                        <item value="Item 4" />
+                        <item value="Item 5" />
+                        <item value="Item 6" />
+                        <item value="Item 7" />
+                        <item value="Item 8" />
+                        <item value="Item 9" />
+                        <item value="Item 10" />
+                        <item value="Item 11" />
+                        <item value="Item 12" />
+                        <item value="Item 13" />
+                        <item value="Item 14" />
+                        <item value="Item 15" />
+                        <item value="Item 16" />
+                        <item value="Item 17" />
+                        <item value="Item 18" />
+                        <item value="Item 19" />
+                        <item value="Item 20" />
+                    </data>
+                </listview>
+            </vbox>   
+            <vbox text="Page 5" width="100%" style="padding: 0;padding-bottom: 1px;">
+                <tableview width="100%" height="100%">
+                    <header>
+                        <column id="colA" text="Col A" width="70" />
+                        <column id="colB" text="Col B" width="70" />
+                        <column id="colC" text="Col C" width="100" />
+                    </header>
+                    <data>
+                        <item colA="Item 1A" colB="Item 1B" colC="Item 1C" />
+                        <item colA="Item 2A" colB="Item 2B" colC="Item 2C" />
+                        <item colA="Item 3A" colB="Item 3B" colC="Item 3C" />
+                        <item colA="Item 4A" colB="Item 4B" colC="Item 4C" />
+                        <item colA="Item 5A" colB="Item 5B" colC="Item 5C" />
+                        <item colA="Item 6A" colB="Item 6B" colC="Item 6C" />
+                        <item colA="Item 7A" colB="Item 7B" colC="Item 7C" />
+                        <item colA="Item 8A" colB="Item 8B" colC="Item 8C" />
+                        <item colA="Item 9A" colB="Item 9B" colC="Item 9C" />
+                        <item colA="Item 10A" colB="Item 10B" colC="Item 10C" />
+                        <item colA="Item 11A" colB="Item 11B" colC="Item 11C" />
+                        <item colA="Item 12A" colB="Item 12B" colC="Item 12C" />
+                        <item colA="Item 13A" colB="Item 13B" colC="Item 13C" />
+                        <item colA="Item 14A" colB="Item 14B" colC="Item 14C" />
+                        <item colA="Item 15A" colB="Item 15B" colC="Item 15C" />
+                        <item colA="Item 16A" colB="Item 16B" colC="Item 16C" />
+                        <item colA="Item 17A" colB="Item 17B" colC="Item 17C" />
+                        <item colA="Item 18A" colB="Item 18B" colC="Item 18C" />
+                        <item colA="Item 19A" colB="Item 19B" colC="Item 19C" />
+                        <item colA="Item 20A" colB="Item 20B" colC="Item 20C" />
+                    </data>
+                </tableview>
+            </vbox>   
+        </accordion>
+
+        <accordion width="200" height="400">
+            <vbox text="Page 1" width="100%">
+                <button text="Button 1" width="100%" height="20%" />
+                <button text="Button 2" width="100%" height="20%" />
+                <button text="Button 3" width="100%" height="20%" />
+                <button text="Button 4" width="100%" height="20%" />
+                <button text="Button 5" width="100%" height="20%" />
+            </vbox>   
+            <vbox id="page2" text="Page 2" width="100%" style="padding: 0px;">
+                <scrollview width="100%" height="100%" contentWidth="100%">
+                    <button text="Button 1" width="100%" />
+                    <button text="Button 2" width="100%" />
+                    <button text="Button 3" width="100%" />
+                    <button text="Button 4" width="100%" />
+                    <button text="Button 5" width="100%" />
+                    <button text="Button 6" width="100%" />
+                    <button text="Button 7" width="100%" />
+                    <button text="Button 8" width="100%" />
+                    <button text="Button 9" width="100%" />
+                    <button text="Button 10" width="100%" />
+                    <button text="Button 11" width="100%" />
+                    <button text="Button 12" width="100%" />
+                    <button text="Button 13" width="100%" />
+                    <button text="Button 14" width="100%" />
+                    <button text="Button 15" width="100%" />
+                    <button text="Button 16" width="100%" />
+                    <button text="Button 18" width="100%" />
+                    <button text="Button 19" width="100%" />
+                    <button text="Button 20" width="100%" />
+                </scrollview>    
+            </vbox>   
+            <vbox text="Page 3" width="100%">
+                <button text="Button 1" width="100%" height="20%" />
+                <button text="Button 2" width="100%" height="20%" />
+                <button text="Button 3" width="100%" height="20%" />
+                <button text="Button 4" width="100%" height="20%" />
+                <button text="Button 5" width="100%" height="20%" />
+            </vbox>   
+            <vbox text="Page 4" width="100%" style="padding: 0;padding-bottom: 1px;">
+                <listview width="100%" height="100%">
+                    <data>
+                        <item value="Item 1" />
+                        <item value="Item 2" />
+                        <item value="Item 3" />
+                        <item value="Item 4" />
+                        <item value="Item 5" />
+                        <item value="Item 6" />
+                        <item value="Item 7" />
+                        <item value="Item 8" />
+                        <item value="Item 9" />
+                        <item value="Item 10" />
+                        <item value="Item 11" />
+                        <item value="Item 12" />
+                        <item value="Item 13" />
+                        <item value="Item 14" />
+                        <item value="Item 15" />
+                        <item value="Item 16" />
+                        <item value="Item 17" />
+                        <item value="Item 18" />
+                        <item value="Item 19" />
+                        <item value="Item 20" />
+                    </data>
+                </listview>
+            </vbox>   
+            <vbox text="Page 5" width="100%" style="padding: 0;padding-bottom: 1px;">
+                <tableview width="100%" height="100%">
+                    <header>
+                        <column id="colA" text="Col A" width="70" />
+                        <column id="colB" text="Col B" width="70" />
+                        <column id="colC" text="Col C" width="100" />
+                    </header>
+                    <data>
+                        <item colA="Item 1A" colB="Item 1B" colC="Item 1C" />
+                        <item colA="Item 2A" colB="Item 2B" colC="Item 2C" />
+                        <item colA="Item 3A" colB="Item 3B" colC="Item 3C" />
+                        <item colA="Item 4A" colB="Item 4B" colC="Item 4C" />
+                        <item colA="Item 5A" colB="Item 5B" colC="Item 5C" />
+                        <item colA="Item 6A" colB="Item 6B" colC="Item 6C" />
+                        <item colA="Item 7A" colB="Item 7B" colC="Item 7C" />
+                        <item colA="Item 8A" colB="Item 8B" colC="Item 8C" />
+                        <item colA="Item 9A" colB="Item 9B" colC="Item 9C" />
+                        <item colA="Item 10A" colB="Item 10B" colC="Item 10C" />
+                        <item colA="Item 11A" colB="Item 11B" colC="Item 11C" />
+                        <item colA="Item 12A" colB="Item 12B" colC="Item 12C" />
+                        <item colA="Item 13A" colB="Item 13B" colC="Item 13C" />
+                        <item colA="Item 14A" colB="Item 14B" colC="Item 14C" />
+                        <item colA="Item 15A" colB="Item 15B" colC="Item 15C" />
+                        <item colA="Item 16A" colB="Item 16B" colC="Item 16C" />
+                        <item colA="Item 17A" colB="Item 17B" colC="Item 17C" />
+                        <item colA="Item 18A" colB="Item 18B" colC="Item 18C" />
+                        <item colA="Item 19A" colB="Item 19B" colC="Item 19C" />
+                        <item colA="Item 20A" colB="Item 20B" colC="Item 20C" />
+                    </data>
+                </tableview>
+            </vbox>   
+        </accordion>
+
+        <accordion width="200" height="400">
+            <vbox text="Page 1" width="100%">
+                <button text="Button 1" width="100%" height="20%" />
+                <button text="Button 2" width="100%" height="20%" />
+                <button text="Button 3" width="100%" height="20%" />
+                <button text="Button 4" width="100%" height="20%" />
+                <button text="Button 5" width="100%" height="20%" />
+            </vbox>   
+            <vbox id="page2" text="Page 2" width="100%" style="padding: 0px;">
+                <scrollview width="100%" height="100%" contentWidth="100%">
+                    <button text="Button 1" width="100%" />
+                    <button text="Button 2" width="100%" />
+                    <button text="Button 3" width="100%" />
+                    <button text="Button 4" width="100%" />
+                    <button text="Button 5" width="100%" />
+                    <button text="Button 6" width="100%" />
+                    <button text="Button 7" width="100%" />
+                    <button text="Button 8" width="100%" />
+                    <button text="Button 9" width="100%" />
+                    <button text="Button 10" width="100%" />
+                    <button text="Button 11" width="100%" />
+                    <button text="Button 12" width="100%" />
+                    <button text="Button 13" width="100%" />
+                    <button text="Button 14" width="100%" />
+                    <button text="Button 15" width="100%" />
+                    <button text="Button 16" width="100%" />
+                    <button text="Button 18" width="100%" />
+                    <button text="Button 19" width="100%" />
+                    <button text="Button 20" width="100%" />
+                </scrollview>    
+            </vbox>   
+            <vbox text="Page 3" width="100%">
+                <button text="Button 1" width="100%" height="20%" />
+                <button text="Button 2" width="100%" height="20%" />
+                <button text="Button 3" width="100%" height="20%" />
+                <button text="Button 4" width="100%" height="20%" />
+                <button text="Button 5" width="100%" height="20%" />
+            </vbox>   
+            <vbox text="Page 4" width="100%" style="padding: 0;padding-bottom: 1px;">
+                <listview width="100%" height="100%">
+                    <data>
+                        <item value="Item 1" />
+                        <item value="Item 2" />
+                        <item value="Item 3" />
+                        <item value="Item 4" />
+                        <item value="Item 5" />
+                        <item value="Item 6" />
+                        <item value="Item 7" />
+                        <item value="Item 8" />
+                        <item value="Item 9" />
+                        <item value="Item 10" />
+                        <item value="Item 11" />
+                        <item value="Item 12" />
+                        <item value="Item 13" />
+                        <item value="Item 14" />
+                        <item value="Item 15" />
+                        <item value="Item 16" />
+                        <item value="Item 17" />
+                        <item value="Item 18" />
+                        <item value="Item 19" />
+                        <item value="Item 20" />
+                    </data>
+                </listview>
+            </vbox>   
+            <vbox text="Page 5" width="100%" style="padding: 0;padding-bottom: 1px;">
+                <tableview width="100%" height="100%">
+                    <header>
+                        <column id="colA" text="Col A" width="70" />
+                        <column id="colB" text="Col B" width="70" />
+                        <column id="colC" text="Col C" width="100" />
+                    </header>
+                    <data>
+                        <item colA="Item 1A" colB="Item 1B" colC="Item 1C" />
+                        <item colA="Item 2A" colB="Item 2B" colC="Item 2C" />
+                        <item colA="Item 3A" colB="Item 3B" colC="Item 3C" />
+                        <item colA="Item 4A" colB="Item 4B" colC="Item 4C" />
+                        <item colA="Item 5A" colB="Item 5B" colC="Item 5C" />
+                        <item colA="Item 6A" colB="Item 6B" colC="Item 6C" />
+                        <item colA="Item 7A" colB="Item 7B" colC="Item 7C" />
+                        <item colA="Item 8A" colB="Item 8B" colC="Item 8C" />
+                        <item colA="Item 9A" colB="Item 9B" colC="Item 9C" />
+                        <item colA="Item 10A" colB="Item 10B" colC="Item 10C" />
+                        <item colA="Item 11A" colB="Item 11B" colC="Item 11C" />
+                        <item colA="Item 12A" colB="Item 12B" colC="Item 12C" />
+                        <item colA="Item 13A" colB="Item 13B" colC="Item 13C" />
+                        <item colA="Item 14A" colB="Item 14B" colC="Item 14C" />
+                        <item colA="Item 15A" colB="Item 15B" colC="Item 15C" />
+                        <item colA="Item 16A" colB="Item 16B" colC="Item 16C" />
+                        <item colA="Item 17A" colB="Item 17B" colC="Item 17C" />
+                        <item colA="Item 18A" colB="Item 18B" colC="Item 18C" />
+                        <item colA="Item 19A" colB="Item 19B" colC="Item 19C" />
+                        <item colA="Item 20A" colB="Item 20B" colC="Item 20C" />
+                    </data>
+                </tableview>
+            </vbox>   
+        </accordion>
+
+
+		</hbox>
+
+        <hbox text="Video" width="100%" continuous="true">
+
+<vbox style="padding: 15px;">
+    <hbox>
+        <label text="Frame Size:" />
+        <slider min="200" max="500" pos="500" onchange="theFrame0.width = this.pos" />
+        <slider min="200" max="500" pos="400" onchange="theFrame0.height = this.pos" />
+    </hbox>
+    <grid columns="3">
+        
+        <frame id="theFrame0" text="Test Video" width="300" height="200">
+            <vbox width="100%" height="100%">
+<!--                <video id="theVideo" width="100%" height="100%" file="https://www.w3schools.com/html/mov_bbb.mp4" />
+-->                <hbox width="100%">
+<!--                    <button width="100%" text="Play" onclick="theVideo.play();" />
+                    <button width="100%" text="Pause" onclick="theVideo.pause();" />
+-->                </hbox>
+            </vbox>    
+        </frame>
+    </grid>
+</vbox>
+
+		</hbox>
+
+        <hbox text="Sensors" width="100%" continuous="true">
+<vbox>
+    <grid>
+        <label text="Width:" verticalAlign="center" />
+        <slider pos="800" min="170" max="800" onchange="grid1.width = this.value" />
+        
+        <label text="Height:" verticalAlign="center" />
+        <slider pos="500" min="170" max="800" onchange="grid1.height = this.value" />
+    </grid>
+    <grid id="grid1" columns="5" style="border: 1px solid #ababab;padding: 5px;">
+        <box width="100%" height="100%" style="background-color: red;border:1px solid red;background-opacity: .5" />
+        <box width="100%" height="100%" style="background-color: red;border:1px solid red;background-opacity: .5" />
+        <box width="100%" height="100%" style="background-color: red;border:1px solid red;background-opacity: .5" />
+        <box width="100%" height="100%" style="background-color: red;border:1px solid red;background-opacity: .5" />
+        <box width="100%" height="100%" style="background-color: red;border:1px solid red;background-opacity: .5" />
+        
+        <box width="100%" height="100%" style="background-color: green;border:1px solid green;background-opacity: .5" />
+        <box width="100%" height="100%" style="background-color: green;border:1px solid green;background-opacity: .5" />
+        <box width="100%" height="100%" style="background-color: green;border:1px solid green;background-opacity: .5" />
+        <box width="100%" height="100%" style="background-color: green;border:1px solid green;background-opacity: .5" />
+        <box width="100%" height="100%" style="background-color: green;border:1px solid green;background-opacity: .5" />
+        
+        <box width="100%" height="100%" style="background-color: blue;border:1px solid blue;background-opacity: .5" />
+        <box width="100%" height="100%" style="background-color: blue;border:1px solid blue;background-opacity: .5" />
+        <box width="100%" height="100%" style="background-color: blue;border:1px solid blue;background-opacity: .5" />
+        <box width="100%" height="100%" style="background-color: blue;border:1px solid blue;background-opacity: .5" />
+        <box width="100%" height="100%" style="background-color: blue;border:1px solid blue;background-opacity: .5" />
+
+    </grid>
+</vbox>
+<!--
+Digital Temp
+Analog Temp
+Humidity
+Sound
+Altitude
+Gyro
+Voltage
+Motion (PIR)
+Collision
+Photocell
+DHT
+Tilt
+Water
+Soil/Humidity/Moisture
+Steam
+Pulse Rate
+Flame
+Gas
+Alcohol
+Vibration
+-->
+
+		</hbox>
+
+        <hbox text="Cameras" width="100%" continuous="true">
+
+<vbox style="padding: 15px;">
+    <hbox>
+        <label text="Frame Size:" />
+        <slider min="200" max="500" pos="400" onchange="theFrame.width = this.pos" />
+        <slider min="200" max="500" pos="300" onchange="theFrame.height = this.pos" />
+    </hbox>
+    <grid columns="1">
+        <frame id="theFrame" text="Camera 1" width="300" height="300">
+            <vbox width="100%" height="100%">
+<!--                <video id="theVideo" width="100%" height="100%" file="https://www.w3schools.com/html/mov_bbb.mp4" />
+-->                <hbox width="100%">
+<!--                    <button width="100%" text="Play" onclick="theVideo.play();" />
+                    <button width="100%" text="Pause" onclick="theVideo.pause();" />
+-->                </hbox>
+            </vbox>    
+        </frame>
+    </grid>
+    
+    
+</vbox>
+
+<vbox style="padding: 15px;">
+    <hbox>
+        <label text="Frame Size:" />
+        <slider min="200" max="500" pos="400" onchange="theFrame2.width = this.pos" />
+        <slider min="200" max="500" pos="300" onchange="theFrame2.height = this.pos" />
+    </hbox>
+    <grid columns="1">
+        <frame id="theFrame2" text="Camera 2 - Night Vision" width="300" height="300">
+            <vbox width="100%" height="100%">
+<!--                <video id="theVideo" width="100%" height="100%" file="https://www.w3schools.com/html/mov_bbb.mp4" />
+-->                <hbox width="100%">
+<!--                    <button width="100%" text="Play" onclick="theVideo.play();" />
+                    <button width="100%" text="Pause" onclick="theVideo.pause();" />
+-->                </hbox>
+            </vbox>    
+        </frame>
+    </grid>
+    
+    
+</vbox>
+
+		</hbox>
+
+        <hbox text="Servo Control" width="100%" continuous="true">
+
+<vbox>
+    <hbox>
+        <accordion width="200" height="400">
+            <vbox text="Servo 1" width="100%">
+
+
+
+            </vbox>   
+
+            <vbox id="page2" text="Servo 2" width="100%" style="padding: 0px;">
+
+
+
+            </vbox>   
+
+            <vbox text="Servo 3" width="100%">
+
+
+
+            </vbox>   
+
+            <vbox text="Servo 4" width="100%" style="padding: 0;padding-bottom: 1px;">
+
+
+
+            </vbox>   
+
+            <vbox text="Servo 5" width="100%" style="padding: 0;padding-bottom: 1px;">
+
+
+
+            </vbox>   
+
+            <vbox text="Servo 6" width="100%" style="padding: 0;padding-bottom: 1px;">
+
+
+
+            </vbox>   
+
+            <vbox text="Servo 7" width="100%" style="padding: 0;padding-bottom: 1px;">
+
+
+
+            </vbox>   
+
+            <vbox text="Servo 8" width="100%" style="padding: 0;padding-bottom: 1px;">
+
+
+
+            </vbox>   
+
+            <vbox text="Servo 9" width="100%" style="padding: 0;padding-bottom: 1px;">
+
+
+
+            </vbox>   
+
+            <vbox text="Servo 10" width="100%" style="padding: 0;padding-bottom: 1px;">
+
+
+
+            </vbox>   
+
+            <vbox text="Servo 11" width="100%" style="padding: 0;padding-bottom: 1px;">
+
+
+
+            </vbox>   
+
+            <vbox text="Servo 12" width="100%" style="padding: 0;padding-bottom: 1px;">
+
+
+
+            </vbox>   
+
+            <vbox text="Servo 13" width="100%" style="padding: 0;padding-bottom: 1px;">
+
+
+
+            </vbox>   
+
+            <vbox text="Servo 14" width="100%" style="padding: 0;padding-bottom: 1px;">
+
+
+
+            </vbox>   
+
+            <vbox text="Servo 15" width="100%" style="padding: 0;padding-bottom: 1px;">
+
+
+
+            </vbox>   
+
+        </accordion>
+            <vbox width="100%" height="100%">
+
+            </vbox>
+            
+            <label text="Command:" verticalAlign="bottom" />
+            <textfield placeholder="Enter some text" width="100%" verticalAlign="bottom"  />
+
+    </hbox>
+</vbox>
+
+		</hbox>
+
+        <hbox text="Guides" width="100%" continuous="true">
+
+
+
+		</hbox>
+
+        <hbox text="Chat" width="100%" continuous="true">
+
+        <scrollview width="100%" contentWidth="100%">
+            <vbox width="100%">
+                <button text="UserName" />
+                <button text="UserName" />
+                <button text="UserName" />
+                <button text="UserName" />
+                <button text="UserName" />
+                <button text="UserName" />
+                <button text="UserName" />
+                <button text="UserName" />
+                <button text="UserName" />
+                <button text="UserName" />
+                <button text="UserName" />
+            </vbox>
+        </scrollview>
+            
+            <hbox width="100%">
+            <label text="Input:" verticalAlign="center" />
+            <textfield placeholder="Enter some text" width="100%" />
+			<button text="Send" />
+            </hbox>
+
+	</hbox>
+
+        <hbox text="Tools" width="100%" continuous="true">
+
+        <accordion width="100%" height="400">
+            <vbox text="Calculator" width="100%">
+
+
+
+            </vbox>   
+
+            <vbox id="page2" text="Terminal" width="100%" style="padding: 0px;">
+
+
+
+            </vbox>   
+
+            <vbox text="Resistor Chart" width="100%">
+
+
+
+            </vbox>   
+
+            <vbox text="-" width="100%" style="padding: 0;padding-bottom: 1px;">
+
+
+
+            </vbox>   
+
+            <vbox text="-" width="100%" style="padding: 0;padding-bottom: 1px;">
+
+
+
+            </vbox>   
+
+            <vbox text="RPi4 Pinout" width="100%" style="padding: 0;padding-bottom: 1px;">
+
+
+
+            </vbox>   
+
+            <vbox text="Arduino Mega Pinout" width="100%" style="padding: 0;padding-bottom: 1px;">
+
+
+
+            </vbox>   
+
+            <vbox text="Arduino Uno Pinout" width="100%" style="padding: 0;padding-bottom: 1px;">
+
+
+
+            </vbox>   
+
+            <vbox text="Arduino Nano Pinout" width="100%" style="padding: 0;padding-bottom: 1px;">
+
+
+
+            </vbox>   
+
+            <vbox text="Glossary" width="100%" style="padding: 0;padding-bottom: 1px;">
+
+
+
+            </vbox>   
+
+        </accordion>
+
+		</hbox>
+
+        <hbox text="Hosting" width="100%" continuous="true">
+
+
+
+		</hbox>
+
+
+</tabview>
+        
+        <hbox styleName="footer" width="100%">
+            <label text="Shaun Holt - 2021" width="100%" verticalAlign="center" />
+			<label text="Made with Haxe and HaxeUI" verticalAlign="center" horizontalAlign="right" />
+        </hbox>
+    </vbox>
+</scrollview>    
