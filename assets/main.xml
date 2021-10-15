@@ -9,7 +9,7 @@
         </script>
         
         <box styleName="header" width="100%" >
-            <label id="headerLabel" text="The Perspective Corner" verticalAlign="center" />
+            <label id="headerLabel" text="The Perspective Corner" verticalAlign="center" horizontalAlign="center" />
             <image id="logo" verticalAlign="center" horizontalAlign="right" />
         </box>
         
@@ -485,106 +485,214 @@ Vibration
 
 <vbox>
     <hbox width="100%">
-        <accordion width="200" height="400">
-            <vbox text="Servo 1" width="100%">
+        <accordion width="200" height="400" >
+            <vbox text="Left Arm" width="100%">
 
 
 
             </vbox>   
 
-            <vbox id="page2" text="Servo 2" width="100%" style="padding: 0px;">
+            <vbox id="Shoulder" text="Shoulder" width="100%" style="padding: 0px;">
 
 
 
             </vbox>   
 
-            <vbox text="Servo 3" width="100%">
+            <vbox text="Elbow" width="100%">
 
 
 
             </vbox>   
 
-            <vbox text="Servo 4" width="100%" style="padding: 0;padding-bottom: 1px;">
+            <vbox text="Wrist" width="100%" style="padding: 0;padding-bottom: 1px;">
 
 
 
             </vbox>   
 
-            <vbox text="Servo 5" width="100%" style="padding: 0;padding-bottom: 1px;">
+            <vbox text="Hand" width="100%" style="padding: 0;padding-bottom: 1px;">
 
 
 
             </vbox>   
 
-            <vbox text="Servo 6" width="100%" style="padding: 0;padding-bottom: 1px;">
+
+        </accordion>
+
+        <accordion width="200" height="400" >
+            <vbox text="Right Arm" width="100%">
 
 
 
             </vbox>   
 
-            <vbox text="Servo 7" width="100%" style="padding: 0;padding-bottom: 1px;">
+            <vbox id="Shoulder" text="Shoulder" width="100%" style="padding: 0px;">
 
 
 
             </vbox>   
 
-            <vbox text="Servo 8" width="100%" style="padding: 0;padding-bottom: 1px;">
+            <vbox text="Elbow" width="100%">
 
 
 
             </vbox>   
 
-            <vbox text="Servo 9" width="100%" style="padding: 0;padding-bottom: 1px;">
+            <vbox text="Wrist" width="100%" style="padding: 0;padding-bottom: 1px;">
 
 
 
             </vbox>   
 
-            <vbox text="Servo 10" width="100%" style="padding: 0;padding-bottom: 1px;">
+            <vbox text="Hand" width="100%" style="padding: 0;padding-bottom: 1px;">
 
 
 
             </vbox>   
 
-            <vbox text="Servo 11" width="100%" style="padding: 0;padding-bottom: 1px;">
+
+        </accordion>
+
+        <accordion width="200" height="400" >
+            <vbox text="Head" width="100%">
 
 
 
             </vbox>   
 
-            <vbox text="Servo 12" width="100%" style="padding: 0;padding-bottom: 1px;">
+            <vbox id="Eyes" text="Eyes" width="100%" style="padding: 0px;">
 
 
 
             </vbox>   
 
-            <vbox text="Servo 13" width="100%" style="padding: 0;padding-bottom: 1px;">
+            <vbox text="Mouth" width="100%">
 
 
 
             </vbox>   
 
-            <vbox text="Servo 14" width="100%" style="padding: 0;padding-bottom: 1px;">
-
-
-
-            </vbox>   
-
-            <vbox text="Servo 15" width="100%" style="padding: 0;padding-bottom: 1px;">
+            <vbox text="Neck" width="100%" style="padding: 0;padding-bottom: 1px;">
 
 
 
             </vbox>   
 
         </accordion>
-            <vbox width="100%" height="100%">
+
+        <accordion width="200" height="400" >
+            <vbox text="Torso" width="100%">
+
+
+
+            </vbox>   
+
+            <vbox id="Chest" text="Shoulder" width="100%" style="padding: 0px;">
+
+
+
+            </vbox>   
+
+            <vbox text="Mid Stomach" width="100%">
+
+
+
+            </vbox>   
+
+            <vbox text="Waist" width="100%" style="padding: 0;padding-bottom: 1px;">
+
+
+
+            </vbox>   
+
+        </accordion>
+
+        <accordion width="200" height="400" >
+            <vbox text="Left Leg" width="100%">
+
+
+
+            </vbox>   
+
+            <vbox id="LHip" text="Hip" width="100%" style="padding: 0px;">
+
+
+
+            </vbox>   
+
+            <vbox text="Knee" width="100%">
+
+
+
+            </vbox>   
+
+            <vbox text="Ankle" width="100%" style="padding: 0;padding-bottom: 1px;">
+
+
+
+            </vbox>   
+
+            <vbox text="Foot" width="100%" style="padding: 0;padding-bottom: 1px;">
+
+
+
+            </vbox>   
+
+
+        </accordion>
+
+        <accordion width="200" height="400" >
+            <vbox text="Right Leg" width="100%">
+
+
+
+            </vbox>   
+
+            <vbox id="RHip" text="Hip" width="100%" style="padding: 0px;">
+
+
+
+            </vbox>   
+
+            <vbox text="Knee" width="100%">
+
+
+
+            </vbox>   
+
+            <vbox text="Ankle" width="100%" style="padding: 0;padding-bottom: 1px;">
+
+
+
+            </vbox>   
+
+            <vbox text="Foot" width="100%" style="padding: 0;padding-bottom: 1px;">
+
+
+
+            </vbox>   
+
+
+        </accordion>
+	</hbox>
+
+	<box width="800px" height="300px" style="border: 1px solid #ababab;padding: 5px;">
+	
+	
+	
+	</box>
+
+	<hbox>
+            <label text="Command:" verticalAlign="center" />
+
+            <vbox width="600px" height="100%">
+            <textfield placeholder="Enter some text" width="100%" verticalAlign="bottom"  />
 
             </vbox>
             
-            <label text="Command:" verticalAlign="bottom" />
-            <textfield placeholder="Enter some text" width="100%" verticalAlign="bottom"  />
 
-    </hbox>
+	</hbox>
+
 </vbox>
 
 		</hbox>
