@@ -145,6 +145,7 @@ Main.__name__ = "Main";
 Main.main = function() {
 	var app = new haxe_ui_HaxeUIApp();
 	app.ready(function() {
+		var video = new Video();
 		haxe_ui_Toolkit.styleSheet.parse("\n.header {\r\n    background-color:#AAAACC;\r\n    padding: 5px;\r\n    filter: drop-shadow(1, 45, #000000, 0.5, 2, 2, 1, 3, false);\r\n}\r\n\r\n.footer {\r\n    background-color:#CCAACC;\r\n    padding: 5px;\r\n    filter: drop-shadow(1, 45, #000000, 0.5, 2, 2, 1, 3, false);\r\n}\r\n\r\n.header label, .footer label {\r\n    font-size: 18px;\r\n    color: white;\r\n}\r\n\r\n.menu {\r\n    width: 100%;\r\n}\r\n\r\n.menu box {\r\n    width:100%;\r\n    background-color:#AACCCC;\r\n    padding: 5px;\r\n    filter: drop-shadow(1, 45, #000000, 0.5, 2, 2, 1, 3, false);\r\n}\r\n\r\n.menu label {\r\n    width:100%;\r\n    color: white;\r\n}\r\n\r\n.sidebar {\r\n    width: 100%;\r\n}\r\n\r\n.sidebar box {\r\n    width:100%;\r\n    background-color:#CCCCAA;\r\n    padding: 5px;\r\n    filter: drop-shadow(1, 45, #000000, 0.5, 2, 2, 1, 3, false);\r\n}\r\n\r\n.sidebar label {\r\n    width:100%;\r\n    color: white;\r\n}\r\n\r\n.content {\r\n    width:100%;\r\n    padding: 5px;\r\n}\r\n\r\n#logo {\r\n    resource: \"haxeui-core/styles/default/haxeui_tiny.png\";\r\n}\r\n\r\n#small {\r\n    hidden: false;\r\n}\r\n\r\n#medium {\r\n    hidden: true;\r\n}\r\n\r\n#large {\r\n    hidden: true;\r\n}\r\n\r\n#html5, #hxwidgets {\r\n    hidden: true;\r\n}\r\n\r\n@media (min-width: 500px) {\r\n    .menu {\r\n        width: 25%;\r\n    }\r\n\r\n    .content {\r\n        width: 75%;\r\n    }    \r\n    \r\n    #logo {\r\n        resource: \"haxeui-core/styles/default/haxeui_small.png\";\r\n    }\r\n    \r\n    #small {\r\n        hidden: true;\r\n    }\r\n\r\n    #medium {\r\n        hidden: false;\r\n    }\r\n\r\n    #large {\r\n        hidden: true;\r\n    }\r\n}\r\n\r\n@media (min-width: 800px) {\r\n    .menu {\r\n        width: 25%;\r\n    }\r\n\r\n    .sidebar {\r\n        width: 25%;\r\n    }\r\n\r\n    .content {\r\n        width: 50%;\r\n    }    \r\n    \r\n    #small {\r\n        hidden: true;\r\n    }\r\n\r\n    #medium {\r\n        hidden: true;\r\n    }\r\n\r\n    #large {\r\n        hidden: false;\r\n    }\r\n}\r\n\r\n@media (backend: html5) {\r\n    #html5 {\r\n        hidden: false;\r\n    }\r\n    \r\n    #hxwidgets {\r\n        hidden: true;\r\n    }\r\n}\r\n\r\n@media (backend: hxwidgets) {\r\n    #html5 {\r\n        hidden: true;\r\n    }\r\n    \r\n    #hxwidgets {\r\n        hidden: false;\r\n    }\r\n}","user");
 		var c0 = new haxe_ui_containers_ScrollView();
 		c0.set_styleSheet(new haxe_ui_styles_StyleSheet());
@@ -1033,552 +1034,610 @@ Main.main = function() {
 		var c207 = new haxe_ui_containers_VBox();
 		c207.set_percentWidth(100.);
 		c207.set_percentHeight(100.);
-		var c208 = new haxe_ui_containers_HBox();
+		var c208 = new custom_Video();
+		c208.set_id("theVideo");
 		c208.set_percentWidth(100.);
+		c208.set_percentHeight(100.);
+		c208.set_file("https://www.w3schools.com/html/mov_bbb.mp4");
 		c207.addComponent(c208);
+		var c209 = new haxe_ui_containers_HBox();
+		c209.set_percentWidth(100.);
+		var c210 = new haxe_ui_components_Button();
+		c210.set_percentWidth(100.);
+		c210.set_text("Play");
+		c209.addComponent(c210);
+		var c211 = new haxe_ui_components_Button();
+		c211.set_percentWidth(100.);
+		c211.set_text("Pause");
+		c209.addComponent(c211);
+		c207.addComponent(c209);
 		c206.addComponent(c207);
 		c205.addComponent(c206);
 		c200.addComponent(c205);
 		c199.addComponent(c200);
 		c4.addComponent(c199);
-		var c209 = new haxe_ui_containers_HBox();
-		c209.set_percentWidth(100.);
-		c209.set_text("Sensors");
-		c209.set_continuous(true);
-		var c210 = new haxe_ui_containers_VBox();
-		var c211 = new haxe_ui_containers_Grid();
-		var c212 = new haxe_ui_components_Label();
-		c212.set_text("Width:");
-		c212.set_verticalAlign("center");
-		c211.addComponent(c212);
-		var c213 = new haxe_ui_components_HorizontalSlider();
-		c213.set_pos(800);
-		c213.set_min(170);
-		c213.set_max(800);
-		c211.addComponent(c213);
-		var c214 = new haxe_ui_components_Label();
-		c214.set_text("Height:");
-		c214.set_verticalAlign("center");
-		c211.addComponent(c214);
-		var c215 = new haxe_ui_components_HorizontalSlider();
-		c215.set_pos(500);
-		c215.set_min(170);
-		c215.set_max(800);
-		c211.addComponent(c215);
-		c210.addComponent(c211);
-		var c216 = new haxe_ui_containers_Grid();
-		c216.set_id("grid1");
-		c216.set_styleString("border: 1px solid #ababab;padding: 5px;");
-		c216.set_columns(5);
-		var c217 = new haxe_ui_containers_Box();
-		c217.set_percentWidth(100.);
-		c217.set_percentHeight(100.);
-		c217.set_styleString("background-color: red;border:1px solid red;background-opacity: .5");
-		c216.addComponent(c217);
-		var c218 = new haxe_ui_containers_Box();
-		c218.set_percentWidth(100.);
-		c218.set_percentHeight(100.);
-		c218.set_styleString("background-color: red;border:1px solid red;background-opacity: .5");
-		c216.addComponent(c218);
-		var c219 = new haxe_ui_containers_Box();
-		c219.set_percentWidth(100.);
-		c219.set_percentHeight(100.);
-		c219.set_styleString("background-color: red;border:1px solid red;background-opacity: .5");
-		c216.addComponent(c219);
+		var c212 = new haxe_ui_containers_HBox();
+		c212.set_percentWidth(100.);
+		c212.set_text("Sensors");
+		c212.set_continuous(true);
+		var c213 = new haxe_ui_containers_VBox();
+		var c214 = new haxe_ui_containers_Grid();
+		var c215 = new haxe_ui_components_Label();
+		c215.set_text("Width:");
+		c215.set_verticalAlign("center");
+		c214.addComponent(c215);
+		var c216 = new haxe_ui_components_HorizontalSlider();
+		c216.set_pos(800);
+		c216.set_min(170);
+		c216.set_max(800);
+		c214.addComponent(c216);
+		var c217 = new haxe_ui_components_Label();
+		c217.set_text("Height:");
+		c217.set_verticalAlign("center");
+		c214.addComponent(c217);
+		var c218 = new haxe_ui_components_HorizontalSlider();
+		c218.set_pos(500);
+		c218.set_min(170);
+		c218.set_max(800);
+		c214.addComponent(c218);
+		c213.addComponent(c214);
+		var c219 = new haxe_ui_containers_Grid();
+		c219.set_id("grid1");
+		c219.set_styleString("border: 1px solid #ababab;padding: 5px;");
+		c219.set_columns(5);
 		var c220 = new haxe_ui_containers_Box();
 		c220.set_percentWidth(100.);
 		c220.set_percentHeight(100.);
 		c220.set_styleString("background-color: red;border:1px solid red;background-opacity: .5");
-		c216.addComponent(c220);
+		c219.addComponent(c220);
 		var c221 = new haxe_ui_containers_Box();
 		c221.set_percentWidth(100.);
 		c221.set_percentHeight(100.);
 		c221.set_styleString("background-color: red;border:1px solid red;background-opacity: .5");
-		c216.addComponent(c221);
+		c219.addComponent(c221);
 		var c222 = new haxe_ui_containers_Box();
 		c222.set_percentWidth(100.);
 		c222.set_percentHeight(100.);
-		c222.set_styleString("background-color: green;border:1px solid green;background-opacity: .5");
-		c216.addComponent(c222);
+		c222.set_styleString("background-color: red;border:1px solid red;background-opacity: .5");
+		c219.addComponent(c222);
 		var c223 = new haxe_ui_containers_Box();
 		c223.set_percentWidth(100.);
 		c223.set_percentHeight(100.);
-		c223.set_styleString("background-color: green;border:1px solid green;background-opacity: .5");
-		c216.addComponent(c223);
+		c223.set_styleString("background-color: red;border:1px solid red;background-opacity: .5");
+		c219.addComponent(c223);
 		var c224 = new haxe_ui_containers_Box();
 		c224.set_percentWidth(100.);
 		c224.set_percentHeight(100.);
-		c224.set_styleString("background-color: green;border:1px solid green;background-opacity: .5");
-		c216.addComponent(c224);
+		c224.set_styleString("background-color: red;border:1px solid red;background-opacity: .5");
+		c219.addComponent(c224);
 		var c225 = new haxe_ui_containers_Box();
 		c225.set_percentWidth(100.);
 		c225.set_percentHeight(100.);
 		c225.set_styleString("background-color: green;border:1px solid green;background-opacity: .5");
-		c216.addComponent(c225);
+		c219.addComponent(c225);
 		var c226 = new haxe_ui_containers_Box();
 		c226.set_percentWidth(100.);
 		c226.set_percentHeight(100.);
 		c226.set_styleString("background-color: green;border:1px solid green;background-opacity: .5");
-		c216.addComponent(c226);
+		c219.addComponent(c226);
 		var c227 = new haxe_ui_containers_Box();
 		c227.set_percentWidth(100.);
 		c227.set_percentHeight(100.);
-		c227.set_styleString("background-color: blue;border:1px solid blue;background-opacity: .5");
-		c216.addComponent(c227);
+		c227.set_styleString("background-color: green;border:1px solid green;background-opacity: .5");
+		c219.addComponent(c227);
 		var c228 = new haxe_ui_containers_Box();
 		c228.set_percentWidth(100.);
 		c228.set_percentHeight(100.);
-		c228.set_styleString("background-color: blue;border:1px solid blue;background-opacity: .5");
-		c216.addComponent(c228);
+		c228.set_styleString("background-color: green;border:1px solid green;background-opacity: .5");
+		c219.addComponent(c228);
 		var c229 = new haxe_ui_containers_Box();
 		c229.set_percentWidth(100.);
 		c229.set_percentHeight(100.);
-		c229.set_styleString("background-color: blue;border:1px solid blue;background-opacity: .5");
-		c216.addComponent(c229);
+		c229.set_styleString("background-color: green;border:1px solid green;background-opacity: .5");
+		c219.addComponent(c229);
 		var c230 = new haxe_ui_containers_Box();
 		c230.set_percentWidth(100.);
 		c230.set_percentHeight(100.);
 		c230.set_styleString("background-color: blue;border:1px solid blue;background-opacity: .5");
-		c216.addComponent(c230);
+		c219.addComponent(c230);
 		var c231 = new haxe_ui_containers_Box();
 		c231.set_percentWidth(100.);
 		c231.set_percentHeight(100.);
 		c231.set_styleString("background-color: blue;border:1px solid blue;background-opacity: .5");
-		c216.addComponent(c231);
-		c210.addComponent(c216);
-		c209.addComponent(c210);
-		c4.addComponent(c209);
-		var c232 = new haxe_ui_containers_HBox();
+		c219.addComponent(c231);
+		var c232 = new haxe_ui_containers_Box();
 		c232.set_percentWidth(100.);
-		c232.set_text("Cameras");
-		c232.set_continuous(true);
-		var c233 = new haxe_ui_containers_VBox();
-		c233.set_styleString("padding: 15px;");
-		var c234 = new haxe_ui_containers_HBox();
-		var c235 = new haxe_ui_components_Label();
-		c235.set_text("Frame Size:");
-		c234.addComponent(c235);
-		var c236 = new haxe_ui_components_HorizontalSlider();
-		c236.set_pos(400);
-		c236.set_min(200);
-		c236.set_max(500);
-		c234.addComponent(c236);
-		var c237 = new haxe_ui_components_HorizontalSlider();
-		c237.set_pos(300);
-		c237.set_min(200);
-		c237.set_max(500);
-		c234.addComponent(c237);
-		c233.addComponent(c234);
-		var c238 = new haxe_ui_containers_Grid();
-		c238.set_columns(1);
-		var c239 = new haxe_ui_containers_Frame();
-		c239.set_id("theFrame");
-		c239.set_width(300.);
-		c239.set_height(300.);
-		c239.set_text("Camera 1");
-		var c240 = new haxe_ui_containers_VBox();
-		c240.set_percentWidth(100.);
-		c240.set_percentHeight(100.);
-		var c241 = new haxe_ui_containers_HBox();
-		c241.set_percentWidth(100.);
-		c240.addComponent(c241);
-		c239.addComponent(c240);
-		c238.addComponent(c239);
-		c233.addComponent(c238);
-		c232.addComponent(c233);
-		var c242 = new haxe_ui_containers_VBox();
-		c242.set_styleString("padding: 15px;");
-		var c243 = new haxe_ui_containers_HBox();
-		var c244 = new haxe_ui_components_Label();
-		c244.set_text("Frame Size:");
+		c232.set_percentHeight(100.);
+		c232.set_styleString("background-color: blue;border:1px solid blue;background-opacity: .5");
+		c219.addComponent(c232);
+		var c233 = new haxe_ui_containers_Box();
+		c233.set_percentWidth(100.);
+		c233.set_percentHeight(100.);
+		c233.set_styleString("background-color: blue;border:1px solid blue;background-opacity: .5");
+		c219.addComponent(c233);
+		var c234 = new haxe_ui_containers_Box();
+		c234.set_percentWidth(100.);
+		c234.set_percentHeight(100.);
+		c234.set_styleString("background-color: blue;border:1px solid blue;background-opacity: .5");
+		c219.addComponent(c234);
+		c213.addComponent(c219);
+		c212.addComponent(c213);
+		c4.addComponent(c212);
+		var c235 = new haxe_ui_containers_HBox();
+		c235.set_percentWidth(100.);
+		c235.set_text("Cameras");
+		c235.set_continuous(true);
+		var c236 = new haxe_ui_containers_VBox();
+		c236.set_styleString("padding: 15px;");
+		var c237 = new haxe_ui_containers_HBox();
+		var c238 = new haxe_ui_components_Label();
+		c238.set_text("Frame Size:");
+		c237.addComponent(c238);
+		var c239 = new haxe_ui_components_HorizontalSlider();
+		c239.set_pos(400);
+		c239.set_min(200);
+		c239.set_max(500);
+		c237.addComponent(c239);
+		var c240 = new haxe_ui_components_HorizontalSlider();
+		c240.set_pos(300);
+		c240.set_min(200);
+		c240.set_max(500);
+		c237.addComponent(c240);
+		c236.addComponent(c237);
+		var c241 = new haxe_ui_containers_Grid();
+		c241.set_columns(1);
+		var c242 = new haxe_ui_containers_Frame();
+		c242.set_id("theFrame");
+		c242.set_width(300.);
+		c242.set_height(300.);
+		c242.set_text("Camera 1");
+		var c243 = new haxe_ui_containers_VBox();
+		c243.set_percentWidth(100.);
+		c243.set_percentHeight(100.);
+		var c244 = new haxe_ui_containers_HBox();
+		c244.set_percentWidth(100.);
 		c243.addComponent(c244);
-		var c245 = new haxe_ui_components_HorizontalSlider();
-		c245.set_pos(400);
-		c245.set_min(200);
-		c245.set_max(500);
-		c243.addComponent(c245);
-		var c246 = new haxe_ui_components_HorizontalSlider();
-		c246.set_pos(300);
-		c246.set_min(200);
-		c246.set_max(500);
-		c243.addComponent(c246);
 		c242.addComponent(c243);
-		var c247 = new haxe_ui_containers_Grid();
-		c247.set_columns(1);
-		var c248 = new haxe_ui_containers_Frame();
-		c248.set_id("theFrame2");
-		c248.set_width(300.);
-		c248.set_height(300.);
-		c248.set_text("Camera 2 - Night Vision");
-		var c249 = new haxe_ui_containers_VBox();
-		c249.set_percentWidth(100.);
-		c249.set_percentHeight(100.);
-		var c250 = new haxe_ui_containers_HBox();
-		c250.set_percentWidth(100.);
-		c249.addComponent(c250);
-		c248.addComponent(c249);
-		c247.addComponent(c248);
-		c242.addComponent(c247);
-		c232.addComponent(c242);
-		c4.addComponent(c232);
-		var c251 = new haxe_ui_containers_HBox();
-		c251.set_percentWidth(100.);
-		c251.set_text("Servo Control");
-		c251.set_continuous(true);
+		c241.addComponent(c242);
+		c236.addComponent(c241);
+		c235.addComponent(c236);
+		var c245 = new haxe_ui_containers_VBox();
+		c245.set_styleString("padding: 15px;");
+		var c246 = new haxe_ui_containers_HBox();
+		var c247 = new haxe_ui_components_Label();
+		c247.set_text("Frame Size:");
+		c246.addComponent(c247);
+		var c248 = new haxe_ui_components_HorizontalSlider();
+		c248.set_pos(400);
+		c248.set_min(200);
+		c248.set_max(500);
+		c246.addComponent(c248);
+		var c249 = new haxe_ui_components_HorizontalSlider();
+		c249.set_pos(300);
+		c249.set_min(200);
+		c249.set_max(500);
+		c246.addComponent(c249);
+		c245.addComponent(c246);
+		var c250 = new haxe_ui_containers_Grid();
+		c250.set_columns(1);
+		var c251 = new haxe_ui_containers_Frame();
+		c251.set_id("theFrame2");
+		c251.set_width(300.);
+		c251.set_height(300.);
+		c251.set_text("Camera 2 - Night Vision");
 		var c252 = new haxe_ui_containers_VBox();
+		c252.set_percentWidth(100.);
+		c252.set_percentHeight(100.);
 		var c253 = new haxe_ui_containers_HBox();
 		c253.set_percentWidth(100.);
-		var c254 = new haxe_ui_containers_Accordion();
-		c254.set_width(200.);
-		c254.set_height(400.);
-		var c255 = new haxe_ui_containers_VBox();
-		c255.set_percentWidth(100.);
-		c255.set_text("Servo 1");
-		c254.addComponent(c255);
-		var c256 = new haxe_ui_containers_VBox();
-		c256.set_id("page2");
-		c256.set_percentWidth(100.);
-		c256.set_text("Servo 2");
-		c256.set_styleString("padding: 0px;");
-		c254.addComponent(c256);
-		var c257 = new haxe_ui_containers_VBox();
-		c257.set_percentWidth(100.);
-		c257.set_text("Servo 3");
-		c254.addComponent(c257);
-		var c258 = new haxe_ui_containers_VBox();
-		c258.set_percentWidth(100.);
-		c258.set_text("Servo 4");
-		c258.set_styleString("padding: 0;padding-bottom: 1px;");
-		c254.addComponent(c258);
-		var c259 = new haxe_ui_containers_VBox();
-		c259.set_percentWidth(100.);
-		c259.set_text("Servo 5");
-		c259.set_styleString("padding: 0;padding-bottom: 1px;");
-		c254.addComponent(c259);
-		var c260 = new haxe_ui_containers_VBox();
-		c260.set_percentWidth(100.);
-		c260.set_text("Servo 6");
-		c260.set_styleString("padding: 0;padding-bottom: 1px;");
-		c254.addComponent(c260);
-		var c261 = new haxe_ui_containers_VBox();
-		c261.set_percentWidth(100.);
-		c261.set_text("Servo 7");
-		c261.set_styleString("padding: 0;padding-bottom: 1px;");
-		c254.addComponent(c261);
-		var c262 = new haxe_ui_containers_VBox();
-		c262.set_percentWidth(100.);
-		c262.set_text("Servo 8");
-		c262.set_styleString("padding: 0;padding-bottom: 1px;");
-		c254.addComponent(c262);
-		var c263 = new haxe_ui_containers_VBox();
-		c263.set_percentWidth(100.);
-		c263.set_text("Servo 9");
-		c263.set_styleString("padding: 0;padding-bottom: 1px;");
-		c254.addComponent(c263);
-		var c264 = new haxe_ui_containers_VBox();
-		c264.set_percentWidth(100.);
-		c264.set_text("Servo 10");
-		c264.set_styleString("padding: 0;padding-bottom: 1px;");
-		c254.addComponent(c264);
-		var c265 = new haxe_ui_containers_VBox();
-		c265.set_percentWidth(100.);
-		c265.set_text("Servo 11");
-		c265.set_styleString("padding: 0;padding-bottom: 1px;");
-		c254.addComponent(c265);
-		var c266 = new haxe_ui_containers_VBox();
-		c266.set_percentWidth(100.);
-		c266.set_text("Servo 12");
-		c266.set_styleString("padding: 0;padding-bottom: 1px;");
-		c254.addComponent(c266);
-		var c267 = new haxe_ui_containers_VBox();
-		c267.set_percentWidth(100.);
-		c267.set_text("Servo 13");
-		c267.set_styleString("padding: 0;padding-bottom: 1px;");
-		c254.addComponent(c267);
-		var c268 = new haxe_ui_containers_VBox();
-		c268.set_percentWidth(100.);
-		c268.set_text("Servo 14");
-		c268.set_styleString("padding: 0;padding-bottom: 1px;");
-		c254.addComponent(c268);
-		var c269 = new haxe_ui_containers_VBox();
-		c269.set_percentWidth(100.);
-		c269.set_text("Servo 15");
-		c269.set_styleString("padding: 0;padding-bottom: 1px;");
-		c254.addComponent(c269);
-		c253.addComponent(c254);
-		var c270 = new haxe_ui_containers_VBox();
-		c270.set_percentWidth(100.);
-		c270.set_percentHeight(100.);
-		c253.addComponent(c270);
-		var c271 = new haxe_ui_components_Label();
-		c271.set_text("Command:");
-		c271.set_verticalAlign("bottom");
-		c253.addComponent(c271);
-		var c272 = new haxe_ui_components_TextField();
-		c272.set_percentWidth(100.);
-		c272.set_verticalAlign("bottom");
-		c272.set_placeholder("Enter some text");
-		c253.addComponent(c272);
 		c252.addComponent(c253);
 		c251.addComponent(c252);
-		c4.addComponent(c251);
-		var c273 = new haxe_ui_containers_HBox();
+		c250.addComponent(c251);
+		c245.addComponent(c250);
+		c235.addComponent(c245);
+		c4.addComponent(c235);
+		var c254 = new haxe_ui_containers_HBox();
+		c254.set_percentWidth(100.);
+		c254.set_text("Servo Control");
+		c254.set_continuous(true);
+		var c255 = new haxe_ui_containers_VBox();
+		var c256 = new haxe_ui_containers_HBox();
+		c256.set_percentWidth(100.);
+		var c257 = new haxe_ui_containers_Accordion();
+		c257.set_width(200.);
+		c257.set_height(400.);
+		var c258 = new haxe_ui_containers_VBox();
+		c258.set_percentWidth(100.);
+		c258.set_text("Servo 1");
+		c257.addComponent(c258);
+		var c259 = new haxe_ui_containers_VBox();
+		c259.set_id("page2");
+		c259.set_percentWidth(100.);
+		c259.set_text("Servo 2");
+		c259.set_styleString("padding: 0px;");
+		c257.addComponent(c259);
+		var c260 = new haxe_ui_containers_VBox();
+		c260.set_percentWidth(100.);
+		c260.set_text("Servo 3");
+		c257.addComponent(c260);
+		var c261 = new haxe_ui_containers_VBox();
+		c261.set_percentWidth(100.);
+		c261.set_text("Servo 4");
+		c261.set_styleString("padding: 0;padding-bottom: 1px;");
+		c257.addComponent(c261);
+		var c262 = new haxe_ui_containers_VBox();
+		c262.set_percentWidth(100.);
+		c262.set_text("Servo 5");
+		c262.set_styleString("padding: 0;padding-bottom: 1px;");
+		c257.addComponent(c262);
+		var c263 = new haxe_ui_containers_VBox();
+		c263.set_percentWidth(100.);
+		c263.set_text("Servo 6");
+		c263.set_styleString("padding: 0;padding-bottom: 1px;");
+		c257.addComponent(c263);
+		var c264 = new haxe_ui_containers_VBox();
+		c264.set_percentWidth(100.);
+		c264.set_text("Servo 7");
+		c264.set_styleString("padding: 0;padding-bottom: 1px;");
+		c257.addComponent(c264);
+		var c265 = new haxe_ui_containers_VBox();
+		c265.set_percentWidth(100.);
+		c265.set_text("Servo 8");
+		c265.set_styleString("padding: 0;padding-bottom: 1px;");
+		c257.addComponent(c265);
+		var c266 = new haxe_ui_containers_VBox();
+		c266.set_percentWidth(100.);
+		c266.set_text("Servo 9");
+		c266.set_styleString("padding: 0;padding-bottom: 1px;");
+		c257.addComponent(c266);
+		var c267 = new haxe_ui_containers_VBox();
+		c267.set_percentWidth(100.);
+		c267.set_text("Servo 10");
+		c267.set_styleString("padding: 0;padding-bottom: 1px;");
+		c257.addComponent(c267);
+		var c268 = new haxe_ui_containers_VBox();
+		c268.set_percentWidth(100.);
+		c268.set_text("Servo 11");
+		c268.set_styleString("padding: 0;padding-bottom: 1px;");
+		c257.addComponent(c268);
+		var c269 = new haxe_ui_containers_VBox();
+		c269.set_percentWidth(100.);
+		c269.set_text("Servo 12");
+		c269.set_styleString("padding: 0;padding-bottom: 1px;");
+		c257.addComponent(c269);
+		var c270 = new haxe_ui_containers_VBox();
+		c270.set_percentWidth(100.);
+		c270.set_text("Servo 13");
+		c270.set_styleString("padding: 0;padding-bottom: 1px;");
+		c257.addComponent(c270);
+		var c271 = new haxe_ui_containers_VBox();
+		c271.set_percentWidth(100.);
+		c271.set_text("Servo 14");
+		c271.set_styleString("padding: 0;padding-bottom: 1px;");
+		c257.addComponent(c271);
+		var c272 = new haxe_ui_containers_VBox();
+		c272.set_percentWidth(100.);
+		c272.set_text("Servo 15");
+		c272.set_styleString("padding: 0;padding-bottom: 1px;");
+		c257.addComponent(c272);
+		c256.addComponent(c257);
+		var c273 = new haxe_ui_containers_VBox();
 		c273.set_percentWidth(100.);
-		c273.set_text("Guides");
-		c273.set_continuous(true);
-		c4.addComponent(c273);
-		var c274 = new haxe_ui_containers_HBox();
-		c274.set_percentWidth(100.);
-		c274.set_text("Chat");
-		c274.set_continuous(true);
-		var c275 = new haxe_ui_containers_ScrollView();
+		c273.set_percentHeight(100.);
+		c256.addComponent(c273);
+		var c274 = new haxe_ui_components_Label();
+		c274.set_text("Command:");
+		c274.set_verticalAlign("bottom");
+		c256.addComponent(c274);
+		var c275 = new haxe_ui_components_TextField();
 		c275.set_percentWidth(100.);
-		c275.set_percentContentWidth(100.);
-		var c276 = new haxe_ui_containers_VBox();
+		c275.set_verticalAlign("bottom");
+		c275.set_placeholder("Enter some text");
+		c256.addComponent(c275);
+		c255.addComponent(c256);
+		c254.addComponent(c255);
+		c4.addComponent(c254);
+		var c276 = new haxe_ui_containers_HBox();
 		c276.set_percentWidth(100.);
-		var c277 = new haxe_ui_components_Button();
-		c277.set_text("UserName");
-		c276.addComponent(c277);
-		var c278 = new haxe_ui_components_Button();
-		c278.set_text("UserName");
-		c276.addComponent(c278);
-		var c279 = new haxe_ui_components_Button();
-		c279.set_text("UserName");
-		c276.addComponent(c279);
+		c276.set_text("Guides");
+		c276.set_continuous(true);
+		c4.addComponent(c276);
+		var c277 = new haxe_ui_containers_HBox();
+		c277.set_percentWidth(100.);
+		c277.set_text("Chat");
+		c277.set_continuous(true);
+		var c278 = new haxe_ui_containers_ScrollView();
+		c278.set_percentWidth(100.);
+		c278.set_percentContentWidth(100.);
+		var c279 = new haxe_ui_containers_VBox();
+		c279.set_percentWidth(100.);
 		var c280 = new haxe_ui_components_Button();
 		c280.set_text("UserName");
-		c276.addComponent(c280);
+		c279.addComponent(c280);
 		var c281 = new haxe_ui_components_Button();
 		c281.set_text("UserName");
-		c276.addComponent(c281);
+		c279.addComponent(c281);
 		var c282 = new haxe_ui_components_Button();
 		c282.set_text("UserName");
-		c276.addComponent(c282);
+		c279.addComponent(c282);
 		var c283 = new haxe_ui_components_Button();
 		c283.set_text("UserName");
-		c276.addComponent(c283);
+		c279.addComponent(c283);
 		var c284 = new haxe_ui_components_Button();
 		c284.set_text("UserName");
-		c276.addComponent(c284);
+		c279.addComponent(c284);
 		var c285 = new haxe_ui_components_Button();
 		c285.set_text("UserName");
-		c276.addComponent(c285);
+		c279.addComponent(c285);
 		var c286 = new haxe_ui_components_Button();
 		c286.set_text("UserName");
-		c276.addComponent(c286);
+		c279.addComponent(c286);
 		var c287 = new haxe_ui_components_Button();
 		c287.set_text("UserName");
-		c276.addComponent(c287);
-		c275.addComponent(c276);
-		c274.addComponent(c275);
-		var c288 = new haxe_ui_containers_HBox();
-		c288.set_percentWidth(100.);
-		var c289 = new haxe_ui_components_Label();
-		c289.set_text("Input:");
-		c289.set_verticalAlign("center");
-		c288.addComponent(c289);
-		var c290 = new haxe_ui_components_TextField();
-		c290.set_percentWidth(100.);
-		c290.set_placeholder("Enter some text");
-		c288.addComponent(c290);
-		var c291 = new haxe_ui_components_Button();
-		c291.set_text("Send");
-		c288.addComponent(c291);
-		c274.addComponent(c288);
-		c4.addComponent(c274);
-		var c292 = new haxe_ui_containers_HBox();
-		c292.set_percentWidth(100.);
-		c292.set_text("Tools");
-		c292.set_continuous(true);
-		var c293 = new haxe_ui_containers_Accordion();
-		c293.set_height(400.);
+		c279.addComponent(c287);
+		var c288 = new haxe_ui_components_Button();
+		c288.set_text("UserName");
+		c279.addComponent(c288);
+		var c289 = new haxe_ui_components_Button();
+		c289.set_text("UserName");
+		c279.addComponent(c289);
+		var c290 = new haxe_ui_components_Button();
+		c290.set_text("UserName");
+		c279.addComponent(c290);
+		c278.addComponent(c279);
+		c277.addComponent(c278);
+		var c291 = new haxe_ui_containers_HBox();
+		c291.set_percentWidth(100.);
+		var c292 = new haxe_ui_components_Label();
+		c292.set_text("Input:");
+		c292.set_verticalAlign("center");
+		c291.addComponent(c292);
+		var c293 = new haxe_ui_components_TextField();
 		c293.set_percentWidth(100.);
-		var c294 = new haxe_ui_containers_VBox();
-		c294.set_percentWidth(100.);
-		c294.set_text("Calculator");
-		c293.addComponent(c294);
-		var c295 = new haxe_ui_containers_VBox();
-		c295.set_id("page2");
+		c293.set_placeholder("Enter some text");
+		c291.addComponent(c293);
+		var c294 = new haxe_ui_components_Button();
+		c294.set_text("Send");
+		c291.addComponent(c294);
+		c277.addComponent(c291);
+		c4.addComponent(c277);
+		var c295 = new haxe_ui_containers_HBox();
 		c295.set_percentWidth(100.);
-		c295.set_text("Terminal");
-		c295.set_styleString("padding: 0px;");
-		c293.addComponent(c295);
-		var c296 = new haxe_ui_containers_VBox();
+		c295.set_text("Tools");
+		c295.set_continuous(true);
+		var c296 = new haxe_ui_containers_Accordion();
+		c296.set_height(400.);
 		c296.set_percentWidth(100.);
-		c296.set_text("Resistor Chart");
-		c293.addComponent(c296);
 		var c297 = new haxe_ui_containers_VBox();
 		c297.set_percentWidth(100.);
-		c297.set_text("-");
-		c297.set_styleString("padding: 0;padding-bottom: 1px;");
-		c293.addComponent(c297);
+		c297.set_text("Calculator");
+		c296.addComponent(c297);
 		var c298 = new haxe_ui_containers_VBox();
+		c298.set_id("page2");
 		c298.set_percentWidth(100.);
-		c298.set_text("-");
-		c298.set_styleString("padding: 0;padding-bottom: 1px;");
-		c293.addComponent(c298);
+		c298.set_text("Terminal");
+		c298.set_styleString("padding: 0px;");
+		c296.addComponent(c298);
 		var c299 = new haxe_ui_containers_VBox();
 		c299.set_percentWidth(100.);
-		c299.set_text("RPi4 Pinout");
-		c299.set_styleString("padding: 0;padding-bottom: 1px;");
-		c293.addComponent(c299);
+		c299.set_text("Resistor Chart");
+		c296.addComponent(c299);
 		var c300 = new haxe_ui_containers_VBox();
 		c300.set_percentWidth(100.);
-		c300.set_text("Arduino Mega Pinout");
+		c300.set_text("-");
 		c300.set_styleString("padding: 0;padding-bottom: 1px;");
-		c293.addComponent(c300);
+		c296.addComponent(c300);
 		var c301 = new haxe_ui_containers_VBox();
 		c301.set_percentWidth(100.);
-		c301.set_text("Arduino Uno Pinout");
+		c301.set_text("-");
 		c301.set_styleString("padding: 0;padding-bottom: 1px;");
-		c293.addComponent(c301);
+		c296.addComponent(c301);
 		var c302 = new haxe_ui_containers_VBox();
 		c302.set_percentWidth(100.);
-		c302.set_text("Arduino Nano Pinout");
+		c302.set_text("RPi4 Pinout");
 		c302.set_styleString("padding: 0;padding-bottom: 1px;");
-		c293.addComponent(c302);
+		c296.addComponent(c302);
 		var c303 = new haxe_ui_containers_VBox();
 		c303.set_percentWidth(100.);
-		c303.set_text("Glossary");
+		c303.set_text("Arduino Mega Pinout");
 		c303.set_styleString("padding: 0;padding-bottom: 1px;");
-		c293.addComponent(c303);
-		c292.addComponent(c293);
-		c4.addComponent(c292);
-		var c304 = new haxe_ui_containers_HBox();
+		c296.addComponent(c303);
+		var c304 = new haxe_ui_containers_VBox();
 		c304.set_percentWidth(100.);
-		c304.set_text("Hosting");
-		c304.set_continuous(true);
-		c4.addComponent(c304);
-		c0.addComponent(c4);
-		var c305 = new haxe_ui_containers_HBox();
+		c304.set_text("Arduino Uno Pinout");
+		c304.set_styleString("padding: 0;padding-bottom: 1px;");
+		c296.addComponent(c304);
+		var c305 = new haxe_ui_containers_VBox();
 		c305.set_percentWidth(100.);
-		c305.set_styleNames("footer");
-		var c306 = new haxe_ui_components_Label();
+		c305.set_text("Arduino Nano Pinout");
+		c305.set_styleString("padding: 0;padding-bottom: 1px;");
+		c296.addComponent(c305);
+		var c306 = new haxe_ui_containers_VBox();
 		c306.set_percentWidth(100.);
-		c306.set_text("Shaun Holt - 2021");
-		c306.set_verticalAlign("center");
-		c305.addComponent(c306);
-		var c307 = new haxe_ui_components_Label();
-		c307.set_text("Made with Haxe and HaxeUI");
-		c307.set_verticalAlign("center");
-		c307.set_horizontalAlign("right");
-		c305.addComponent(c307);
-		c0.addComponent(c305);
+		c306.set_text("Glossary");
+		c306.set_styleString("padding: 0;padding-bottom: 1px;");
+		c296.addComponent(c306);
+		c295.addComponent(c296);
+		c4.addComponent(c295);
+		var c307 = new haxe_ui_containers_HBox();
+		c307.set_percentWidth(100.);
+		c307.set_text("Social");
+		c307.set_continuous(true);
+		c4.addComponent(c307);
+		var c308 = new haxe_ui_containers_HBox();
+		c308.set_percentWidth(100.);
+		c308.set_text("Hosting");
+		c308.set_continuous(true);
+		c4.addComponent(c308);
+		c0.addComponent(c4);
+		var c309 = new haxe_ui_containers_HBox();
+		c309.set_percentWidth(100.);
+		c309.set_styleNames("footer");
+		var c310 = new haxe_ui_components_Label();
+		c310.set_percentWidth(100.);
+		c310.set_text("Shaun Holt - 2021");
+		c310.set_verticalAlign("center");
+		c309.addComponent(c310);
+		var c311 = new haxe_ui_components_Label();
+		c311.set_text("Made with Haxe and HaxeUI");
+		c311.set_verticalAlign("center");
+		c311.set_horizontalAlign("right");
+		c309.addComponent(c311);
+		c0.addComponent(c309);
 		rootComponent.addComponent(c0);
 		c203.registerEvent("change",function(event) {
 			var __this__ = c203;
-			var theFrame2 = c248;
+			var theVideo = c208;
+			var theFrame2 = c251;
 			var theFrame0 = c206;
-			var theFrame = c239;
-			var page2 = c295;
+			var theFrame = c242;
+			var page2 = c298;
 			var main = c0;
 			var lorem2 = c10;
 			var lorem1 = c9;
 			var logo = c3;
 			var headerLabel = c2;
-			var grid1 = c216;
+			var grid1 = c219;
 			theFrame0.set_width(__this__.get_pos());
 		});
 		c204.registerEvent("change",function(event) {
 			var __this__ = c204;
-			var theFrame2 = c248;
+			var theVideo = c208;
+			var theFrame2 = c251;
 			var theFrame0 = c206;
-			var theFrame = c239;
-			var page2 = c295;
+			var theFrame = c242;
+			var page2 = c298;
 			var main = c0;
 			var lorem2 = c10;
 			var lorem1 = c9;
 			var logo = c3;
 			var headerLabel = c2;
-			var grid1 = c216;
+			var grid1 = c219;
 			theFrame0.set_height(__this__.get_pos());
 		});
-		c213.registerEvent("change",function(event) {
-			var __this__ = c213;
-			var theFrame2 = c248;
+		c210.registerEvent("click",function(event) {
+			var __this__ = c210;
+			var theVideo = c208;
+			var theFrame2 = c251;
 			var theFrame0 = c206;
-			var theFrame = c239;
-			var page2 = c295;
+			var theFrame = c242;
+			var page2 = c298;
 			var main = c0;
 			var lorem2 = c10;
 			var lorem1 = c9;
 			var logo = c3;
 			var headerLabel = c2;
-			var grid1 = c216;
+			var grid1 = c219;
+			theVideo.play();
+		});
+		c211.registerEvent("click",function(event) {
+			var __this__ = c211;
+			var theVideo = c208;
+			var theFrame2 = c251;
+			var theFrame0 = c206;
+			var theFrame = c242;
+			var page2 = c298;
+			var main = c0;
+			var lorem2 = c10;
+			var lorem1 = c9;
+			var logo = c3;
+			var headerLabel = c2;
+			var grid1 = c219;
+			theVideo.pause();
+		});
+		c216.registerEvent("change",function(event) {
+			var __this__ = c216;
+			var theVideo = c208;
+			var theFrame2 = c251;
+			var theFrame0 = c206;
+			var theFrame = c242;
+			var page2 = c298;
+			var main = c0;
+			var lorem2 = c10;
+			var lorem1 = c9;
+			var logo = c3;
+			var headerLabel = c2;
+			var grid1 = c219;
 			grid1.set_width(__this__.get_value());
 		});
-		c215.registerEvent("change",function(event) {
-			var __this__ = c215;
-			var theFrame2 = c248;
+		c218.registerEvent("change",function(event) {
+			var __this__ = c218;
+			var theVideo = c208;
+			var theFrame2 = c251;
 			var theFrame0 = c206;
-			var theFrame = c239;
-			var page2 = c295;
+			var theFrame = c242;
+			var page2 = c298;
 			var main = c0;
 			var lorem2 = c10;
 			var lorem1 = c9;
 			var logo = c3;
 			var headerLabel = c2;
-			var grid1 = c216;
+			var grid1 = c219;
 			grid1.set_height(__this__.get_value());
 		});
-		c236.registerEvent("change",function(event) {
-			var __this__ = c236;
-			var theFrame2 = c248;
+		c239.registerEvent("change",function(event) {
+			var __this__ = c239;
+			var theVideo = c208;
+			var theFrame2 = c251;
 			var theFrame0 = c206;
-			var theFrame = c239;
-			var page2 = c295;
+			var theFrame = c242;
+			var page2 = c298;
 			var main = c0;
 			var lorem2 = c10;
 			var lorem1 = c9;
 			var logo = c3;
 			var headerLabel = c2;
-			var grid1 = c216;
+			var grid1 = c219;
 			theFrame.set_width(__this__.get_pos());
 		});
-		c237.registerEvent("change",function(event) {
-			var __this__ = c237;
-			var theFrame2 = c248;
+		c240.registerEvent("change",function(event) {
+			var __this__ = c240;
+			var theVideo = c208;
+			var theFrame2 = c251;
 			var theFrame0 = c206;
-			var theFrame = c239;
-			var page2 = c295;
+			var theFrame = c242;
+			var page2 = c298;
 			var main = c0;
 			var lorem2 = c10;
 			var lorem1 = c9;
 			var logo = c3;
 			var headerLabel = c2;
-			var grid1 = c216;
+			var grid1 = c219;
 			theFrame.set_height(__this__.get_pos());
 		});
-		c245.registerEvent("change",function(event) {
-			var __this__ = c245;
-			var theFrame2 = c248;
+		c248.registerEvent("change",function(event) {
+			var __this__ = c248;
+			var theVideo = c208;
+			var theFrame2 = c251;
 			var theFrame0 = c206;
-			var theFrame = c239;
-			var page2 = c295;
+			var theFrame = c242;
+			var page2 = c298;
 			var main = c0;
 			var lorem2 = c10;
 			var lorem1 = c9;
 			var logo = c3;
 			var headerLabel = c2;
-			var grid1 = c216;
+			var grid1 = c219;
 			theFrame2.set_width(__this__.get_pos());
 		});
-		c246.registerEvent("change",function(event) {
-			var __this__ = c246;
-			var theFrame2 = c248;
+		c249.registerEvent("change",function(event) {
+			var __this__ = c249;
+			var theVideo = c208;
+			var theFrame2 = c251;
 			var theFrame0 = c206;
-			var theFrame = c239;
-			var page2 = c295;
+			var theFrame = c242;
+			var page2 = c298;
 			var main = c0;
 			var lorem2 = c10;
 			var lorem1 = c9;
 			var logo = c3;
 			var headerLabel = c2;
-			var grid1 = c216;
+			var grid1 = c219;
 			theFrame2.set_height(__this__.get_pos());
 		});
 		rootComponent.bindingRoot = true;
 		var main = rootComponent;
+		app.addComponent(video);
 		app.addComponent(main);
 		app.start();
 	});
@@ -1884,972 +1943,6 @@ Type.enumParameters = function(e) {
 		return [];
 	}
 };
-var haxe_IMap = function() { };
-$hxClasses["haxe.IMap"] = haxe_IMap;
-haxe_IMap.__name__ = "haxe.IMap";
-haxe_IMap.__isInterface__ = true;
-haxe_IMap.prototype = {
-	get: null
-	,set: null
-	,__class__: haxe_IMap
-};
-var haxe_Exception = function(message,previous,native) {
-	Error.call(this,message);
-	this.message = message;
-	this.__previousException = previous;
-	this.__nativeException = native != null ? native : this;
-};
-$hxClasses["haxe.Exception"] = haxe_Exception;
-haxe_Exception.__name__ = "haxe.Exception";
-haxe_Exception.caught = function(value) {
-	if(((value) instanceof haxe_Exception)) {
-		return value;
-	} else if(((value) instanceof Error)) {
-		return new haxe_Exception(value.message,null,value);
-	} else {
-		return new haxe_ValueException(value,null,value);
-	}
-};
-haxe_Exception.thrown = function(value) {
-	if(((value) instanceof haxe_Exception)) {
-		return value.get_native();
-	} else if(((value) instanceof Error)) {
-		return value;
-	} else {
-		var e = new haxe_ValueException(value);
-		return e;
-	}
-};
-haxe_Exception.__super__ = Error;
-haxe_Exception.prototype = $extend(Error.prototype,{
-	__skipStack: null
-	,__nativeException: null
-	,__previousException: null
-	,unwrap: function() {
-		return this.__nativeException;
-	}
-	,get_native: function() {
-		return this.__nativeException;
-	}
-	,__class__: haxe_Exception
-	,__properties__: {get_native:"get_native"}
-});
-var haxe_Log = function() { };
-$hxClasses["haxe.Log"] = haxe_Log;
-haxe_Log.__name__ = "haxe.Log";
-haxe_Log.formatOutput = function(v,infos) {
-	var str = Std.string(v);
-	if(infos == null) {
-		return str;
-	}
-	var pstr = infos.fileName + ":" + infos.lineNumber;
-	if(infos.customParams != null) {
-		var _g = 0;
-		var _g1 = infos.customParams;
-		while(_g < _g1.length) {
-			var v = _g1[_g];
-			++_g;
-			str += ", " + Std.string(v);
-		}
-	}
-	return pstr + ": " + str;
-};
-haxe_Log.trace = function(v,infos) {
-	var str = haxe_Log.formatOutput(v,infos);
-	if(typeof(console) != "undefined" && console.log != null) {
-		console.log(str);
-	}
-};
-var haxe_Resource = function() { };
-$hxClasses["haxe.Resource"] = haxe_Resource;
-haxe_Resource.__name__ = "haxe.Resource";
-haxe_Resource.listNames = function() {
-	var _g = [];
-	var _g1 = 0;
-	var _g2 = haxe_Resource.content;
-	while(_g1 < _g2.length) {
-		var x = _g2[_g1];
-		++_g1;
-		_g.push(x.name);
-	}
-	return _g;
-};
-haxe_Resource.getString = function(name) {
-	var _g = 0;
-	var _g1 = haxe_Resource.content;
-	while(_g < _g1.length) {
-		var x = _g1[_g];
-		++_g;
-		if(x.name == name) {
-			if(x.str != null) {
-				return x.str;
-			}
-			var b = haxe_crypto_Base64.decode(x.data);
-			return b.toString();
-		}
-	}
-	return null;
-};
-haxe_Resource.getBytes = function(name) {
-	var _g = 0;
-	var _g1 = haxe_Resource.content;
-	while(_g < _g1.length) {
-		var x = _g1[_g];
-		++_g;
-		if(x.name == name) {
-			if(x.str != null) {
-				return haxe_io_Bytes.ofString(x.str);
-			}
-			return haxe_crypto_Base64.decode(x.data);
-		}
-	}
-	return null;
-};
-var haxe_Timer = function(time_ms) {
-	var me = this;
-	this.id = setInterval(function() {
-		me.run();
-	},time_ms);
-};
-$hxClasses["haxe.Timer"] = haxe_Timer;
-haxe_Timer.__name__ = "haxe.Timer";
-haxe_Timer.prototype = {
-	id: null
-	,stop: function() {
-		if(this.id == null) {
-			return;
-		}
-		clearInterval(this.id);
-		this.id = null;
-	}
-	,run: function() {
-	}
-	,__class__: haxe_Timer
-};
-var haxe_ValueException = function(value,previous,native) {
-	haxe_Exception.call(this,String(value),previous,native);
-	this.value = value;
-};
-$hxClasses["haxe.ValueException"] = haxe_ValueException;
-haxe_ValueException.__name__ = "haxe.ValueException";
-haxe_ValueException.__super__ = haxe_Exception;
-haxe_ValueException.prototype = $extend(haxe_Exception.prototype,{
-	value: null
-	,unwrap: function() {
-		return this.value;
-	}
-	,__class__: haxe_ValueException
-});
-var haxe_io_Bytes = function(data) {
-	this.length = data.byteLength;
-	this.b = new Uint8Array(data);
-	this.b.bufferValue = data;
-	data.hxBytes = this;
-	data.bytes = this.b;
-};
-$hxClasses["haxe.io.Bytes"] = haxe_io_Bytes;
-haxe_io_Bytes.__name__ = "haxe.io.Bytes";
-haxe_io_Bytes.ofString = function(s,encoding) {
-	if(encoding == haxe_io_Encoding.RawNative) {
-		var buf = new Uint8Array(s.length << 1);
-		var _g = 0;
-		var _g1 = s.length;
-		while(_g < _g1) {
-			var i = _g++;
-			var c = s.charCodeAt(i);
-			buf[i << 1] = c & 255;
-			buf[i << 1 | 1] = c >> 8;
-		}
-		return new haxe_io_Bytes(buf.buffer);
-	}
-	var a = [];
-	var i = 0;
-	while(i < s.length) {
-		var c = s.charCodeAt(i++);
-		if(55296 <= c && c <= 56319) {
-			c = c - 55232 << 10 | s.charCodeAt(i++) & 1023;
-		}
-		if(c <= 127) {
-			a.push(c);
-		} else if(c <= 2047) {
-			a.push(192 | c >> 6);
-			a.push(128 | c & 63);
-		} else if(c <= 65535) {
-			a.push(224 | c >> 12);
-			a.push(128 | c >> 6 & 63);
-			a.push(128 | c & 63);
-		} else {
-			a.push(240 | c >> 18);
-			a.push(128 | c >> 12 & 63);
-			a.push(128 | c >> 6 & 63);
-			a.push(128 | c & 63);
-		}
-	}
-	return new haxe_io_Bytes(new Uint8Array(a).buffer);
-};
-haxe_io_Bytes.ofData = function(b) {
-	var hb = b.hxBytes;
-	if(hb != null) {
-		return hb;
-	}
-	return new haxe_io_Bytes(b);
-};
-haxe_io_Bytes.prototype = {
-	length: null
-	,b: null
-	,getString: function(pos,len,encoding) {
-		if(pos < 0 || len < 0 || pos + len > this.length) {
-			throw haxe_Exception.thrown(haxe_io_Error.OutsideBounds);
-		}
-		if(encoding == null) {
-			encoding = haxe_io_Encoding.UTF8;
-		}
-		var s = "";
-		var b = this.b;
-		var i = pos;
-		var max = pos + len;
-		switch(encoding._hx_index) {
-		case 0:
-			var debug = pos > 0;
-			while(i < max) {
-				var c = b[i++];
-				if(c < 128) {
-					if(c == 0) {
-						break;
-					}
-					s += String.fromCodePoint(c);
-				} else if(c < 224) {
-					var code = (c & 63) << 6 | b[i++] & 127;
-					s += String.fromCodePoint(code);
-				} else if(c < 240) {
-					var c2 = b[i++];
-					var code1 = (c & 31) << 12 | (c2 & 127) << 6 | b[i++] & 127;
-					s += String.fromCodePoint(code1);
-				} else {
-					var c21 = b[i++];
-					var c3 = b[i++];
-					var u = (c & 15) << 18 | (c21 & 127) << 12 | (c3 & 127) << 6 | b[i++] & 127;
-					s += String.fromCodePoint(u);
-				}
-			}
-			break;
-		case 1:
-			while(i < max) {
-				var c = b[i++] | b[i++] << 8;
-				s += String.fromCodePoint(c);
-			}
-			break;
-		}
-		return s;
-	}
-	,toString: function() {
-		return this.getString(0,this.length);
-	}
-	,__class__: haxe_io_Bytes
-};
-var haxe_io_Encoding = $hxEnums["haxe.io.Encoding"] = { __ename__:true,__constructs__:null
-	,UTF8: {_hx_name:"UTF8",_hx_index:0,__enum__:"haxe.io.Encoding",toString:$estr}
-	,RawNative: {_hx_name:"RawNative",_hx_index:1,__enum__:"haxe.io.Encoding",toString:$estr}
-};
-haxe_io_Encoding.__constructs__ = [haxe_io_Encoding.UTF8,haxe_io_Encoding.RawNative];
-var haxe_crypto_Base64 = function() { };
-$hxClasses["haxe.crypto.Base64"] = haxe_crypto_Base64;
-haxe_crypto_Base64.__name__ = "haxe.crypto.Base64";
-haxe_crypto_Base64.decode = function(str,complement) {
-	if(complement == null) {
-		complement = true;
-	}
-	if(complement) {
-		while(HxOverrides.cca(str,str.length - 1) == 61) str = HxOverrides.substr(str,0,-1);
-	}
-	return new haxe_crypto_BaseCode(haxe_crypto_Base64.BYTES).decodeBytes(haxe_io_Bytes.ofString(str));
-};
-var haxe_crypto_BaseCode = function(base) {
-	var len = base.length;
-	var nbits = 1;
-	while(len > 1 << nbits) ++nbits;
-	if(nbits > 8 || len != 1 << nbits) {
-		throw haxe_Exception.thrown("BaseCode : base length must be a power of two.");
-	}
-	this.base = base;
-	this.nbits = nbits;
-};
-$hxClasses["haxe.crypto.BaseCode"] = haxe_crypto_BaseCode;
-haxe_crypto_BaseCode.__name__ = "haxe.crypto.BaseCode";
-haxe_crypto_BaseCode.prototype = {
-	base: null
-	,nbits: null
-	,tbl: null
-	,initTable: function() {
-		var tbl = [];
-		var _g = 0;
-		while(_g < 256) {
-			var i = _g++;
-			tbl[i] = -1;
-		}
-		var _g = 0;
-		var _g1 = this.base.length;
-		while(_g < _g1) {
-			var i = _g++;
-			tbl[this.base.b[i]] = i;
-		}
-		this.tbl = tbl;
-	}
-	,decodeBytes: function(b) {
-		var nbits = this.nbits;
-		var base = this.base;
-		if(this.tbl == null) {
-			this.initTable();
-		}
-		var tbl = this.tbl;
-		var size = b.length * nbits >> 3;
-		var out = new haxe_io_Bytes(new ArrayBuffer(size));
-		var buf = 0;
-		var curbits = 0;
-		var pin = 0;
-		var pout = 0;
-		while(pout < size) {
-			while(curbits < 8) {
-				curbits += nbits;
-				buf <<= nbits;
-				var i = tbl[b.b[pin++]];
-				if(i == -1) {
-					throw haxe_Exception.thrown("BaseCode : invalid encoded char");
-				}
-				buf |= i;
-			}
-			curbits -= 8;
-			out.b[pout++] = buf >> curbits & 255;
-		}
-		return out;
-	}
-	,__class__: haxe_crypto_BaseCode
-};
-var haxe_ds_ArraySort = function() { };
-$hxClasses["haxe.ds.ArraySort"] = haxe_ds_ArraySort;
-haxe_ds_ArraySort.__name__ = "haxe.ds.ArraySort";
-haxe_ds_ArraySort.sort = function(a,cmp) {
-	haxe_ds_ArraySort.rec(a,cmp,0,a.length);
-};
-haxe_ds_ArraySort.rec = function(a,cmp,from,to) {
-	var middle = from + to >> 1;
-	if(to - from < 12) {
-		if(to <= from) {
-			return;
-		}
-		var _g = from + 1;
-		var _g1 = to;
-		while(_g < _g1) {
-			var i = _g++;
-			var j = i;
-			while(j > from) {
-				if(cmp(a[j],a[j - 1]) < 0) {
-					haxe_ds_ArraySort.swap(a,j - 1,j);
-				} else {
-					break;
-				}
-				--j;
-			}
-		}
-		return;
-	}
-	haxe_ds_ArraySort.rec(a,cmp,from,middle);
-	haxe_ds_ArraySort.rec(a,cmp,middle,to);
-	haxe_ds_ArraySort.doMerge(a,cmp,from,middle,to,middle - from,to - middle);
-};
-haxe_ds_ArraySort.doMerge = function(a,cmp,from,pivot,to,len1,len2) {
-	var first_cut;
-	var second_cut;
-	var len11;
-	var len22;
-	if(len1 == 0 || len2 == 0) {
-		return;
-	}
-	if(len1 + len2 == 2) {
-		if(cmp(a[pivot],a[from]) < 0) {
-			haxe_ds_ArraySort.swap(a,pivot,from);
-		}
-		return;
-	}
-	if(len1 > len2) {
-		len11 = len1 >> 1;
-		first_cut = from + len11;
-		second_cut = haxe_ds_ArraySort.lower(a,cmp,pivot,to,first_cut);
-		len22 = second_cut - pivot;
-	} else {
-		len22 = len2 >> 1;
-		second_cut = pivot + len22;
-		first_cut = haxe_ds_ArraySort.upper(a,cmp,from,pivot,second_cut);
-		len11 = first_cut - from;
-	}
-	haxe_ds_ArraySort.rotate(a,cmp,first_cut,pivot,second_cut);
-	var new_mid = first_cut + len22;
-	haxe_ds_ArraySort.doMerge(a,cmp,from,first_cut,new_mid,len11,len22);
-	haxe_ds_ArraySort.doMerge(a,cmp,new_mid,second_cut,to,len1 - len11,len2 - len22);
-};
-haxe_ds_ArraySort.rotate = function(a,cmp,from,mid,to) {
-	if(from == mid || mid == to) {
-		return;
-	}
-	var n = haxe_ds_ArraySort.gcd(to - from,mid - from);
-	while(n-- != 0) {
-		var val = a[from + n];
-		var shift = mid - from;
-		var p1 = from + n;
-		var p2 = from + n + shift;
-		while(p2 != from + n) {
-			a[p1] = a[p2];
-			p1 = p2;
-			if(to - p2 > shift) {
-				p2 += shift;
-			} else {
-				p2 = from + (shift - (to - p2));
-			}
-		}
-		a[p1] = val;
-	}
-};
-haxe_ds_ArraySort.gcd = function(m,n) {
-	while(n != 0) {
-		var t = m % n;
-		m = n;
-		n = t;
-	}
-	return m;
-};
-haxe_ds_ArraySort.upper = function(a,cmp,from,to,val) {
-	var len = to - from;
-	var half;
-	var mid;
-	while(len > 0) {
-		half = len >> 1;
-		mid = from + half;
-		if(cmp(a[val],a[mid]) < 0) {
-			len = half;
-		} else {
-			from = mid + 1;
-			len = len - half - 1;
-		}
-	}
-	return from;
-};
-haxe_ds_ArraySort.lower = function(a,cmp,from,to,val) {
-	var len = to - from;
-	var half;
-	var mid;
-	while(len > 0) {
-		half = len >> 1;
-		mid = from + half;
-		if(cmp(a[mid],a[val]) < 0) {
-			from = mid + 1;
-			len = len - half - 1;
-		} else {
-			len = half;
-		}
-	}
-	return from;
-};
-haxe_ds_ArraySort.swap = function(a,i,j) {
-	var tmp = a[i];
-	a[i] = a[j];
-	a[j] = tmp;
-};
-var haxe_ds_BalancedTree = function() {
-};
-$hxClasses["haxe.ds.BalancedTree"] = haxe_ds_BalancedTree;
-haxe_ds_BalancedTree.__name__ = "haxe.ds.BalancedTree";
-haxe_ds_BalancedTree.__interfaces__ = [haxe_IMap];
-haxe_ds_BalancedTree.prototype = {
-	root: null
-	,set: function(key,value) {
-		this.root = this.setLoop(key,value,this.root);
-	}
-	,get: function(key) {
-		var node = this.root;
-		while(node != null) {
-			var c = this.compare(key,node.key);
-			if(c == 0) {
-				return node.value;
-			}
-			if(c < 0) {
-				node = node.left;
-			} else {
-				node = node.right;
-			}
-		}
-		return null;
-	}
-	,setLoop: function(k,v,node) {
-		if(node == null) {
-			return new haxe_ds_TreeNode(null,k,v,null);
-		}
-		var c = this.compare(k,node.key);
-		if(c == 0) {
-			return new haxe_ds_TreeNode(node.left,k,v,node.right,node == null ? 0 : node._height);
-		} else if(c < 0) {
-			var nl = this.setLoop(k,v,node.left);
-			return this.balance(nl,node.key,node.value,node.right);
-		} else {
-			var nr = this.setLoop(k,v,node.right);
-			return this.balance(node.left,node.key,node.value,nr);
-		}
-	}
-	,balance: function(l,k,v,r) {
-		var hl = l == null ? 0 : l._height;
-		var hr = r == null ? 0 : r._height;
-		if(hl > hr + 2) {
-			var _this = l.left;
-			var _this1 = l.right;
-			if((_this == null ? 0 : _this._height) >= (_this1 == null ? 0 : _this1._height)) {
-				return new haxe_ds_TreeNode(l.left,l.key,l.value,new haxe_ds_TreeNode(l.right,k,v,r));
-			} else {
-				return new haxe_ds_TreeNode(new haxe_ds_TreeNode(l.left,l.key,l.value,l.right.left),l.right.key,l.right.value,new haxe_ds_TreeNode(l.right.right,k,v,r));
-			}
-		} else if(hr > hl + 2) {
-			var _this = r.right;
-			var _this1 = r.left;
-			if((_this == null ? 0 : _this._height) > (_this1 == null ? 0 : _this1._height)) {
-				return new haxe_ds_TreeNode(new haxe_ds_TreeNode(l,k,v,r.left),r.key,r.value,r.right);
-			} else {
-				return new haxe_ds_TreeNode(new haxe_ds_TreeNode(l,k,v,r.left.left),r.left.key,r.left.value,new haxe_ds_TreeNode(r.left.right,r.key,r.value,r.right));
-			}
-		} else {
-			return new haxe_ds_TreeNode(l,k,v,r,(hl > hr ? hl : hr) + 1);
-		}
-	}
-	,compare: function(k1,k2) {
-		return Reflect.compare(k1,k2);
-	}
-	,__class__: haxe_ds_BalancedTree
-};
-var haxe_ds_TreeNode = function(l,k,v,r,h) {
-	if(h == null) {
-		h = -1;
-	}
-	this.left = l;
-	this.key = k;
-	this.value = v;
-	this.right = r;
-	if(h == -1) {
-		var tmp;
-		var _this = this.left;
-		var _this1 = this.right;
-		if((_this == null ? 0 : _this._height) > (_this1 == null ? 0 : _this1._height)) {
-			var _this = this.left;
-			tmp = _this == null ? 0 : _this._height;
-		} else {
-			var _this = this.right;
-			tmp = _this == null ? 0 : _this._height;
-		}
-		this._height = tmp + 1;
-	} else {
-		this._height = h;
-	}
-};
-$hxClasses["haxe.ds.TreeNode"] = haxe_ds_TreeNode;
-haxe_ds_TreeNode.__name__ = "haxe.ds.TreeNode";
-haxe_ds_TreeNode.prototype = {
-	left: null
-	,right: null
-	,key: null
-	,value: null
-	,_height: null
-	,__class__: haxe_ds_TreeNode
-};
-var haxe_ds_EnumValueMap = function() {
-	haxe_ds_BalancedTree.call(this);
-};
-$hxClasses["haxe.ds.EnumValueMap"] = haxe_ds_EnumValueMap;
-haxe_ds_EnumValueMap.__name__ = "haxe.ds.EnumValueMap";
-haxe_ds_EnumValueMap.__interfaces__ = [haxe_IMap];
-haxe_ds_EnumValueMap.__super__ = haxe_ds_BalancedTree;
-haxe_ds_EnumValueMap.prototype = $extend(haxe_ds_BalancedTree.prototype,{
-	compare: function(k1,k2) {
-		var d = k1._hx_index - k2._hx_index;
-		if(d != 0) {
-			return d;
-		}
-		var p1 = Type.enumParameters(k1);
-		var p2 = Type.enumParameters(k2);
-		if(p1.length == 0 && p2.length == 0) {
-			return 0;
-		}
-		return this.compareArgs(p1,p2);
-	}
-	,compareArgs: function(a1,a2) {
-		var ld = a1.length - a2.length;
-		if(ld != 0) {
-			return ld;
-		}
-		var _g = 0;
-		var _g1 = a1.length;
-		while(_g < _g1) {
-			var i = _g++;
-			var d = this.compareArg(a1[i],a2[i]);
-			if(d != 0) {
-				return d;
-			}
-		}
-		return 0;
-	}
-	,compareArg: function(v1,v2) {
-		if(Reflect.isEnumValue(v1) && Reflect.isEnumValue(v2)) {
-			return this.compare(v1,v2);
-		} else if(((v1) instanceof Array) && ((v2) instanceof Array)) {
-			return this.compareArgs(v1,v2);
-		} else {
-			return Reflect.compare(v1,v2);
-		}
-	}
-	,__class__: haxe_ds_EnumValueMap
-});
-var haxe_ds_GenericCell = function(elt,next) {
-	this.elt = elt;
-	this.next = next;
-};
-$hxClasses["haxe.ds.GenericCell"] = haxe_ds_GenericCell;
-haxe_ds_GenericCell.__name__ = "haxe.ds.GenericCell";
-haxe_ds_GenericCell.prototype = {
-	elt: null
-	,next: null
-	,__class__: haxe_ds_GenericCell
-};
-var haxe_ds_GenericStack = function() {
-};
-$hxClasses["haxe.ds.GenericStack"] = haxe_ds_GenericStack;
-haxe_ds_GenericStack.__name__ = "haxe.ds.GenericStack";
-haxe_ds_GenericStack.prototype = {
-	head: null
-	,__class__: haxe_ds_GenericStack
-};
-var haxe_ds_IntMap = function() {
-	this.h = { };
-};
-$hxClasses["haxe.ds.IntMap"] = haxe_ds_IntMap;
-haxe_ds_IntMap.__name__ = "haxe.ds.IntMap";
-haxe_ds_IntMap.__interfaces__ = [haxe_IMap];
-haxe_ds_IntMap.prototype = {
-	h: null
-	,set: function(key,value) {
-		this.h[key] = value;
-	}
-	,get: function(key) {
-		return this.h[key];
-	}
-	,__class__: haxe_ds_IntMap
-};
-var haxe_ds_ObjectMap = function() {
-	this.h = { __keys__ : { }};
-};
-$hxClasses["haxe.ds.ObjectMap"] = haxe_ds_ObjectMap;
-haxe_ds_ObjectMap.__name__ = "haxe.ds.ObjectMap";
-haxe_ds_ObjectMap.__interfaces__ = [haxe_IMap];
-haxe_ds_ObjectMap.prototype = {
-	h: null
-	,set: function(key,value) {
-		var id = key.__id__;
-		if(id == null) {
-			id = (key.__id__ = $global.$haxeUID++);
-		}
-		this.h[id] = value;
-		this.h.__keys__[id] = key;
-	}
-	,get: function(key) {
-		return this.h[key.__id__];
-	}
-	,remove: function(key) {
-		var id = key.__id__;
-		if(this.h.__keys__[id] == null) {
-			return false;
-		}
-		delete(this.h[id]);
-		delete(this.h.__keys__[id]);
-		return true;
-	}
-	,keys: function() {
-		var a = [];
-		for( var key in this.h.__keys__ ) {
-		if(this.h.hasOwnProperty(key)) {
-			a.push(this.h.__keys__[key]);
-		}
-		}
-		return new haxe_iterators_ArrayIterator(a);
-	}
-	,__class__: haxe_ds_ObjectMap
-};
-var haxe_ds_StringMap = function() {
-	this.h = Object.create(null);
-};
-$hxClasses["haxe.ds.StringMap"] = haxe_ds_StringMap;
-haxe_ds_StringMap.__name__ = "haxe.ds.StringMap";
-haxe_ds_StringMap.__interfaces__ = [haxe_IMap];
-haxe_ds_StringMap.prototype = {
-	h: null
-	,get: function(key) {
-		return this.h[key];
-	}
-	,set: function(key,value) {
-		this.h[key] = value;
-	}
-	,__class__: haxe_ds_StringMap
-};
-var haxe_ds__$StringMap_StringMapKeyIterator = function(h) {
-	this.h = h;
-	this.keys = Object.keys(h);
-	this.length = this.keys.length;
-	this.current = 0;
-};
-$hxClasses["haxe.ds._StringMap.StringMapKeyIterator"] = haxe_ds__$StringMap_StringMapKeyIterator;
-haxe_ds__$StringMap_StringMapKeyIterator.__name__ = "haxe.ds._StringMap.StringMapKeyIterator";
-haxe_ds__$StringMap_StringMapKeyIterator.prototype = {
-	h: null
-	,keys: null
-	,length: null
-	,current: null
-	,hasNext: function() {
-		return this.current < this.length;
-	}
-	,next: function() {
-		return this.keys[this.current++];
-	}
-	,__class__: haxe_ds__$StringMap_StringMapKeyIterator
-};
-var haxe_io_Error = $hxEnums["haxe.io.Error"] = { __ename__:true,__constructs__:null
-	,Blocked: {_hx_name:"Blocked",_hx_index:0,__enum__:"haxe.io.Error",toString:$estr}
-	,Overflow: {_hx_name:"Overflow",_hx_index:1,__enum__:"haxe.io.Error",toString:$estr}
-	,OutsideBounds: {_hx_name:"OutsideBounds",_hx_index:2,__enum__:"haxe.io.Error",toString:$estr}
-	,Custom: ($_=function(e) { return {_hx_index:3,e:e,__enum__:"haxe.io.Error",toString:$estr}; },$_._hx_name="Custom",$_.__params__ = ["e"],$_)
-};
-haxe_io_Error.__constructs__ = [haxe_io_Error.Blocked,haxe_io_Error.Overflow,haxe_io_Error.OutsideBounds,haxe_io_Error.Custom];
-var haxe_iterators_ArrayIterator = function(array) {
-	this.current = 0;
-	this.array = array;
-};
-$hxClasses["haxe.iterators.ArrayIterator"] = haxe_iterators_ArrayIterator;
-haxe_iterators_ArrayIterator.__name__ = "haxe.iterators.ArrayIterator";
-haxe_iterators_ArrayIterator.prototype = {
-	array: null
-	,current: null
-	,hasNext: function() {
-		return this.current < this.array.length;
-	}
-	,next: function() {
-		return this.array[this.current++];
-	}
-	,__class__: haxe_iterators_ArrayIterator
-};
-var haxe_ui_backend_BackendImpl = function() { };
-$hxClasses["haxe.ui.backend.BackendImpl"] = haxe_ui_backend_BackendImpl;
-haxe_ui_backend_BackendImpl.__name__ = "haxe.ui.backend.BackendImpl";
-var haxe_ui_Backend = function() { };
-$hxClasses["haxe.ui.Backend"] = haxe_ui_Backend;
-haxe_ui_Backend.__name__ = "haxe.ui.Backend";
-haxe_ui_Backend.__properties__ = {get_id:"get_id"};
-haxe_ui_Backend.get_id = function() {
-	return haxe_ui_backend_BackendImpl.id;
-};
-haxe_ui_Backend.__super__ = haxe_ui_backend_BackendImpl;
-haxe_ui_Backend.prototype = $extend(haxe_ui_backend_BackendImpl.prototype,{
-	__class__: haxe_ui_Backend
-});
-var haxe_ui_backend_CallLaterImpl = function(fn) {
-	window.requestAnimationFrame(function(timestamp) {
-		fn();
-	});
-};
-$hxClasses["haxe.ui.backend.CallLaterImpl"] = haxe_ui_backend_CallLaterImpl;
-haxe_ui_backend_CallLaterImpl.__name__ = "haxe.ui.backend.CallLaterImpl";
-haxe_ui_backend_CallLaterImpl.prototype = {
-	__class__: haxe_ui_backend_CallLaterImpl
-};
-var haxe_ui_CallLater = function(fn) {
-	haxe_ui_backend_CallLaterImpl.call(this,fn);
-};
-$hxClasses["haxe.ui.CallLater"] = haxe_ui_CallLater;
-haxe_ui_CallLater.__name__ = "haxe.ui.CallLater";
-haxe_ui_CallLater.__super__ = haxe_ui_backend_CallLaterImpl;
-haxe_ui_CallLater.prototype = $extend(haxe_ui_backend_CallLaterImpl.prototype,{
-	__class__: haxe_ui_CallLater
-});
-var haxe_ui_backend_AppBase = function() {
-	this.__events = null;
-};
-$hxClasses["haxe.ui.backend.AppBase"] = haxe_ui_backend_AppBase;
-haxe_ui_backend_AppBase.__name__ = "haxe.ui.backend.AppBase";
-haxe_ui_backend_AppBase.prototype = {
-	__events: null
-	,registerEvent: function(type,listener,priority) {
-		if(priority == null) {
-			priority = 0;
-		}
-		if(this.__events == null) {
-			this.__events = new haxe_ui_util_EventMap();
-		}
-		this.__events.add(type,listener,priority);
-	}
-	,hasEvent: function(type,listener) {
-		if(this.__events == null) {
-			return false;
-		}
-		return this.__events.contains(type,listener);
-	}
-	,unregisterEvent: function(type,listener) {
-		if(this.__events != null) {
-			this.__events.remove(type,listener);
-		}
-	}
-	,dispatch: function(event) {
-		if(this.__events != null) {
-			this.__events.invoke(event.type,event,null);
-		}
-	}
-	,build: function() {
-	}
-	,init: function(onReady,onEnd) {
-		onReady();
-	}
-	,getToolkitInit: function() {
-		return { };
-	}
-	,start: function() {
-	}
-	,exit: function() {
-	}
-	,buildPreloadList: function() {
-		return [];
-	}
-	,__class__: haxe_ui_backend_AppBase
-};
-var haxe_ui_backend_AppImpl = function() {
-	haxe_ui_backend_AppBase.call(this);
-};
-$hxClasses["haxe.ui.backend.AppImpl"] = haxe_ui_backend_AppImpl;
-haxe_ui_backend_AppImpl.__name__ = "haxe.ui.backend.AppImpl";
-haxe_ui_backend_AppImpl.__super__ = haxe_ui_backend_AppBase;
-haxe_ui_backend_AppImpl.prototype = $extend(haxe_ui_backend_AppBase.prototype,{
-	init: function(onReady,onEnd) {
-		var title = haxe_ui_Toolkit.get_backendProperties().getProp("haxe.ui.html5.title");
-		if(title != null) {
-			haxe_ui_core_Screen.get_instance().set_title(title);
-		}
-		if(window.document.readyState == "complete") {
-			onReady();
-		} else {
-			window.document.body.onload = function(e) {
-				onReady();
-			};
-		}
-	}
-	,getToolkitInit: function() {
-		return { container : this.findContainer(haxe_ui_Toolkit.get_backendProperties().getProp("haxe.ui.html5.container","body"))};
-	}
-	,findContainer: function(id) {
-		var el = null;
-		if(id == "body") {
-			el = window.document.body;
-		} else if(id != null) {
-			el = window.document.getElementById(id);
-		}
-		if(el == null) {
-			el = window.document.body;
-		}
-		el.style.overflow = "hidden";
-		return el;
-	}
-	,__class__: haxe_ui_backend_AppImpl
-});
-var haxe_ui_HaxeUIApp = function(options) {
-	haxe_ui_backend_AppImpl.call(this);
-	haxe_ui_HaxeUIApp.instance = this;
-	this._options = options;
-	haxe_ui_Toolkit.build();
-	this.build();
-};
-$hxClasses["haxe.ui.HaxeUIApp"] = haxe_ui_HaxeUIApp;
-haxe_ui_HaxeUIApp.__name__ = "haxe.ui.HaxeUIApp";
-haxe_ui_HaxeUIApp.__super__ = haxe_ui_backend_AppImpl;
-haxe_ui_HaxeUIApp.prototype = $extend(haxe_ui_backend_AppImpl.prototype,{
-	_options: null
-	,ready: function(onReady,onEnd) {
-		this.init(onReady,onEnd);
-	}
-	,init: function(onReady,onEnd) {
-		if(haxe_ui_Toolkit.get_backendProperties().getProp("haxe.ui.theme") != null && haxe_ui_Toolkit.get_theme() == "default") {
-			haxe_ui_Toolkit.set_theme(haxe_ui_Toolkit.get_backendProperties().getProp("haxe.ui.theme"));
-		}
-		if(this._options == null) {
-			haxe_ui_Toolkit.init(this.getToolkitInit());
-		} else {
-			haxe_ui_Toolkit.init(this._options);
-		}
-		var preloadList = null;
-		var preloader = null;
-		preloadList = this.buildPreloadList();
-		if(preloadList != null && preloadList.length > 0) {
-			preloader = new haxe_ui_Preloader();
-			preloader.progress(0,preloadList.length);
-			this.addComponent(preloader);
-			preloader.validateComponent();
-		}
-		this.handlePreload(preloadList,onReady,onEnd,preloader);
-	}
-	,handlePreload: function(list,onReady,onEnd,preloader) {
-		var _gthis = this;
-		if(list == null || list.length == 0) {
-			if(preloader != null) {
-				preloader.complete();
-			}
-			haxe_ui_backend_AppImpl.prototype.init.call(this,onReady,onEnd);
-			return;
-		}
-		var item = list.shift();
-		switch(item.type) {
-		case "font":
-			haxe_ui_ToolkitAssets.get_instance().getFont(item.resourceId,function(f) {
-				if(preloader != null) {
-					preloader.increment();
-				}
-				_gthis.handlePreload(list,onReady,onEnd,preloader);
-			});
-			break;
-		case "image":
-			haxe_ui_ToolkitAssets.get_instance().getImage(item.resourceId,function(i) {
-				if(preloader != null) {
-					preloader.increment();
-				}
-				_gthis.handlePreload(list,onReady,onEnd,preloader);
-			});
-			break;
-		default:
-			haxe_Log.trace("WARNING: unknown type to preload \"" + item.type + "\", continuing",{ fileName : "haxe/ui/HaxeUIApp.hx", lineNumber : 81, className : "haxe.ui.HaxeUIApp", methodName : "handlePreload"});
-			if(preloader != null) {
-				preloader.increment();
-			}
-			this.handlePreload(list,onReady,onEnd,preloader);
-		}
-	}
-	,addComponent: function(component) {
-		return haxe_ui_core_Screen.get_instance().addComponent(component);
-	}
-	,removeComponent: function(component,dispose) {
-		if(dispose == null) {
-			dispose = true;
-		}
-		return haxe_ui_core_Screen.get_instance().removeComponent(component,dispose);
-	}
-	,setComponentIndex: function(child,index) {
-		return haxe_ui_core_Screen.get_instance().setComponentIndex(child,index);
-	}
-	,buildPreloadList: function() {
-		var list = haxe_ui_backend_AppImpl.prototype.buildPreloadList.call(this);
-		if(list == null) {
-			list = [];
-		}
-		list = list.concat(haxe_ui_ToolkitAssets.get_instance().preloadList);
-		return list;
-	}
-	,__class__: haxe_ui_HaxeUIApp
-});
 var haxe_ui_backend_ComponentSurface = function() {
 };
 $hxClasses["haxe.ui.backend.ComponentSurface"] = haxe_ui_backend_ComponentSurface;
@@ -7049,6 +6142,1224 @@ haxe_ui_core_Component.prototype = $extend(haxe_ui_backend_ComponentImpl.prototy
 	}
 	,__class__: haxe_ui_core_Component
 	,__properties__: $extend(haxe_ui_backend_ComponentImpl.prototype.__properties__,{set_onChange:"set_onChange",set_onRightClick:"set_onRightClick",set_onDblClick:"set_onDblClick",set_onClick:"set_onClick",set_onAnimationEnd:"set_onAnimationEnd",set_onAnimationStart:"set_onAnimationStart",set_verticalAlign:"set_verticalAlign",get_verticalAlign:"get_verticalAlign",set_horizontalAlign:"set_horizontalAlign",get_horizontalAlign:"get_horizontalAlign",set_opacity:"set_opacity",get_opacity:"get_opacity",set_clip:"set_clip",get_clip:"get_clip",set_marginBottom:"set_marginBottom",get_marginBottom:"get_marginBottom",set_marginTop:"set_marginTop",get_marginTop:"get_marginTop",set_marginRight:"set_marginRight",get_marginRight:"get_marginRight",set_marginLeft:"set_marginLeft",get_marginLeft:"get_marginLeft",set_paddingBottom:"set_paddingBottom",get_paddingBottom:"get_paddingBottom",set_paddingTop:"set_paddingTop",get_paddingTop:"get_paddingTop",set_paddingRight:"set_paddingRight",get_paddingRight:"get_paddingRight",set_paddingLeft:"set_paddingLeft",get_paddingLeft:"get_paddingLeft",set_padding:"set_padding",get_padding:"get_padding",set_borderRadius:"set_borderRadius",get_borderRadius:"get_borderRadius",set_borderSize:"set_borderSize",get_borderSize:"get_borderSize",set_borderColor:"set_borderColor",get_borderColor:"get_borderColor",set_backgroundImage:"set_backgroundImage",get_backgroundImage:"get_backgroundImage",set_backgroundColor:"set_backgroundColor",get_backgroundColor:"get_backgroundColor",set_color:"set_color",get_color:"get_color",get_cssName:"get_cssName",get_namedComponents:"get_namedComponents",set_scriptAccess:"set_scriptAccess",get_scriptAccess:"get_scriptAccess",set_layout:"set_layout",get_layout:"get_layout",set_includeInLayout:"set_includeInLayout",get_includeInLayout:"get_includeInLayout",set_styleSheet:"set_styleSheet",get_styleSheet:"get_styleSheet",set_styleString:"set_styleString",get_styleString:"get_styleString",set_styleNames:"set_styleNames",get_styleNames:"get_styleNames",set_customStyle:"set_customStyle",get_customStyle:"get_customStyle",set_hidden:"set_hidden",get_hidden:"get_hidden",get_numComponents:"get_numComponents",get_rootComponent:"get_rootComponent",set_dragInitiator:"set_dragInitiator",get_dragInitiator:"get_dragInitiator",set_draggable:"set_draggable",get_draggable:"get_draggable",get_screen:"get_screen",set_componentAnimation:"set_componentAnimation",get_componentAnimation:"get_componentAnimation",set_animatable:"set_animatable",get_animatable:"get_animatable",set_native:"set_native",get_native:"get_native"})
+});
+var haxe_ui_containers_Box = function() {
+	this._direction = null;
+	haxe_ui_core_Component.call(this);
+};
+$hxClasses["haxe.ui.containers.Box"] = haxe_ui_containers_Box;
+haxe_ui_containers_Box.__name__ = "haxe.ui.containers.Box";
+haxe_ui_containers_Box.__super__ = haxe_ui_core_Component;
+haxe_ui_containers_Box.prototype = $extend(haxe_ui_core_Component.prototype,{
+	_layoutName: null
+	,get_layoutName: function() {
+		return this._layoutName;
+	}
+	,set_layoutName: function(value) {
+		if(this._layoutName == value) {
+			return value;
+		}
+		this._layoutName = value;
+		this.set_layout(haxe_ui_layouts_LayoutFactory.createFromName(this.get_layoutName()));
+		return value;
+	}
+	,createDefaults: function() {
+		haxe_ui_core_Component.prototype.createDefaults.call(this);
+		if(this._defaultLayoutClass == null) {
+			this._defaultLayoutClass = haxe_ui_layouts_DefaultLayout;
+		}
+	}
+	,_direction: null
+	,applyStyle: function(style) {
+		haxe_ui_core_Component.prototype.applyStyle.call(this,style);
+		if(style.direction != null && style.direction != this._direction) {
+			this._direction = style.direction;
+			this.set_layout(haxe_ui_layouts_LayoutFactory.createFromName(this._direction));
+		}
+	}
+	,registerComposite: function() {
+		haxe_ui_core_Component.prototype.registerComposite.call(this);
+		this._defaultLayoutClass = haxe_ui_layouts_DefaultLayout;
+	}
+	,registerBehaviours: function() {
+		haxe_ui_core_Component.prototype.registerBehaviours.call(this);
+		this.behaviours.register("icon",haxe_ui_behaviours_DefaultBehaviour);
+	}
+	,get_icon: function() {
+		return haxe_ui_util_Variant.toString(this.behaviours.get("icon"));
+	}
+	,set_icon: function(value) {
+		var _g = Type.typeof(value);
+		if(_g._hx_index == 6) {
+			if(_g.c == String) {
+				if(value != null && value.indexOf("{{") != -1 && value.indexOf("}}") != -1) {
+					haxe_ui_locale_LocaleManager.get_instance().registerComponent(this,"icon",null,value);
+					return value;
+				}
+			}
+		}
+		this.behaviours.set("icon",haxe_ui_util_Variant.fromString(value));
+		this.dispatch(new haxe_ui_events_UIEvent("propertyChange",null,"icon"));
+		return value;
+	}
+	,cloneComponent: function() {
+		var c = haxe_ui_core_Component.prototype.cloneComponent.call(this);
+		if(this.get_layoutName() != null) {
+			c.set_layoutName(this.get_layoutName());
+		}
+		if(this.get_icon() != null) {
+			c.set_icon(this.get_icon());
+		}
+		if((this._children == null ? [] : this._children).length != (c._children == null ? [] : c._children).length) {
+			var _g = 0;
+			var _g1 = this._children == null ? [] : this._children;
+			while(_g < _g1.length) {
+				var child = _g1[_g];
+				++_g;
+				c.addComponent(child.cloneComponent());
+			}
+		}
+		return c;
+	}
+	,self: function() {
+		return new haxe_ui_containers_Box();
+	}
+	,__class__: haxe_ui_containers_Box
+	,__properties__: $extend(haxe_ui_core_Component.prototype.__properties__,{set_icon:"set_icon",get_icon:"get_icon",set_layoutName:"set_layoutName",get_layoutName:"get_layoutName"})
+});
+var Video = function() {
+	this._source = null;
+	this._video = null;
+	haxe_ui_containers_Box.call(this);
+};
+$hxClasses["Video"] = Video;
+Video.__name__ = "Video";
+Video.__super__ = haxe_ui_containers_Box;
+Video.prototype = $extend(haxe_ui_containers_Box.prototype,{
+	_video: null
+	,_source: null
+	,onReady: function() {
+		haxe_ui_containers_Box.prototype.onReady.call(this);
+		this._video = window.document.createElement("video");
+		this._video.style.objectFit = "fill";
+		this.element.appendChild(this._video);
+		if(!(this._layout == null || this._layoutLocked == true)) {
+			this.invalidateComponent("layout",false);
+		}
+		if(this._file != null && this._source == null) {
+			this.changeSource(this._file);
+		}
+	}
+	,play: function() {
+		if(this._video != null) {
+			this._video.play();
+		}
+	}
+	,pause: function() {
+		if(this._video != null) {
+			this._video.pause();
+		}
+	}
+	,_file: null
+	,get_file: function() {
+		return this._file;
+	}
+	,set_file: function(value) {
+		this._file = value;
+		if(this._video != null) {
+			this.changeSource(this._file);
+		}
+		return value;
+	}
+	,changeSource: function(src) {
+		if(this._source != null) {
+			haxe_ui_backend_html5_HtmlUtils.removeElement(this._source);
+		}
+		this._source = window.document.createElement("source");
+		this._source.setAttribute("src",src);
+		this._video.appendChild(this._source);
+	}
+	,validateComponentLayout: function() {
+		var b = haxe_ui_containers_Box.prototype.validateComponentLayout.call(this);
+		if(this._video != null && this.get_width() > 0 && this.get_height() > 0) {
+			var tmp = "" + this.get_width() + "px";
+			this._video.style.width = tmp;
+			var tmp = "" + this.get_height() + "px";
+			this._video.style.height = tmp;
+		}
+		return b;
+	}
+	,registerBehaviours: function() {
+		haxe_ui_containers_Box.prototype.registerBehaviours.call(this);
+	}
+	,cloneComponent: function() {
+		var c = haxe_ui_containers_Box.prototype.cloneComponent.call(this);
+		if((this._children == null ? [] : this._children).length != (c._children == null ? [] : c._children).length) {
+			var _g = 0;
+			var _g1 = this._children == null ? [] : this._children;
+			while(_g < _g1.length) {
+				var child = _g1[_g];
+				++_g;
+				c.addComponent(child.cloneComponent());
+			}
+		}
+		return c;
+	}
+	,self: function() {
+		return new Video();
+	}
+	,__class__: Video
+	,__properties__: $extend(haxe_ui_containers_Box.prototype.__properties__,{set_file:"set_file",get_file:"get_file"})
+});
+var custom_Video = function() {
+	this._source = null;
+	this._video = null;
+	haxe_ui_containers_Box.call(this);
+};
+$hxClasses["custom.Video"] = custom_Video;
+custom_Video.__name__ = "custom.Video";
+custom_Video.__super__ = haxe_ui_containers_Box;
+custom_Video.prototype = $extend(haxe_ui_containers_Box.prototype,{
+	_video: null
+	,_source: null
+	,onReady: function() {
+		haxe_ui_containers_Box.prototype.onReady.call(this);
+		this._video = window.document.createElement("video");
+		this._video.style.objectFit = "fill";
+		this.element.appendChild(this._video);
+		if(!(this._layout == null || this._layoutLocked == true)) {
+			this.invalidateComponent("layout",false);
+		}
+		if(this._file != null && this._source == null) {
+			this.changeSource(this._file);
+		}
+	}
+	,play: function() {
+		if(this._video != null) {
+			this._video.play();
+		}
+	}
+	,pause: function() {
+		if(this._video != null) {
+			this._video.pause();
+		}
+	}
+	,_file: null
+	,get_file: function() {
+		return this._file;
+	}
+	,set_file: function(value) {
+		this._file = value;
+		if(this._video != null) {
+			this.changeSource(this._file);
+		}
+		return value;
+	}
+	,changeSource: function(src) {
+		if(this._source != null) {
+			haxe_ui_backend_html5_HtmlUtils.removeElement(this._source);
+		}
+		this._source = window.document.createElement("source");
+		this._source.setAttribute("src",src);
+		this._video.appendChild(this._source);
+	}
+	,validateComponentLayout: function() {
+		var b = haxe_ui_containers_Box.prototype.validateComponentLayout.call(this);
+		if(this._video != null && this.get_width() > 0 && this.get_height() > 0) {
+			var tmp = "" + this.get_width() + "px";
+			this._video.style.width = tmp;
+			var tmp = "" + this.get_height() + "px";
+			this._video.style.height = tmp;
+		}
+		return b;
+	}
+	,registerBehaviours: function() {
+		haxe_ui_containers_Box.prototype.registerBehaviours.call(this);
+	}
+	,cloneComponent: function() {
+		var c = haxe_ui_containers_Box.prototype.cloneComponent.call(this);
+		if((this._children == null ? [] : this._children).length != (c._children == null ? [] : c._children).length) {
+			var _g = 0;
+			var _g1 = this._children == null ? [] : this._children;
+			while(_g < _g1.length) {
+				var child = _g1[_g];
+				++_g;
+				c.addComponent(child.cloneComponent());
+			}
+		}
+		return c;
+	}
+	,self: function() {
+		return new custom_Video();
+	}
+	,__class__: custom_Video
+	,__properties__: $extend(haxe_ui_containers_Box.prototype.__properties__,{set_file:"set_file",get_file:"get_file"})
+});
+var haxe_IMap = function() { };
+$hxClasses["haxe.IMap"] = haxe_IMap;
+haxe_IMap.__name__ = "haxe.IMap";
+haxe_IMap.__isInterface__ = true;
+haxe_IMap.prototype = {
+	get: null
+	,set: null
+	,__class__: haxe_IMap
+};
+var haxe_Exception = function(message,previous,native) {
+	Error.call(this,message);
+	this.message = message;
+	this.__previousException = previous;
+	this.__nativeException = native != null ? native : this;
+};
+$hxClasses["haxe.Exception"] = haxe_Exception;
+haxe_Exception.__name__ = "haxe.Exception";
+haxe_Exception.caught = function(value) {
+	if(((value) instanceof haxe_Exception)) {
+		return value;
+	} else if(((value) instanceof Error)) {
+		return new haxe_Exception(value.message,null,value);
+	} else {
+		return new haxe_ValueException(value,null,value);
+	}
+};
+haxe_Exception.thrown = function(value) {
+	if(((value) instanceof haxe_Exception)) {
+		return value.get_native();
+	} else if(((value) instanceof Error)) {
+		return value;
+	} else {
+		var e = new haxe_ValueException(value);
+		return e;
+	}
+};
+haxe_Exception.__super__ = Error;
+haxe_Exception.prototype = $extend(Error.prototype,{
+	__skipStack: null
+	,__nativeException: null
+	,__previousException: null
+	,unwrap: function() {
+		return this.__nativeException;
+	}
+	,get_native: function() {
+		return this.__nativeException;
+	}
+	,__class__: haxe_Exception
+	,__properties__: {get_native:"get_native"}
+});
+var haxe_Log = function() { };
+$hxClasses["haxe.Log"] = haxe_Log;
+haxe_Log.__name__ = "haxe.Log";
+haxe_Log.formatOutput = function(v,infos) {
+	var str = Std.string(v);
+	if(infos == null) {
+		return str;
+	}
+	var pstr = infos.fileName + ":" + infos.lineNumber;
+	if(infos.customParams != null) {
+		var _g = 0;
+		var _g1 = infos.customParams;
+		while(_g < _g1.length) {
+			var v = _g1[_g];
+			++_g;
+			str += ", " + Std.string(v);
+		}
+	}
+	return pstr + ": " + str;
+};
+haxe_Log.trace = function(v,infos) {
+	var str = haxe_Log.formatOutput(v,infos);
+	if(typeof(console) != "undefined" && console.log != null) {
+		console.log(str);
+	}
+};
+var haxe_Resource = function() { };
+$hxClasses["haxe.Resource"] = haxe_Resource;
+haxe_Resource.__name__ = "haxe.Resource";
+haxe_Resource.listNames = function() {
+	var _g = [];
+	var _g1 = 0;
+	var _g2 = haxe_Resource.content;
+	while(_g1 < _g2.length) {
+		var x = _g2[_g1];
+		++_g1;
+		_g.push(x.name);
+	}
+	return _g;
+};
+haxe_Resource.getString = function(name) {
+	var _g = 0;
+	var _g1 = haxe_Resource.content;
+	while(_g < _g1.length) {
+		var x = _g1[_g];
+		++_g;
+		if(x.name == name) {
+			if(x.str != null) {
+				return x.str;
+			}
+			var b = haxe_crypto_Base64.decode(x.data);
+			return b.toString();
+		}
+	}
+	return null;
+};
+haxe_Resource.getBytes = function(name) {
+	var _g = 0;
+	var _g1 = haxe_Resource.content;
+	while(_g < _g1.length) {
+		var x = _g1[_g];
+		++_g;
+		if(x.name == name) {
+			if(x.str != null) {
+				return haxe_io_Bytes.ofString(x.str);
+			}
+			return haxe_crypto_Base64.decode(x.data);
+		}
+	}
+	return null;
+};
+var haxe_Timer = function(time_ms) {
+	var me = this;
+	this.id = setInterval(function() {
+		me.run();
+	},time_ms);
+};
+$hxClasses["haxe.Timer"] = haxe_Timer;
+haxe_Timer.__name__ = "haxe.Timer";
+haxe_Timer.prototype = {
+	id: null
+	,stop: function() {
+		if(this.id == null) {
+			return;
+		}
+		clearInterval(this.id);
+		this.id = null;
+	}
+	,run: function() {
+	}
+	,__class__: haxe_Timer
+};
+var haxe_ValueException = function(value,previous,native) {
+	haxe_Exception.call(this,String(value),previous,native);
+	this.value = value;
+};
+$hxClasses["haxe.ValueException"] = haxe_ValueException;
+haxe_ValueException.__name__ = "haxe.ValueException";
+haxe_ValueException.__super__ = haxe_Exception;
+haxe_ValueException.prototype = $extend(haxe_Exception.prototype,{
+	value: null
+	,unwrap: function() {
+		return this.value;
+	}
+	,__class__: haxe_ValueException
+});
+var haxe_io_Bytes = function(data) {
+	this.length = data.byteLength;
+	this.b = new Uint8Array(data);
+	this.b.bufferValue = data;
+	data.hxBytes = this;
+	data.bytes = this.b;
+};
+$hxClasses["haxe.io.Bytes"] = haxe_io_Bytes;
+haxe_io_Bytes.__name__ = "haxe.io.Bytes";
+haxe_io_Bytes.ofString = function(s,encoding) {
+	if(encoding == haxe_io_Encoding.RawNative) {
+		var buf = new Uint8Array(s.length << 1);
+		var _g = 0;
+		var _g1 = s.length;
+		while(_g < _g1) {
+			var i = _g++;
+			var c = s.charCodeAt(i);
+			buf[i << 1] = c & 255;
+			buf[i << 1 | 1] = c >> 8;
+		}
+		return new haxe_io_Bytes(buf.buffer);
+	}
+	var a = [];
+	var i = 0;
+	while(i < s.length) {
+		var c = s.charCodeAt(i++);
+		if(55296 <= c && c <= 56319) {
+			c = c - 55232 << 10 | s.charCodeAt(i++) & 1023;
+		}
+		if(c <= 127) {
+			a.push(c);
+		} else if(c <= 2047) {
+			a.push(192 | c >> 6);
+			a.push(128 | c & 63);
+		} else if(c <= 65535) {
+			a.push(224 | c >> 12);
+			a.push(128 | c >> 6 & 63);
+			a.push(128 | c & 63);
+		} else {
+			a.push(240 | c >> 18);
+			a.push(128 | c >> 12 & 63);
+			a.push(128 | c >> 6 & 63);
+			a.push(128 | c & 63);
+		}
+	}
+	return new haxe_io_Bytes(new Uint8Array(a).buffer);
+};
+haxe_io_Bytes.ofData = function(b) {
+	var hb = b.hxBytes;
+	if(hb != null) {
+		return hb;
+	}
+	return new haxe_io_Bytes(b);
+};
+haxe_io_Bytes.prototype = {
+	length: null
+	,b: null
+	,getString: function(pos,len,encoding) {
+		if(pos < 0 || len < 0 || pos + len > this.length) {
+			throw haxe_Exception.thrown(haxe_io_Error.OutsideBounds);
+		}
+		if(encoding == null) {
+			encoding = haxe_io_Encoding.UTF8;
+		}
+		var s = "";
+		var b = this.b;
+		var i = pos;
+		var max = pos + len;
+		switch(encoding._hx_index) {
+		case 0:
+			var debug = pos > 0;
+			while(i < max) {
+				var c = b[i++];
+				if(c < 128) {
+					if(c == 0) {
+						break;
+					}
+					s += String.fromCodePoint(c);
+				} else if(c < 224) {
+					var code = (c & 63) << 6 | b[i++] & 127;
+					s += String.fromCodePoint(code);
+				} else if(c < 240) {
+					var c2 = b[i++];
+					var code1 = (c & 31) << 12 | (c2 & 127) << 6 | b[i++] & 127;
+					s += String.fromCodePoint(code1);
+				} else {
+					var c21 = b[i++];
+					var c3 = b[i++];
+					var u = (c & 15) << 18 | (c21 & 127) << 12 | (c3 & 127) << 6 | b[i++] & 127;
+					s += String.fromCodePoint(u);
+				}
+			}
+			break;
+		case 1:
+			while(i < max) {
+				var c = b[i++] | b[i++] << 8;
+				s += String.fromCodePoint(c);
+			}
+			break;
+		}
+		return s;
+	}
+	,toString: function() {
+		return this.getString(0,this.length);
+	}
+	,__class__: haxe_io_Bytes
+};
+var haxe_io_Encoding = $hxEnums["haxe.io.Encoding"] = { __ename__:true,__constructs__:null
+	,UTF8: {_hx_name:"UTF8",_hx_index:0,__enum__:"haxe.io.Encoding",toString:$estr}
+	,RawNative: {_hx_name:"RawNative",_hx_index:1,__enum__:"haxe.io.Encoding",toString:$estr}
+};
+haxe_io_Encoding.__constructs__ = [haxe_io_Encoding.UTF8,haxe_io_Encoding.RawNative];
+var haxe_crypto_Base64 = function() { };
+$hxClasses["haxe.crypto.Base64"] = haxe_crypto_Base64;
+haxe_crypto_Base64.__name__ = "haxe.crypto.Base64";
+haxe_crypto_Base64.decode = function(str,complement) {
+	if(complement == null) {
+		complement = true;
+	}
+	if(complement) {
+		while(HxOverrides.cca(str,str.length - 1) == 61) str = HxOverrides.substr(str,0,-1);
+	}
+	return new haxe_crypto_BaseCode(haxe_crypto_Base64.BYTES).decodeBytes(haxe_io_Bytes.ofString(str));
+};
+var haxe_crypto_BaseCode = function(base) {
+	var len = base.length;
+	var nbits = 1;
+	while(len > 1 << nbits) ++nbits;
+	if(nbits > 8 || len != 1 << nbits) {
+		throw haxe_Exception.thrown("BaseCode : base length must be a power of two.");
+	}
+	this.base = base;
+	this.nbits = nbits;
+};
+$hxClasses["haxe.crypto.BaseCode"] = haxe_crypto_BaseCode;
+haxe_crypto_BaseCode.__name__ = "haxe.crypto.BaseCode";
+haxe_crypto_BaseCode.prototype = {
+	base: null
+	,nbits: null
+	,tbl: null
+	,initTable: function() {
+		var tbl = [];
+		var _g = 0;
+		while(_g < 256) {
+			var i = _g++;
+			tbl[i] = -1;
+		}
+		var _g = 0;
+		var _g1 = this.base.length;
+		while(_g < _g1) {
+			var i = _g++;
+			tbl[this.base.b[i]] = i;
+		}
+		this.tbl = tbl;
+	}
+	,decodeBytes: function(b) {
+		var nbits = this.nbits;
+		var base = this.base;
+		if(this.tbl == null) {
+			this.initTable();
+		}
+		var tbl = this.tbl;
+		var size = b.length * nbits >> 3;
+		var out = new haxe_io_Bytes(new ArrayBuffer(size));
+		var buf = 0;
+		var curbits = 0;
+		var pin = 0;
+		var pout = 0;
+		while(pout < size) {
+			while(curbits < 8) {
+				curbits += nbits;
+				buf <<= nbits;
+				var i = tbl[b.b[pin++]];
+				if(i == -1) {
+					throw haxe_Exception.thrown("BaseCode : invalid encoded char");
+				}
+				buf |= i;
+			}
+			curbits -= 8;
+			out.b[pout++] = buf >> curbits & 255;
+		}
+		return out;
+	}
+	,__class__: haxe_crypto_BaseCode
+};
+var haxe_ds_ArraySort = function() { };
+$hxClasses["haxe.ds.ArraySort"] = haxe_ds_ArraySort;
+haxe_ds_ArraySort.__name__ = "haxe.ds.ArraySort";
+haxe_ds_ArraySort.sort = function(a,cmp) {
+	haxe_ds_ArraySort.rec(a,cmp,0,a.length);
+};
+haxe_ds_ArraySort.rec = function(a,cmp,from,to) {
+	var middle = from + to >> 1;
+	if(to - from < 12) {
+		if(to <= from) {
+			return;
+		}
+		var _g = from + 1;
+		var _g1 = to;
+		while(_g < _g1) {
+			var i = _g++;
+			var j = i;
+			while(j > from) {
+				if(cmp(a[j],a[j - 1]) < 0) {
+					haxe_ds_ArraySort.swap(a,j - 1,j);
+				} else {
+					break;
+				}
+				--j;
+			}
+		}
+		return;
+	}
+	haxe_ds_ArraySort.rec(a,cmp,from,middle);
+	haxe_ds_ArraySort.rec(a,cmp,middle,to);
+	haxe_ds_ArraySort.doMerge(a,cmp,from,middle,to,middle - from,to - middle);
+};
+haxe_ds_ArraySort.doMerge = function(a,cmp,from,pivot,to,len1,len2) {
+	var first_cut;
+	var second_cut;
+	var len11;
+	var len22;
+	if(len1 == 0 || len2 == 0) {
+		return;
+	}
+	if(len1 + len2 == 2) {
+		if(cmp(a[pivot],a[from]) < 0) {
+			haxe_ds_ArraySort.swap(a,pivot,from);
+		}
+		return;
+	}
+	if(len1 > len2) {
+		len11 = len1 >> 1;
+		first_cut = from + len11;
+		second_cut = haxe_ds_ArraySort.lower(a,cmp,pivot,to,first_cut);
+		len22 = second_cut - pivot;
+	} else {
+		len22 = len2 >> 1;
+		second_cut = pivot + len22;
+		first_cut = haxe_ds_ArraySort.upper(a,cmp,from,pivot,second_cut);
+		len11 = first_cut - from;
+	}
+	haxe_ds_ArraySort.rotate(a,cmp,first_cut,pivot,second_cut);
+	var new_mid = first_cut + len22;
+	haxe_ds_ArraySort.doMerge(a,cmp,from,first_cut,new_mid,len11,len22);
+	haxe_ds_ArraySort.doMerge(a,cmp,new_mid,second_cut,to,len1 - len11,len2 - len22);
+};
+haxe_ds_ArraySort.rotate = function(a,cmp,from,mid,to) {
+	if(from == mid || mid == to) {
+		return;
+	}
+	var n = haxe_ds_ArraySort.gcd(to - from,mid - from);
+	while(n-- != 0) {
+		var val = a[from + n];
+		var shift = mid - from;
+		var p1 = from + n;
+		var p2 = from + n + shift;
+		while(p2 != from + n) {
+			a[p1] = a[p2];
+			p1 = p2;
+			if(to - p2 > shift) {
+				p2 += shift;
+			} else {
+				p2 = from + (shift - (to - p2));
+			}
+		}
+		a[p1] = val;
+	}
+};
+haxe_ds_ArraySort.gcd = function(m,n) {
+	while(n != 0) {
+		var t = m % n;
+		m = n;
+		n = t;
+	}
+	return m;
+};
+haxe_ds_ArraySort.upper = function(a,cmp,from,to,val) {
+	var len = to - from;
+	var half;
+	var mid;
+	while(len > 0) {
+		half = len >> 1;
+		mid = from + half;
+		if(cmp(a[val],a[mid]) < 0) {
+			len = half;
+		} else {
+			from = mid + 1;
+			len = len - half - 1;
+		}
+	}
+	return from;
+};
+haxe_ds_ArraySort.lower = function(a,cmp,from,to,val) {
+	var len = to - from;
+	var half;
+	var mid;
+	while(len > 0) {
+		half = len >> 1;
+		mid = from + half;
+		if(cmp(a[mid],a[val]) < 0) {
+			from = mid + 1;
+			len = len - half - 1;
+		} else {
+			len = half;
+		}
+	}
+	return from;
+};
+haxe_ds_ArraySort.swap = function(a,i,j) {
+	var tmp = a[i];
+	a[i] = a[j];
+	a[j] = tmp;
+};
+var haxe_ds_BalancedTree = function() {
+};
+$hxClasses["haxe.ds.BalancedTree"] = haxe_ds_BalancedTree;
+haxe_ds_BalancedTree.__name__ = "haxe.ds.BalancedTree";
+haxe_ds_BalancedTree.__interfaces__ = [haxe_IMap];
+haxe_ds_BalancedTree.prototype = {
+	root: null
+	,set: function(key,value) {
+		this.root = this.setLoop(key,value,this.root);
+	}
+	,get: function(key) {
+		var node = this.root;
+		while(node != null) {
+			var c = this.compare(key,node.key);
+			if(c == 0) {
+				return node.value;
+			}
+			if(c < 0) {
+				node = node.left;
+			} else {
+				node = node.right;
+			}
+		}
+		return null;
+	}
+	,setLoop: function(k,v,node) {
+		if(node == null) {
+			return new haxe_ds_TreeNode(null,k,v,null);
+		}
+		var c = this.compare(k,node.key);
+		if(c == 0) {
+			return new haxe_ds_TreeNode(node.left,k,v,node.right,node == null ? 0 : node._height);
+		} else if(c < 0) {
+			var nl = this.setLoop(k,v,node.left);
+			return this.balance(nl,node.key,node.value,node.right);
+		} else {
+			var nr = this.setLoop(k,v,node.right);
+			return this.balance(node.left,node.key,node.value,nr);
+		}
+	}
+	,balance: function(l,k,v,r) {
+		var hl = l == null ? 0 : l._height;
+		var hr = r == null ? 0 : r._height;
+		if(hl > hr + 2) {
+			var _this = l.left;
+			var _this1 = l.right;
+			if((_this == null ? 0 : _this._height) >= (_this1 == null ? 0 : _this1._height)) {
+				return new haxe_ds_TreeNode(l.left,l.key,l.value,new haxe_ds_TreeNode(l.right,k,v,r));
+			} else {
+				return new haxe_ds_TreeNode(new haxe_ds_TreeNode(l.left,l.key,l.value,l.right.left),l.right.key,l.right.value,new haxe_ds_TreeNode(l.right.right,k,v,r));
+			}
+		} else if(hr > hl + 2) {
+			var _this = r.right;
+			var _this1 = r.left;
+			if((_this == null ? 0 : _this._height) > (_this1 == null ? 0 : _this1._height)) {
+				return new haxe_ds_TreeNode(new haxe_ds_TreeNode(l,k,v,r.left),r.key,r.value,r.right);
+			} else {
+				return new haxe_ds_TreeNode(new haxe_ds_TreeNode(l,k,v,r.left.left),r.left.key,r.left.value,new haxe_ds_TreeNode(r.left.right,r.key,r.value,r.right));
+			}
+		} else {
+			return new haxe_ds_TreeNode(l,k,v,r,(hl > hr ? hl : hr) + 1);
+		}
+	}
+	,compare: function(k1,k2) {
+		return Reflect.compare(k1,k2);
+	}
+	,__class__: haxe_ds_BalancedTree
+};
+var haxe_ds_TreeNode = function(l,k,v,r,h) {
+	if(h == null) {
+		h = -1;
+	}
+	this.left = l;
+	this.key = k;
+	this.value = v;
+	this.right = r;
+	if(h == -1) {
+		var tmp;
+		var _this = this.left;
+		var _this1 = this.right;
+		if((_this == null ? 0 : _this._height) > (_this1 == null ? 0 : _this1._height)) {
+			var _this = this.left;
+			tmp = _this == null ? 0 : _this._height;
+		} else {
+			var _this = this.right;
+			tmp = _this == null ? 0 : _this._height;
+		}
+		this._height = tmp + 1;
+	} else {
+		this._height = h;
+	}
+};
+$hxClasses["haxe.ds.TreeNode"] = haxe_ds_TreeNode;
+haxe_ds_TreeNode.__name__ = "haxe.ds.TreeNode";
+haxe_ds_TreeNode.prototype = {
+	left: null
+	,right: null
+	,key: null
+	,value: null
+	,_height: null
+	,__class__: haxe_ds_TreeNode
+};
+var haxe_ds_EnumValueMap = function() {
+	haxe_ds_BalancedTree.call(this);
+};
+$hxClasses["haxe.ds.EnumValueMap"] = haxe_ds_EnumValueMap;
+haxe_ds_EnumValueMap.__name__ = "haxe.ds.EnumValueMap";
+haxe_ds_EnumValueMap.__interfaces__ = [haxe_IMap];
+haxe_ds_EnumValueMap.__super__ = haxe_ds_BalancedTree;
+haxe_ds_EnumValueMap.prototype = $extend(haxe_ds_BalancedTree.prototype,{
+	compare: function(k1,k2) {
+		var d = k1._hx_index - k2._hx_index;
+		if(d != 0) {
+			return d;
+		}
+		var p1 = Type.enumParameters(k1);
+		var p2 = Type.enumParameters(k2);
+		if(p1.length == 0 && p2.length == 0) {
+			return 0;
+		}
+		return this.compareArgs(p1,p2);
+	}
+	,compareArgs: function(a1,a2) {
+		var ld = a1.length - a2.length;
+		if(ld != 0) {
+			return ld;
+		}
+		var _g = 0;
+		var _g1 = a1.length;
+		while(_g < _g1) {
+			var i = _g++;
+			var d = this.compareArg(a1[i],a2[i]);
+			if(d != 0) {
+				return d;
+			}
+		}
+		return 0;
+	}
+	,compareArg: function(v1,v2) {
+		if(Reflect.isEnumValue(v1) && Reflect.isEnumValue(v2)) {
+			return this.compare(v1,v2);
+		} else if(((v1) instanceof Array) && ((v2) instanceof Array)) {
+			return this.compareArgs(v1,v2);
+		} else {
+			return Reflect.compare(v1,v2);
+		}
+	}
+	,__class__: haxe_ds_EnumValueMap
+});
+var haxe_ds_GenericCell = function(elt,next) {
+	this.elt = elt;
+	this.next = next;
+};
+$hxClasses["haxe.ds.GenericCell"] = haxe_ds_GenericCell;
+haxe_ds_GenericCell.__name__ = "haxe.ds.GenericCell";
+haxe_ds_GenericCell.prototype = {
+	elt: null
+	,next: null
+	,__class__: haxe_ds_GenericCell
+};
+var haxe_ds_GenericStack = function() {
+};
+$hxClasses["haxe.ds.GenericStack"] = haxe_ds_GenericStack;
+haxe_ds_GenericStack.__name__ = "haxe.ds.GenericStack";
+haxe_ds_GenericStack.prototype = {
+	head: null
+	,__class__: haxe_ds_GenericStack
+};
+var haxe_ds_IntMap = function() {
+	this.h = { };
+};
+$hxClasses["haxe.ds.IntMap"] = haxe_ds_IntMap;
+haxe_ds_IntMap.__name__ = "haxe.ds.IntMap";
+haxe_ds_IntMap.__interfaces__ = [haxe_IMap];
+haxe_ds_IntMap.prototype = {
+	h: null
+	,set: function(key,value) {
+		this.h[key] = value;
+	}
+	,get: function(key) {
+		return this.h[key];
+	}
+	,__class__: haxe_ds_IntMap
+};
+var haxe_ds_ObjectMap = function() {
+	this.h = { __keys__ : { }};
+};
+$hxClasses["haxe.ds.ObjectMap"] = haxe_ds_ObjectMap;
+haxe_ds_ObjectMap.__name__ = "haxe.ds.ObjectMap";
+haxe_ds_ObjectMap.__interfaces__ = [haxe_IMap];
+haxe_ds_ObjectMap.prototype = {
+	h: null
+	,set: function(key,value) {
+		var id = key.__id__;
+		if(id == null) {
+			id = (key.__id__ = $global.$haxeUID++);
+		}
+		this.h[id] = value;
+		this.h.__keys__[id] = key;
+	}
+	,get: function(key) {
+		return this.h[key.__id__];
+	}
+	,remove: function(key) {
+		var id = key.__id__;
+		if(this.h.__keys__[id] == null) {
+			return false;
+		}
+		delete(this.h[id]);
+		delete(this.h.__keys__[id]);
+		return true;
+	}
+	,keys: function() {
+		var a = [];
+		for( var key in this.h.__keys__ ) {
+		if(this.h.hasOwnProperty(key)) {
+			a.push(this.h.__keys__[key]);
+		}
+		}
+		return new haxe_iterators_ArrayIterator(a);
+	}
+	,__class__: haxe_ds_ObjectMap
+};
+var haxe_ds_StringMap = function() {
+	this.h = Object.create(null);
+};
+$hxClasses["haxe.ds.StringMap"] = haxe_ds_StringMap;
+haxe_ds_StringMap.__name__ = "haxe.ds.StringMap";
+haxe_ds_StringMap.__interfaces__ = [haxe_IMap];
+haxe_ds_StringMap.prototype = {
+	h: null
+	,get: function(key) {
+		return this.h[key];
+	}
+	,set: function(key,value) {
+		this.h[key] = value;
+	}
+	,__class__: haxe_ds_StringMap
+};
+var haxe_ds__$StringMap_StringMapKeyIterator = function(h) {
+	this.h = h;
+	this.keys = Object.keys(h);
+	this.length = this.keys.length;
+	this.current = 0;
+};
+$hxClasses["haxe.ds._StringMap.StringMapKeyIterator"] = haxe_ds__$StringMap_StringMapKeyIterator;
+haxe_ds__$StringMap_StringMapKeyIterator.__name__ = "haxe.ds._StringMap.StringMapKeyIterator";
+haxe_ds__$StringMap_StringMapKeyIterator.prototype = {
+	h: null
+	,keys: null
+	,length: null
+	,current: null
+	,hasNext: function() {
+		return this.current < this.length;
+	}
+	,next: function() {
+		return this.keys[this.current++];
+	}
+	,__class__: haxe_ds__$StringMap_StringMapKeyIterator
+};
+var haxe_io_Error = $hxEnums["haxe.io.Error"] = { __ename__:true,__constructs__:null
+	,Blocked: {_hx_name:"Blocked",_hx_index:0,__enum__:"haxe.io.Error",toString:$estr}
+	,Overflow: {_hx_name:"Overflow",_hx_index:1,__enum__:"haxe.io.Error",toString:$estr}
+	,OutsideBounds: {_hx_name:"OutsideBounds",_hx_index:2,__enum__:"haxe.io.Error",toString:$estr}
+	,Custom: ($_=function(e) { return {_hx_index:3,e:e,__enum__:"haxe.io.Error",toString:$estr}; },$_._hx_name="Custom",$_.__params__ = ["e"],$_)
+};
+haxe_io_Error.__constructs__ = [haxe_io_Error.Blocked,haxe_io_Error.Overflow,haxe_io_Error.OutsideBounds,haxe_io_Error.Custom];
+var haxe_iterators_ArrayIterator = function(array) {
+	this.current = 0;
+	this.array = array;
+};
+$hxClasses["haxe.iterators.ArrayIterator"] = haxe_iterators_ArrayIterator;
+haxe_iterators_ArrayIterator.__name__ = "haxe.iterators.ArrayIterator";
+haxe_iterators_ArrayIterator.prototype = {
+	array: null
+	,current: null
+	,hasNext: function() {
+		return this.current < this.array.length;
+	}
+	,next: function() {
+		return this.array[this.current++];
+	}
+	,__class__: haxe_iterators_ArrayIterator
+};
+var haxe_ui_backend_BackendImpl = function() { };
+$hxClasses["haxe.ui.backend.BackendImpl"] = haxe_ui_backend_BackendImpl;
+haxe_ui_backend_BackendImpl.__name__ = "haxe.ui.backend.BackendImpl";
+var haxe_ui_Backend = function() { };
+$hxClasses["haxe.ui.Backend"] = haxe_ui_Backend;
+haxe_ui_Backend.__name__ = "haxe.ui.Backend";
+haxe_ui_Backend.__properties__ = {get_id:"get_id"};
+haxe_ui_Backend.get_id = function() {
+	return haxe_ui_backend_BackendImpl.id;
+};
+haxe_ui_Backend.__super__ = haxe_ui_backend_BackendImpl;
+haxe_ui_Backend.prototype = $extend(haxe_ui_backend_BackendImpl.prototype,{
+	__class__: haxe_ui_Backend
+});
+var haxe_ui_backend_CallLaterImpl = function(fn) {
+	window.requestAnimationFrame(function(timestamp) {
+		fn();
+	});
+};
+$hxClasses["haxe.ui.backend.CallLaterImpl"] = haxe_ui_backend_CallLaterImpl;
+haxe_ui_backend_CallLaterImpl.__name__ = "haxe.ui.backend.CallLaterImpl";
+haxe_ui_backend_CallLaterImpl.prototype = {
+	__class__: haxe_ui_backend_CallLaterImpl
+};
+var haxe_ui_CallLater = function(fn) {
+	haxe_ui_backend_CallLaterImpl.call(this,fn);
+};
+$hxClasses["haxe.ui.CallLater"] = haxe_ui_CallLater;
+haxe_ui_CallLater.__name__ = "haxe.ui.CallLater";
+haxe_ui_CallLater.__super__ = haxe_ui_backend_CallLaterImpl;
+haxe_ui_CallLater.prototype = $extend(haxe_ui_backend_CallLaterImpl.prototype,{
+	__class__: haxe_ui_CallLater
+});
+var haxe_ui_backend_AppBase = function() {
+	this.__events = null;
+};
+$hxClasses["haxe.ui.backend.AppBase"] = haxe_ui_backend_AppBase;
+haxe_ui_backend_AppBase.__name__ = "haxe.ui.backend.AppBase";
+haxe_ui_backend_AppBase.prototype = {
+	__events: null
+	,registerEvent: function(type,listener,priority) {
+		if(priority == null) {
+			priority = 0;
+		}
+		if(this.__events == null) {
+			this.__events = new haxe_ui_util_EventMap();
+		}
+		this.__events.add(type,listener,priority);
+	}
+	,hasEvent: function(type,listener) {
+		if(this.__events == null) {
+			return false;
+		}
+		return this.__events.contains(type,listener);
+	}
+	,unregisterEvent: function(type,listener) {
+		if(this.__events != null) {
+			this.__events.remove(type,listener);
+		}
+	}
+	,dispatch: function(event) {
+		if(this.__events != null) {
+			this.__events.invoke(event.type,event,null);
+		}
+	}
+	,build: function() {
+	}
+	,init: function(onReady,onEnd) {
+		onReady();
+	}
+	,getToolkitInit: function() {
+		return { };
+	}
+	,start: function() {
+	}
+	,exit: function() {
+	}
+	,buildPreloadList: function() {
+		return [];
+	}
+	,__class__: haxe_ui_backend_AppBase
+};
+var haxe_ui_backend_AppImpl = function() {
+	haxe_ui_backend_AppBase.call(this);
+};
+$hxClasses["haxe.ui.backend.AppImpl"] = haxe_ui_backend_AppImpl;
+haxe_ui_backend_AppImpl.__name__ = "haxe.ui.backend.AppImpl";
+haxe_ui_backend_AppImpl.__super__ = haxe_ui_backend_AppBase;
+haxe_ui_backend_AppImpl.prototype = $extend(haxe_ui_backend_AppBase.prototype,{
+	init: function(onReady,onEnd) {
+		var title = haxe_ui_Toolkit.get_backendProperties().getProp("haxe.ui.html5.title");
+		if(title != null) {
+			haxe_ui_core_Screen.get_instance().set_title(title);
+		}
+		if(window.document.readyState == "complete") {
+			onReady();
+		} else {
+			window.document.body.onload = function(e) {
+				onReady();
+			};
+		}
+	}
+	,getToolkitInit: function() {
+		return { container : this.findContainer(haxe_ui_Toolkit.get_backendProperties().getProp("haxe.ui.html5.container","body"))};
+	}
+	,findContainer: function(id) {
+		var el = null;
+		if(id == "body") {
+			el = window.document.body;
+		} else if(id != null) {
+			el = window.document.getElementById(id);
+		}
+		if(el == null) {
+			el = window.document.body;
+		}
+		el.style.overflow = "hidden";
+		return el;
+	}
+	,__class__: haxe_ui_backend_AppImpl
+});
+var haxe_ui_HaxeUIApp = function(options) {
+	haxe_ui_backend_AppImpl.call(this);
+	haxe_ui_HaxeUIApp.instance = this;
+	this._options = options;
+	haxe_ui_Toolkit.build();
+	this.build();
+};
+$hxClasses["haxe.ui.HaxeUIApp"] = haxe_ui_HaxeUIApp;
+haxe_ui_HaxeUIApp.__name__ = "haxe.ui.HaxeUIApp";
+haxe_ui_HaxeUIApp.__super__ = haxe_ui_backend_AppImpl;
+haxe_ui_HaxeUIApp.prototype = $extend(haxe_ui_backend_AppImpl.prototype,{
+	_options: null
+	,ready: function(onReady,onEnd) {
+		this.init(onReady,onEnd);
+	}
+	,init: function(onReady,onEnd) {
+		if(haxe_ui_Toolkit.get_backendProperties().getProp("haxe.ui.theme") != null && haxe_ui_Toolkit.get_theme() == "default") {
+			haxe_ui_Toolkit.set_theme(haxe_ui_Toolkit.get_backendProperties().getProp("haxe.ui.theme"));
+		}
+		if(this._options == null) {
+			haxe_ui_Toolkit.init(this.getToolkitInit());
+		} else {
+			haxe_ui_Toolkit.init(this._options);
+		}
+		var preloadList = null;
+		var preloader = null;
+		preloadList = this.buildPreloadList();
+		if(preloadList != null && preloadList.length > 0) {
+			preloader = new haxe_ui_Preloader();
+			preloader.progress(0,preloadList.length);
+			this.addComponent(preloader);
+			preloader.validateComponent();
+		}
+		this.handlePreload(preloadList,onReady,onEnd,preloader);
+	}
+	,handlePreload: function(list,onReady,onEnd,preloader) {
+		var _gthis = this;
+		if(list == null || list.length == 0) {
+			if(preloader != null) {
+				preloader.complete();
+			}
+			haxe_ui_backend_AppImpl.prototype.init.call(this,onReady,onEnd);
+			return;
+		}
+		var item = list.shift();
+		switch(item.type) {
+		case "font":
+			haxe_ui_ToolkitAssets.get_instance().getFont(item.resourceId,function(f) {
+				if(preloader != null) {
+					preloader.increment();
+				}
+				_gthis.handlePreload(list,onReady,onEnd,preloader);
+			});
+			break;
+		case "image":
+			haxe_ui_ToolkitAssets.get_instance().getImage(item.resourceId,function(i) {
+				if(preloader != null) {
+					preloader.increment();
+				}
+				_gthis.handlePreload(list,onReady,onEnd,preloader);
+			});
+			break;
+		default:
+			haxe_Log.trace("WARNING: unknown type to preload \"" + item.type + "\", continuing",{ fileName : "haxe/ui/HaxeUIApp.hx", lineNumber : 81, className : "haxe.ui.HaxeUIApp", methodName : "handlePreload"});
+			if(preloader != null) {
+				preloader.increment();
+			}
+			this.handlePreload(list,onReady,onEnd,preloader);
+		}
+	}
+	,addComponent: function(component) {
+		return haxe_ui_core_Screen.get_instance().addComponent(component);
+	}
+	,removeComponent: function(component,dispose) {
+		if(dispose == null) {
+			dispose = true;
+		}
+		return haxe_ui_core_Screen.get_instance().removeComponent(component,dispose);
+	}
+	,setComponentIndex: function(child,index) {
+		return haxe_ui_core_Screen.get_instance().setComponentIndex(child,index);
+	}
+	,buildPreloadList: function() {
+		var list = haxe_ui_backend_AppImpl.prototype.buildPreloadList.call(this);
+		if(list == null) {
+			list = [];
+		}
+		list = list.concat(haxe_ui_ToolkitAssets.get_instance().preloadList);
+		return list;
+	}
+	,__class__: haxe_ui_HaxeUIApp
 });
 var haxe_ui_Preloader = function() {
 	haxe_ui_core_Component.call(this);
@@ -15050,90 +15361,6 @@ haxe_ui_components__$VerticalScroll_VerticalScrollLayout.prototype = $extend(hax
 		return ucy;
 	}
 	,__class__: haxe_ui_components__$VerticalScroll_VerticalScrollLayout
-});
-var haxe_ui_containers_Box = function() {
-	this._direction = null;
-	haxe_ui_core_Component.call(this);
-};
-$hxClasses["haxe.ui.containers.Box"] = haxe_ui_containers_Box;
-haxe_ui_containers_Box.__name__ = "haxe.ui.containers.Box";
-haxe_ui_containers_Box.__super__ = haxe_ui_core_Component;
-haxe_ui_containers_Box.prototype = $extend(haxe_ui_core_Component.prototype,{
-	_layoutName: null
-	,get_layoutName: function() {
-		return this._layoutName;
-	}
-	,set_layoutName: function(value) {
-		if(this._layoutName == value) {
-			return value;
-		}
-		this._layoutName = value;
-		this.set_layout(haxe_ui_layouts_LayoutFactory.createFromName(this.get_layoutName()));
-		return value;
-	}
-	,createDefaults: function() {
-		haxe_ui_core_Component.prototype.createDefaults.call(this);
-		if(this._defaultLayoutClass == null) {
-			this._defaultLayoutClass = haxe_ui_layouts_DefaultLayout;
-		}
-	}
-	,_direction: null
-	,applyStyle: function(style) {
-		haxe_ui_core_Component.prototype.applyStyle.call(this,style);
-		if(style.direction != null && style.direction != this._direction) {
-			this._direction = style.direction;
-			this.set_layout(haxe_ui_layouts_LayoutFactory.createFromName(this._direction));
-		}
-	}
-	,registerComposite: function() {
-		haxe_ui_core_Component.prototype.registerComposite.call(this);
-		this._defaultLayoutClass = haxe_ui_layouts_DefaultLayout;
-	}
-	,registerBehaviours: function() {
-		haxe_ui_core_Component.prototype.registerBehaviours.call(this);
-		this.behaviours.register("icon",haxe_ui_behaviours_DefaultBehaviour);
-	}
-	,get_icon: function() {
-		return haxe_ui_util_Variant.toString(this.behaviours.get("icon"));
-	}
-	,set_icon: function(value) {
-		var _g = Type.typeof(value);
-		if(_g._hx_index == 6) {
-			if(_g.c == String) {
-				if(value != null && value.indexOf("{{") != -1 && value.indexOf("}}") != -1) {
-					haxe_ui_locale_LocaleManager.get_instance().registerComponent(this,"icon",null,value);
-					return value;
-				}
-			}
-		}
-		this.behaviours.set("icon",haxe_ui_util_Variant.fromString(value));
-		this.dispatch(new haxe_ui_events_UIEvent("propertyChange",null,"icon"));
-		return value;
-	}
-	,cloneComponent: function() {
-		var c = haxe_ui_core_Component.prototype.cloneComponent.call(this);
-		if(this.get_layoutName() != null) {
-			c.set_layoutName(this.get_layoutName());
-		}
-		if(this.get_icon() != null) {
-			c.set_icon(this.get_icon());
-		}
-		if((this._children == null ? [] : this._children).length != (c._children == null ? [] : c._children).length) {
-			var _g = 0;
-			var _g1 = this._children == null ? [] : this._children;
-			while(_g < _g1.length) {
-				var child = _g1[_g];
-				++_g;
-				c.addComponent(child.cloneComponent());
-			}
-		}
-		return c;
-	}
-	,self: function() {
-		return new haxe_ui_containers_Box();
-	}
-	,__class__: haxe_ui_containers_Box
-	,__properties__: $extend(haxe_ui_core_Component.prototype.__properties__,{set_icon:"set_icon",get_icon:"get_icon",set_layoutName:"set_layoutName",get_layoutName:"get_layoutName"})
 });
 var haxe_ui_containers_VBox = function() {
 	haxe_ui_containers_Box.call(this);
@@ -30887,14 +31114,14 @@ haxe_Resource.content = [{ name : "haxeui-core/styles/dark/dropdowns.css", data 
 haxe_ds_ObjectMap.count = 0;
 haxe_ui_validation_ValidationManager.get_instance().registerEvent("ValidationStop",haxe_ui_backend_html5_HtmlUtils.onValidationStop);
 js_Boot.__toStr = ({ }).toString;
-haxe_crypto_Base64.CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-haxe_crypto_Base64.BYTES = haxe_io_Bytes.ofString(haxe_crypto_Base64.CHARS);
-haxe_ui_backend_BackendImpl.id = "html5";
 haxe_ui_core_ComponentEvents.INTERACTIVE_EVENTS = ["mousemove","mouseover","mouseout","mousedown","mouseup","mousewheel","click","doubleclick","keydown","keyup"];
 haxe_ui_core_ComponentBounds.__meta__ = { fields : { percentWidth : { clonable : null, bindable : null}, percentHeight : { clonable : null, bindable : null}, width : { bindable : null}, height : { bindable : null}}};
 haxe_ui_backend_ComponentImpl.elementToComponent = new haxe_ds_ObjectMap();
 haxe_ui_backend_ComponentImpl._stylesAdded = false;
 haxe_ui_core_Component.__meta__ = { fields : { styleNames : { clonable : null}, styleString : { clonable : null}}};
+haxe_crypto_Base64.CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+haxe_crypto_Base64.BYTES = haxe_io_Bytes.ofString(haxe_crypto_Base64.CHARS);
+haxe_ui_backend_BackendImpl.id = "html5";
 haxe_ui_util_GenericConfig.cache = new haxe_ds_StringMap();
 haxe_ui_Toolkit.styleSheet = new haxe_ui_styles_CompositeStyleSheet();
 haxe_ui_Toolkit.properties = new haxe_ds_StringMap();

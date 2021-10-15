@@ -7,9 +7,6 @@ import js.html.SourceElement;
 import js.html.VideoElement;
 
 
-@:build(haxe.ui.macros.ComponentMacros.build("assets/video.xml", {
-  startValue: 50
-}))
 class Video extends Box {
     private var _video:VideoElement = null;
     private var _source:SourceElement = null;

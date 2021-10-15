@@ -368,11 +368,11 @@
         
         <frame id="theFrame0" text="Test Video" width="300" height="200">
             <vbox width="100%" height="100%">
-<!--                <video id="theVideo" width="100%" height="100%" file="https://www.w3schools.com/html/mov_bbb.mp4" />
--->                <hbox width="100%">
-<!--                    <button width="100%" text="Play" onclick="theVideo.play();" />
+                <video id="theVideo" width="100%" height="100%" file="https://www.w3schools.com/html/mov_bbb.mp4" />
+                <hbox width="100%">
+                    <button width="100%" text="Play" onclick="theVideo.play();" />
                     <button width="100%" text="Pause" onclick="theVideo.pause();" />
--->                </hbox>
+                </hbox>
             </vbox>    
         </frame>
     </grid>
@@ -685,6 +685,12 @@ Vibration
             </vbox>   
 
         </accordion>
+
+		</hbox>
+
+        <hbox text="Social" width="100%" continuous="true">
+
+
 
 		</hbox>
 
