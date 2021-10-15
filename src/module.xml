@@ -4,5 +4,6 @@
         <!-- alternative method for entire package (without aliases)
         <component package="custom" />
         -->
+		<component class="custom.Audio" alias="audio" />
     </components>
 </module>

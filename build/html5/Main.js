@@ -6,2086 +6,6 @@ function $extend(from, fields) {
 	if( fields.toString !== Object.prototype.toString ) proto.toString = fields.toString;
 	return proto;
 }
-var EReg = function(r,opt) {
-	this.r = new RegExp(r,opt.split("u").join(""));
-};
-$hxClasses["EReg"] = EReg;
-EReg.__name__ = "EReg";
-EReg.prototype = {
-	r: null
-	,match: function(s) {
-		if(this.r.global) {
-			this.r.lastIndex = 0;
-		}
-		this.r.m = this.r.exec(s);
-		this.r.s = s;
-		return this.r.m != null;
-	}
-	,matched: function(n) {
-		if(this.r.m != null && n >= 0 && n < this.r.m.length) {
-			return this.r.m[n];
-		} else {
-			throw haxe_Exception.thrown("EReg::matched");
-		}
-	}
-	,matchedPos: function() {
-		if(this.r.m == null) {
-			throw haxe_Exception.thrown("No string matched");
-		}
-		return { pos : this.r.m.index, len : this.r.m[0].length};
-	}
-	,matchSub: function(s,pos,len) {
-		if(len == null) {
-			len = -1;
-		}
-		if(this.r.global) {
-			this.r.lastIndex = pos;
-			this.r.m = this.r.exec(len < 0 ? s : HxOverrides.substr(s,0,pos + len));
-			var b = this.r.m != null;
-			if(b) {
-				this.r.s = s;
-			}
-			return b;
-		} else {
-			var b = this.match(len < 0 ? HxOverrides.substr(s,pos,null) : HxOverrides.substr(s,pos,len));
-			if(b) {
-				this.r.s = s;
-				this.r.m.index += pos;
-			}
-			return b;
-		}
-	}
-	,split: function(s) {
-		var d = "#__delim__#";
-		return s.replace(this.r,d).split(d);
-	}
-	,map: function(s,f) {
-		var offset = 0;
-		var buf_b = "";
-		while(true) {
-			if(offset >= s.length) {
-				break;
-			} else if(!this.matchSub(s,offset)) {
-				buf_b += Std.string(HxOverrides.substr(s,offset,null));
-				break;
-			}
-			var p = this.matchedPos();
-			buf_b += Std.string(HxOverrides.substr(s,offset,p.pos - offset));
-			buf_b += Std.string(f(this));
-			if(p.len == 0) {
-				buf_b += Std.string(HxOverrides.substr(s,p.pos,1));
-				offset = p.pos + 1;
-			} else {
-				offset = p.pos + p.len;
-			}
-			if(!this.r.global) {
-				break;
-			}
-		}
-		if(!this.r.global && offset > 0 && offset < s.length) {
-			buf_b += Std.string(HxOverrides.substr(s,offset,null));
-		}
-		return buf_b;
-	}
-	,__class__: EReg
-};
-var HxOverrides = function() { };
-$hxClasses["HxOverrides"] = HxOverrides;
-HxOverrides.__name__ = "HxOverrides";
-HxOverrides.cca = function(s,index) {
-	var x = s.charCodeAt(index);
-	if(x != x) {
-		return undefined;
-	}
-	return x;
-};
-HxOverrides.substr = function(s,pos,len) {
-	if(len == null) {
-		len = s.length;
-	} else if(len < 0) {
-		if(pos == 0) {
-			len = s.length + len;
-		} else {
-			return "";
-		}
-	}
-	return s.substr(pos,len);
-};
-HxOverrides.remove = function(a,obj) {
-	var i = a.indexOf(obj);
-	if(i == -1) {
-		return false;
-	}
-	a.splice(i,1);
-	return true;
-};
-HxOverrides.now = function() {
-	return Date.now();
-};
-var IntIterator = function(min,max) {
-	this.min = min;
-	this.max = max;
-};
-$hxClasses["IntIterator"] = IntIterator;
-IntIterator.__name__ = "IntIterator";
-IntIterator.prototype = {
-	min: null
-	,max: null
-	,hasNext: function() {
-		return this.min < this.max;
-	}
-	,next: function() {
-		return this.min++;
-	}
-	,__class__: IntIterator
-};
-var Main = function() { };
-$hxClasses["Main"] = Main;
-Main.__name__ = "Main";
-Main.main = function() {
-	var app = new haxe_ui_HaxeUIApp();
-	app.ready(function() {
-		var video = new Video();
-		haxe_ui_Toolkit.styleSheet.parse("\n.header {\r\n    background-color:#AAAACC;\r\n    padding: 5px;\r\n    filter: drop-shadow(1, 45, #000000, 0.5, 2, 2, 1, 3, false);\r\n}\r\n\r\n.footer {\r\n    background-color:#CCAACC;\r\n    padding: 5px;\r\n    filter: drop-shadow(1, 45, #000000, 0.5, 2, 2, 1, 3, false);\r\n}\r\n\r\n.header label {\r\n    font-size: 32px;\r\n    color: white;\r\n}\r\n\r\n.footer label {\r\n    font-size: 18px;\r\n    color: white;\r\n}\r\n\r\n.menu {\r\n    width: 100%;\r\n}\r\n\r\n.menu box {\r\n    width:100%;\r\n    background-color:#AACCCC;\r\n    padding: 5px;\r\n    filter: drop-shadow(1, 45, #000000, 0.5, 2, 2, 1, 3, false);\r\n}\r\n\r\n.menu label {\r\n    width:100%;\r\n    color: white;\r\n}\r\n\r\n.sidebar {\r\n    width: 100%;\r\n}\r\n\r\n.sidebar box {\r\n    width:100%;\r\n    background-color:#CCCCAA;\r\n    padding: 5px;\r\n    filter: drop-shadow(1, 45, #000000, 0.5, 2, 2, 1, 3, false);\r\n}\r\n\r\n.sidebar label {\r\n    width:100%;\r\n    color: white;\r\n}\r\n\r\n.content {\r\n    width:100%;\r\n    padding: 5px;\r\n}\r\n\r\n#logo {\r\n    resource: \"haxeui-core/styles/default/haxeui_tiny.png\";\r\n}\r\n\r\n#small {\r\n    hidden: false;\r\n}\r\n\r\n#medium {\r\n    hidden: true;\r\n}\r\n\r\n#large {\r\n    hidden: true;\r\n}\r\n\r\n#html5, #hxwidgets {\r\n    hidden: true;\r\n}\r\n\r\n@media (min-width: 500px) {\r\n    .menu {\r\n        width: 25%;\r\n    }\r\n\r\n    .content {\r\n        width: 75%;\r\n    }    \r\n    \r\n    #logo {\r\n        resource: \"haxeui-core/styles/default/haxeui_small.png\";\r\n    }\r\n    \r\n    #small {\r\n        hidden: true;\r\n    }\r\n\r\n    #medium {\r\n        hidden: false;\r\n    }\r\n\r\n    #large {\r\n        hidden: true;\r\n    }\r\n}\r\n\r\n@media (min-width: 800px) {\r\n    .menu {\r\n        width: 25%;\r\n    }\r\n\r\n    .sidebar {\r\n        width: 25%;\r\n    }\r\n\r\n    .content {\r\n        width: 50%;\r\n    }    \r\n    \r\n    #small {\r\n        hidden: true;\r\n    }\r\n\r\n    #medium {\r\n        hidden: true;\r\n    }\r\n\r\n    #large {\r\n        hidden: false;\r\n    }\r\n}\r\n\r\n@media (backend: html5) {\r\n    #html5 {\r\n        hidden: false;\r\n    }\r\n    \r\n    #hxwidgets {\r\n        hidden: true;\r\n    }\r\n}\r\n\r\n@media (backend: hxwidgets) {\r\n    #html5 {\r\n        hidden: true;\r\n    }\r\n    \r\n    #hxwidgets {\r\n        hidden: false;\r\n    }\r\n}\r\n","user");
-		var c0 = new haxe_ui_containers_ScrollView();
-		c0.set_styleSheet(new haxe_ui_styles_StyleSheet());
-		c0.set_percentWidth(100.);
-		c0.set_percentHeight(100.);
-		c0.set_percentContentWidth(100.);
-		c0.set_styleString("border-size:0;background-color: white;");
-		var rootComponent = c0;
-		var c0 = new haxe_ui_containers_VBox();
-		c0.set_id("main");
-		c0.set_percentWidth(100.);
-		c0.set_styleString("padding: 5px;");
-		var c1 = new haxe_ui_containers_Box();
-		c1.set_percentWidth(100.);
-		c1.set_styleNames("header");
-		var c2 = new haxe_ui_components_Image();
-		c2.set_id("logo");
-		c2.set_verticalAlign("center");
-		c2.set_horizontalAlign("left");
-		c1.addComponent(c2);
-		var c3 = new haxe_ui_components_Label();
-		c3.set_id("headerLabel");
-		c3.set_text("The Perspective Corner");
-		c3.set_verticalAlign("center");
-		c3.set_horizontalAlign("center");
-		c1.addComponent(c3);
-		var c4 = new haxe_ui_components_Image();
-		c4.set_id("logo");
-		c4.set_verticalAlign("center");
-		c4.set_horizontalAlign("right");
-		c1.addComponent(c4);
-		c0.addComponent(c1);
-		var c5 = new haxe_ui_containers_TabView();
-		c5.set_height(800.);
-		c5.set_percentWidth(100.);
-		var c6 = new haxe_ui_containers_HBox();
-		c6.set_percentWidth(100.);
-		c6.set_text("Home");
-		c6.set_continuous(true);
-		var c7 = new haxe_ui_containers_VBox();
-		c7.set_styleNames("image");
-		c7.set_verticalAlign("center");
-		c7.set_horizontalAlign("center");
-		var c8 = new haxe_ui_components_Image();
-		c8.set_width(200.);
-		c8.set_height(400.);
-		c8.set_styleString("border:1px solid #ababab");
-		c8.set_scaleMode("fitwidth");
-		c8.set_resource(haxe_ui_util_Variant.fromString("haxeui-core/styles/default/haxeui.png"));
-		c7.addComponent(c8);
-		c6.addComponent(c7);
-		var c9 = new haxe_ui_containers_VBox();
-		c9.set_percentWidth(100.);
-		c9.set_styleNames("content");
-		var c10 = new haxe_ui_components_Label();
-		c10.set_id("lorem1");
-		c10.set_percentWidth(100.);
-		c10.set_text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam lacinia, ipsum id egestas pulvinar, ex metus ultricies lacus, vitae blandit urna sapien id ex. Curabitur finibus tempor ex, et pulvinar nunc interdum egestas. Proin dapibus tincidunt massa eget efficitur. Mauris sagittis non ante non rutrum. Sed gravida nunc vel blandit tempor. Curabitur consequat cursus metus malesuada varius. Suspendisse blandit tempor mattis. Duis sed diam sollicitudin ipsum interdum pellentesque.");
-		c9.addComponent(c10);
-		var c11 = new haxe_ui_components_Label();
-		c11.set_id("lorem2");
-		c11.set_percentWidth(100.);
-		c11.set_text("Proin vitae pharetra sem. Nunc sit amet urna eget sapien molestie rhoncus. Phasellus nec facilisis nibh. Aenean congue, orci ut luctus aliquam, augue ipsum ullamcorper leo, at blandit urna justo id odio. Etiam aliquam, neque pretium euismod pharetra, tortor orci efficitur justo, nec auctor metus orci at lectus. Nam quis fermentum tellus, at tempor eros. Integer faucibus elementum cursus. Aliquam eu lobortis purus. Nullam et elit vitae arcu tempor tristique ut eget metus. Nam sagittis mi eu enim tempus dignissim. Suspendisse id massa sit amet urna sollicitudin cursus. Ut fringilla tortor et elementum ultricies. Donec euismod tortor sit amet porttitor consectetur. Ut non nibh quis ipsum eleifend vulputate. Nunc interdum non enim in efficitur.");
-		c9.addComponent(c11);
-		c6.addComponent(c9);
-		c5.addComponent(c6);
-		var c12 = new haxe_ui_containers_HBox();
-		c12.set_percentWidth(100.);
-		c12.set_text("Apps");
-		c12.set_continuous(true);
-		var c13 = new haxe_ui_components_Image();
-		c13.set_width(200.);
-		c13.set_height(200.);
-		c13.set_styleString("border:1px solid #ababab");
-		c13.set_resource(haxe_ui_util_Variant.fromString("haxeui-core/styles/default/haxeui.png"));
-		c12.addComponent(c13);
-		var c14 = new haxe_ui_components_Image();
-		c14.set_width(100.);
-		c14.set_height(200.);
-		c14.set_styleString("border:1px solid #ababab");
-		c14.set_resource(haxe_ui_util_Variant.fromString("haxeui-core/styles/default/haxeui.png"));
-		c12.addComponent(c14);
-		var c15 = new haxe_ui_components_Image();
-		c15.set_width(100.);
-		c15.set_height(200.);
-		c15.set_styleString("border:1px solid #ababab");
-		c15.set_scaleMode("fitwidth");
-		c15.set_resource(haxe_ui_util_Variant.fromString("haxeui-core/styles/default/haxeui.png"));
-		c12.addComponent(c15);
-		c5.addComponent(c12);
-		var c16 = new haxe_ui_containers_HBox();
-		c16.set_percentWidth(100.);
-		c16.set_text("Crypto");
-		c16.set_continuous(true);
-		c5.addComponent(c16);
-		var c17 = new haxe_ui_containers_HBox();
-		c17.set_percentWidth(100.);
-		c17.set_text("Audio");
-		c17.set_continuous(true);
-		var c18 = new haxe_ui_containers_Accordion();
-		c18.set_width(200.);
-		c18.set_height(400.);
-		var c19 = new haxe_ui_containers_VBox();
-		c19.set_percentWidth(100.);
-		c19.set_text("Animals");
-		c18.addComponent(c19);
-		var c20 = new haxe_ui_containers_VBox();
-		c20.set_id("page2");
-		c20.set_percentWidth(100.);
-		c20.set_text("Page 2");
-		c20.set_styleString("padding: 0px;");
-		var c21 = new haxe_ui_containers_ScrollView();
-		c21.set_percentWidth(100.);
-		c21.set_percentHeight(100.);
-		c21.set_percentContentWidth(100.);
-		var c22 = new haxe_ui_components_Button();
-		c22.set_percentWidth(100.);
-		c22.set_text("Button 1");
-		c21.addComponent(c22);
-		var c23 = new haxe_ui_components_Button();
-		c23.set_percentWidth(100.);
-		c23.set_text("Button 2");
-		c21.addComponent(c23);
-		var c24 = new haxe_ui_components_Button();
-		c24.set_percentWidth(100.);
-		c24.set_text("Button 3");
-		c21.addComponent(c24);
-		var c25 = new haxe_ui_components_Button();
-		c25.set_percentWidth(100.);
-		c25.set_text("Button 4");
-		c21.addComponent(c25);
-		var c26 = new haxe_ui_components_Button();
-		c26.set_percentWidth(100.);
-		c26.set_text("Button 5");
-		c21.addComponent(c26);
-		var c27 = new haxe_ui_components_Button();
-		c27.set_percentWidth(100.);
-		c27.set_text("Button 6");
-		c21.addComponent(c27);
-		var c28 = new haxe_ui_components_Button();
-		c28.set_percentWidth(100.);
-		c28.set_text("Button 7");
-		c21.addComponent(c28);
-		var c29 = new haxe_ui_components_Button();
-		c29.set_percentWidth(100.);
-		c29.set_text("Button 8");
-		c21.addComponent(c29);
-		var c30 = new haxe_ui_components_Button();
-		c30.set_percentWidth(100.);
-		c30.set_text("Button 9");
-		c21.addComponent(c30);
-		var c31 = new haxe_ui_components_Button();
-		c31.set_percentWidth(100.);
-		c31.set_text("Button 10");
-		c21.addComponent(c31);
-		var c32 = new haxe_ui_components_Button();
-		c32.set_percentWidth(100.);
-		c32.set_text("Button 11");
-		c21.addComponent(c32);
-		var c33 = new haxe_ui_components_Button();
-		c33.set_percentWidth(100.);
-		c33.set_text("Button 12");
-		c21.addComponent(c33);
-		var c34 = new haxe_ui_components_Button();
-		c34.set_percentWidth(100.);
-		c34.set_text("Button 13");
-		c21.addComponent(c34);
-		var c35 = new haxe_ui_components_Button();
-		c35.set_percentWidth(100.);
-		c35.set_text("Button 14");
-		c21.addComponent(c35);
-		var c36 = new haxe_ui_components_Button();
-		c36.set_percentWidth(100.);
-		c36.set_text("Button 15");
-		c21.addComponent(c36);
-		var c37 = new haxe_ui_components_Button();
-		c37.set_percentWidth(100.);
-		c37.set_text("Button 16");
-		c21.addComponent(c37);
-		var c38 = new haxe_ui_components_Button();
-		c38.set_percentWidth(100.);
-		c38.set_text("Button 18");
-		c21.addComponent(c38);
-		var c39 = new haxe_ui_components_Button();
-		c39.set_percentWidth(100.);
-		c39.set_text("Button 19");
-		c21.addComponent(c39);
-		var c40 = new haxe_ui_components_Button();
-		c40.set_percentWidth(100.);
-		c40.set_text("Button 20");
-		c21.addComponent(c40);
-		c20.addComponent(c21);
-		c18.addComponent(c20);
-		var c41 = new haxe_ui_containers_VBox();
-		c41.set_percentWidth(100.);
-		c41.set_text("Page 3");
-		c18.addComponent(c41);
-		var c42 = new haxe_ui_containers_VBox();
-		c42.set_percentWidth(100.);
-		c42.set_text("Page 4");
-		c42.set_styleString("padding: 0;padding-bottom: 1px;");
-		c18.addComponent(c42);
-		var c43 = new haxe_ui_containers_VBox();
-		c43.set_percentWidth(100.);
-		c43.set_text("Page 5");
-		c43.set_styleString("padding: 0;padding-bottom: 1px;");
-		c18.addComponent(c43);
-		c17.addComponent(c18);
-		var c44 = new haxe_ui_containers_Accordion();
-		c44.set_width(200.);
-		c44.set_height(400.);
-		var c45 = new haxe_ui_containers_VBox();
-		c45.set_percentWidth(100.);
-		c45.set_text("Alarms");
-		c44.addComponent(c45);
-		var c46 = new haxe_ui_containers_VBox();
-		c46.set_id("page2");
-		c46.set_percentWidth(100.);
-		c46.set_text("Page 2");
-		c46.set_styleString("padding: 0px;");
-		var c47 = new haxe_ui_containers_ScrollView();
-		c47.set_percentWidth(100.);
-		c47.set_percentHeight(100.);
-		c47.set_percentContentWidth(100.);
-		var c48 = new haxe_ui_components_Button();
-		c48.set_percentWidth(100.);
-		c48.set_text("Button 1");
-		c47.addComponent(c48);
-		var c49 = new haxe_ui_components_Button();
-		c49.set_percentWidth(100.);
-		c49.set_text("Button 2");
-		c47.addComponent(c49);
-		var c50 = new haxe_ui_components_Button();
-		c50.set_percentWidth(100.);
-		c50.set_text("Button 3");
-		c47.addComponent(c50);
-		var c51 = new haxe_ui_components_Button();
-		c51.set_percentWidth(100.);
-		c51.set_text("Button 4");
-		c47.addComponent(c51);
-		var c52 = new haxe_ui_components_Button();
-		c52.set_percentWidth(100.);
-		c52.set_text("Button 5");
-		c47.addComponent(c52);
-		var c53 = new haxe_ui_components_Button();
-		c53.set_percentWidth(100.);
-		c53.set_text("Button 6");
-		c47.addComponent(c53);
-		var c54 = new haxe_ui_components_Button();
-		c54.set_percentWidth(100.);
-		c54.set_text("Button 7");
-		c47.addComponent(c54);
-		var c55 = new haxe_ui_components_Button();
-		c55.set_percentWidth(100.);
-		c55.set_text("Button 8");
-		c47.addComponent(c55);
-		var c56 = new haxe_ui_components_Button();
-		c56.set_percentWidth(100.);
-		c56.set_text("Button 9");
-		c47.addComponent(c56);
-		var c57 = new haxe_ui_components_Button();
-		c57.set_percentWidth(100.);
-		c57.set_text("Button 10");
-		c47.addComponent(c57);
-		var c58 = new haxe_ui_components_Button();
-		c58.set_percentWidth(100.);
-		c58.set_text("Button 11");
-		c47.addComponent(c58);
-		var c59 = new haxe_ui_components_Button();
-		c59.set_percentWidth(100.);
-		c59.set_text("Button 12");
-		c47.addComponent(c59);
-		var c60 = new haxe_ui_components_Button();
-		c60.set_percentWidth(100.);
-		c60.set_text("Button 13");
-		c47.addComponent(c60);
-		var c61 = new haxe_ui_components_Button();
-		c61.set_percentWidth(100.);
-		c61.set_text("Button 14");
-		c47.addComponent(c61);
-		var c62 = new haxe_ui_components_Button();
-		c62.set_percentWidth(100.);
-		c62.set_text("Button 15");
-		c47.addComponent(c62);
-		var c63 = new haxe_ui_components_Button();
-		c63.set_percentWidth(100.);
-		c63.set_text("Button 16");
-		c47.addComponent(c63);
-		var c64 = new haxe_ui_components_Button();
-		c64.set_percentWidth(100.);
-		c64.set_text("Button 18");
-		c47.addComponent(c64);
-		var c65 = new haxe_ui_components_Button();
-		c65.set_percentWidth(100.);
-		c65.set_text("Button 19");
-		c47.addComponent(c65);
-		var c66 = new haxe_ui_components_Button();
-		c66.set_percentWidth(100.);
-		c66.set_text("Button 20");
-		c47.addComponent(c66);
-		c46.addComponent(c47);
-		c44.addComponent(c46);
-		var c67 = new haxe_ui_containers_VBox();
-		c67.set_percentWidth(100.);
-		c67.set_text("Page 3");
-		c44.addComponent(c67);
-		var c68 = new haxe_ui_containers_VBox();
-		c68.set_percentWidth(100.);
-		c68.set_text("Page 4");
-		c68.set_styleString("padding: 0;padding-bottom: 1px;");
-		c44.addComponent(c68);
-		var c69 = new haxe_ui_containers_VBox();
-		c69.set_percentWidth(100.);
-		c69.set_text("Page 5");
-		c69.set_styleString("padding: 0;padding-bottom: 1px;");
-		c44.addComponent(c69);
-		c17.addComponent(c44);
-		var c70 = new haxe_ui_containers_Accordion();
-		c70.set_width(200.);
-		c70.set_height(400.);
-		var c71 = new haxe_ui_containers_VBox();
-		c71.set_percentWidth(100.);
-		c71.set_text("Music");
-		c70.addComponent(c71);
-		var c72 = new haxe_ui_containers_VBox();
-		c72.set_id("page2");
-		c72.set_percentWidth(100.);
-		c72.set_text("Page 2");
-		c72.set_styleString("padding: 0px;");
-		var c73 = new haxe_ui_containers_ScrollView();
-		c73.set_percentWidth(100.);
-		c73.set_percentHeight(100.);
-		c73.set_percentContentWidth(100.);
-		var c74 = new haxe_ui_components_Button();
-		c74.set_percentWidth(100.);
-		c74.set_text("Button 1");
-		c73.addComponent(c74);
-		var c75 = new haxe_ui_components_Button();
-		c75.set_percentWidth(100.);
-		c75.set_text("Button 2");
-		c73.addComponent(c75);
-		var c76 = new haxe_ui_components_Button();
-		c76.set_percentWidth(100.);
-		c76.set_text("Button 3");
-		c73.addComponent(c76);
-		var c77 = new haxe_ui_components_Button();
-		c77.set_percentWidth(100.);
-		c77.set_text("Button 4");
-		c73.addComponent(c77);
-		var c78 = new haxe_ui_components_Button();
-		c78.set_percentWidth(100.);
-		c78.set_text("Button 5");
-		c73.addComponent(c78);
-		var c79 = new haxe_ui_components_Button();
-		c79.set_percentWidth(100.);
-		c79.set_text("Button 6");
-		c73.addComponent(c79);
-		var c80 = new haxe_ui_components_Button();
-		c80.set_percentWidth(100.);
-		c80.set_text("Button 7");
-		c73.addComponent(c80);
-		var c81 = new haxe_ui_components_Button();
-		c81.set_percentWidth(100.);
-		c81.set_text("Button 8");
-		c73.addComponent(c81);
-		var c82 = new haxe_ui_components_Button();
-		c82.set_percentWidth(100.);
-		c82.set_text("Button 9");
-		c73.addComponent(c82);
-		var c83 = new haxe_ui_components_Button();
-		c83.set_percentWidth(100.);
-		c83.set_text("Button 10");
-		c73.addComponent(c83);
-		var c84 = new haxe_ui_components_Button();
-		c84.set_percentWidth(100.);
-		c84.set_text("Button 11");
-		c73.addComponent(c84);
-		var c85 = new haxe_ui_components_Button();
-		c85.set_percentWidth(100.);
-		c85.set_text("Button 12");
-		c73.addComponent(c85);
-		var c86 = new haxe_ui_components_Button();
-		c86.set_percentWidth(100.);
-		c86.set_text("Button 13");
-		c73.addComponent(c86);
-		var c87 = new haxe_ui_components_Button();
-		c87.set_percentWidth(100.);
-		c87.set_text("Button 14");
-		c73.addComponent(c87);
-		var c88 = new haxe_ui_components_Button();
-		c88.set_percentWidth(100.);
-		c88.set_text("Button 15");
-		c73.addComponent(c88);
-		var c89 = new haxe_ui_components_Button();
-		c89.set_percentWidth(100.);
-		c89.set_text("Button 16");
-		c73.addComponent(c89);
-		var c90 = new haxe_ui_components_Button();
-		c90.set_percentWidth(100.);
-		c90.set_text("Button 18");
-		c73.addComponent(c90);
-		var c91 = new haxe_ui_components_Button();
-		c91.set_percentWidth(100.);
-		c91.set_text("Button 19");
-		c73.addComponent(c91);
-		var c92 = new haxe_ui_components_Button();
-		c92.set_percentWidth(100.);
-		c92.set_text("Button 20");
-		c73.addComponent(c92);
-		c72.addComponent(c73);
-		c70.addComponent(c72);
-		var c93 = new haxe_ui_containers_VBox();
-		c93.set_percentWidth(100.);
-		c93.set_text("Page 3");
-		c70.addComponent(c93);
-		var c94 = new haxe_ui_containers_VBox();
-		c94.set_percentWidth(100.);
-		c94.set_text("Page 4");
-		c94.set_styleString("padding: 0;padding-bottom: 1px;");
-		c70.addComponent(c94);
-		var c95 = new haxe_ui_containers_VBox();
-		c95.set_percentWidth(100.);
-		c95.set_text("Page 5");
-		c95.set_styleString("padding: 0;padding-bottom: 1px;");
-		c70.addComponent(c95);
-		c17.addComponent(c70);
-		var c96 = new haxe_ui_containers_Accordion();
-		c96.set_width(200.);
-		c96.set_height(400.);
-		var c97 = new haxe_ui_containers_VBox();
-		c97.set_percentWidth(100.);
-		c97.set_text("Page 1");
-		c96.addComponent(c97);
-		var c98 = new haxe_ui_containers_VBox();
-		c98.set_id("page2");
-		c98.set_percentWidth(100.);
-		c98.set_text("Page 2");
-		c98.set_styleString("padding: 0px;");
-		var c99 = new haxe_ui_containers_ScrollView();
-		c99.set_percentWidth(100.);
-		c99.set_percentHeight(100.);
-		c99.set_percentContentWidth(100.);
-		var c100 = new haxe_ui_components_Button();
-		c100.set_percentWidth(100.);
-		c100.set_text("Button 1");
-		c99.addComponent(c100);
-		var c101 = new haxe_ui_components_Button();
-		c101.set_percentWidth(100.);
-		c101.set_text("Button 2");
-		c99.addComponent(c101);
-		var c102 = new haxe_ui_components_Button();
-		c102.set_percentWidth(100.);
-		c102.set_text("Button 3");
-		c99.addComponent(c102);
-		var c103 = new haxe_ui_components_Button();
-		c103.set_percentWidth(100.);
-		c103.set_text("Button 4");
-		c99.addComponent(c103);
-		var c104 = new haxe_ui_components_Button();
-		c104.set_percentWidth(100.);
-		c104.set_text("Button 5");
-		c99.addComponent(c104);
-		var c105 = new haxe_ui_components_Button();
-		c105.set_percentWidth(100.);
-		c105.set_text("Button 6");
-		c99.addComponent(c105);
-		var c106 = new haxe_ui_components_Button();
-		c106.set_percentWidth(100.);
-		c106.set_text("Button 7");
-		c99.addComponent(c106);
-		var c107 = new haxe_ui_components_Button();
-		c107.set_percentWidth(100.);
-		c107.set_text("Button 8");
-		c99.addComponent(c107);
-		var c108 = new haxe_ui_components_Button();
-		c108.set_percentWidth(100.);
-		c108.set_text("Button 9");
-		c99.addComponent(c108);
-		var c109 = new haxe_ui_components_Button();
-		c109.set_percentWidth(100.);
-		c109.set_text("Button 10");
-		c99.addComponent(c109);
-		var c110 = new haxe_ui_components_Button();
-		c110.set_percentWidth(100.);
-		c110.set_text("Button 11");
-		c99.addComponent(c110);
-		var c111 = new haxe_ui_components_Button();
-		c111.set_percentWidth(100.);
-		c111.set_text("Button 12");
-		c99.addComponent(c111);
-		var c112 = new haxe_ui_components_Button();
-		c112.set_percentWidth(100.);
-		c112.set_text("Button 13");
-		c99.addComponent(c112);
-		var c113 = new haxe_ui_components_Button();
-		c113.set_percentWidth(100.);
-		c113.set_text("Button 14");
-		c99.addComponent(c113);
-		var c114 = new haxe_ui_components_Button();
-		c114.set_percentWidth(100.);
-		c114.set_text("Button 15");
-		c99.addComponent(c114);
-		var c115 = new haxe_ui_components_Button();
-		c115.set_percentWidth(100.);
-		c115.set_text("Button 16");
-		c99.addComponent(c115);
-		var c116 = new haxe_ui_components_Button();
-		c116.set_percentWidth(100.);
-		c116.set_text("Button 18");
-		c99.addComponent(c116);
-		var c117 = new haxe_ui_components_Button();
-		c117.set_percentWidth(100.);
-		c117.set_text("Button 19");
-		c99.addComponent(c117);
-		var c118 = new haxe_ui_components_Button();
-		c118.set_percentWidth(100.);
-		c118.set_text("Button 20");
-		c99.addComponent(c118);
-		c98.addComponent(c99);
-		c96.addComponent(c98);
-		var c119 = new haxe_ui_containers_VBox();
-		c119.set_percentWidth(100.);
-		c119.set_text("Page 3");
-		c96.addComponent(c119);
-		var c120 = new haxe_ui_containers_VBox();
-		c120.set_percentWidth(100.);
-		c120.set_text("Page 4");
-		c120.set_styleString("padding: 0;padding-bottom: 1px;");
-		c96.addComponent(c120);
-		var c121 = new haxe_ui_containers_VBox();
-		c121.set_percentWidth(100.);
-		c121.set_text("Page 5");
-		c121.set_styleString("padding: 0;padding-bottom: 1px;");
-		c96.addComponent(c121);
-		c17.addComponent(c96);
-		var c122 = new haxe_ui_containers_Accordion();
-		c122.set_width(200.);
-		c122.set_height(400.);
-		var c123 = new haxe_ui_containers_VBox();
-		c123.set_percentWidth(100.);
-		c123.set_text("Page 1");
-		c122.addComponent(c123);
-		var c124 = new haxe_ui_containers_VBox();
-		c124.set_id("page2");
-		c124.set_percentWidth(100.);
-		c124.set_text("Page 2");
-		c124.set_styleString("padding: 0px;");
-		var c125 = new haxe_ui_containers_ScrollView();
-		c125.set_percentWidth(100.);
-		c125.set_percentHeight(100.);
-		c125.set_percentContentWidth(100.);
-		var c126 = new haxe_ui_components_Button();
-		c126.set_percentWidth(100.);
-		c126.set_text("Button 1");
-		c125.addComponent(c126);
-		var c127 = new haxe_ui_components_Button();
-		c127.set_percentWidth(100.);
-		c127.set_text("Button 2");
-		c125.addComponent(c127);
-		var c128 = new haxe_ui_components_Button();
-		c128.set_percentWidth(100.);
-		c128.set_text("Button 3");
-		c125.addComponent(c128);
-		var c129 = new haxe_ui_components_Button();
-		c129.set_percentWidth(100.);
-		c129.set_text("Button 4");
-		c125.addComponent(c129);
-		var c130 = new haxe_ui_components_Button();
-		c130.set_percentWidth(100.);
-		c130.set_text("Button 5");
-		c125.addComponent(c130);
-		var c131 = new haxe_ui_components_Button();
-		c131.set_percentWidth(100.);
-		c131.set_text("Button 6");
-		c125.addComponent(c131);
-		var c132 = new haxe_ui_components_Button();
-		c132.set_percentWidth(100.);
-		c132.set_text("Button 7");
-		c125.addComponent(c132);
-		var c133 = new haxe_ui_components_Button();
-		c133.set_percentWidth(100.);
-		c133.set_text("Button 8");
-		c125.addComponent(c133);
-		var c134 = new haxe_ui_components_Button();
-		c134.set_percentWidth(100.);
-		c134.set_text("Button 9");
-		c125.addComponent(c134);
-		var c135 = new haxe_ui_components_Button();
-		c135.set_percentWidth(100.);
-		c135.set_text("Button 10");
-		c125.addComponent(c135);
-		var c136 = new haxe_ui_components_Button();
-		c136.set_percentWidth(100.);
-		c136.set_text("Button 11");
-		c125.addComponent(c136);
-		var c137 = new haxe_ui_components_Button();
-		c137.set_percentWidth(100.);
-		c137.set_text("Button 12");
-		c125.addComponent(c137);
-		var c138 = new haxe_ui_components_Button();
-		c138.set_percentWidth(100.);
-		c138.set_text("Button 13");
-		c125.addComponent(c138);
-		var c139 = new haxe_ui_components_Button();
-		c139.set_percentWidth(100.);
-		c139.set_text("Button 14");
-		c125.addComponent(c139);
-		var c140 = new haxe_ui_components_Button();
-		c140.set_percentWidth(100.);
-		c140.set_text("Button 15");
-		c125.addComponent(c140);
-		var c141 = new haxe_ui_components_Button();
-		c141.set_percentWidth(100.);
-		c141.set_text("Button 16");
-		c125.addComponent(c141);
-		var c142 = new haxe_ui_components_Button();
-		c142.set_percentWidth(100.);
-		c142.set_text("Button 18");
-		c125.addComponent(c142);
-		var c143 = new haxe_ui_components_Button();
-		c143.set_percentWidth(100.);
-		c143.set_text("Button 19");
-		c125.addComponent(c143);
-		var c144 = new haxe_ui_components_Button();
-		c144.set_percentWidth(100.);
-		c144.set_text("Button 20");
-		c125.addComponent(c144);
-		c124.addComponent(c125);
-		c122.addComponent(c124);
-		var c145 = new haxe_ui_containers_VBox();
-		c145.set_percentWidth(100.);
-		c145.set_text("Page 3");
-		c122.addComponent(c145);
-		var c146 = new haxe_ui_containers_VBox();
-		c146.set_percentWidth(100.);
-		c146.set_text("Page 4");
-		c146.set_styleString("padding: 0;padding-bottom: 1px;");
-		c122.addComponent(c146);
-		var c147 = new haxe_ui_containers_VBox();
-		c147.set_percentWidth(100.);
-		c147.set_text("Page 5");
-		c147.set_styleString("padding: 0;padding-bottom: 1px;");
-		c122.addComponent(c147);
-		c17.addComponent(c122);
-		var c148 = new haxe_ui_containers_Accordion();
-		c148.set_width(200.);
-		c148.set_height(400.);
-		var c149 = new haxe_ui_containers_VBox();
-		c149.set_percentWidth(100.);
-		c149.set_text("Page 1");
-		c148.addComponent(c149);
-		var c150 = new haxe_ui_containers_VBox();
-		c150.set_id("page2");
-		c150.set_percentWidth(100.);
-		c150.set_text("Page 2");
-		c150.set_styleString("padding: 0px;");
-		var c151 = new haxe_ui_containers_ScrollView();
-		c151.set_percentWidth(100.);
-		c151.set_percentHeight(100.);
-		c151.set_percentContentWidth(100.);
-		var c152 = new haxe_ui_components_Button();
-		c152.set_percentWidth(100.);
-		c152.set_text("Button 1");
-		c151.addComponent(c152);
-		var c153 = new haxe_ui_components_Button();
-		c153.set_percentWidth(100.);
-		c153.set_text("Button 2");
-		c151.addComponent(c153);
-		var c154 = new haxe_ui_components_Button();
-		c154.set_percentWidth(100.);
-		c154.set_text("Button 3");
-		c151.addComponent(c154);
-		var c155 = new haxe_ui_components_Button();
-		c155.set_percentWidth(100.);
-		c155.set_text("Button 4");
-		c151.addComponent(c155);
-		var c156 = new haxe_ui_components_Button();
-		c156.set_percentWidth(100.);
-		c156.set_text("Button 5");
-		c151.addComponent(c156);
-		var c157 = new haxe_ui_components_Button();
-		c157.set_percentWidth(100.);
-		c157.set_text("Button 6");
-		c151.addComponent(c157);
-		var c158 = new haxe_ui_components_Button();
-		c158.set_percentWidth(100.);
-		c158.set_text("Button 7");
-		c151.addComponent(c158);
-		var c159 = new haxe_ui_components_Button();
-		c159.set_percentWidth(100.);
-		c159.set_text("Button 8");
-		c151.addComponent(c159);
-		var c160 = new haxe_ui_components_Button();
-		c160.set_percentWidth(100.);
-		c160.set_text("Button 9");
-		c151.addComponent(c160);
-		var c161 = new haxe_ui_components_Button();
-		c161.set_percentWidth(100.);
-		c161.set_text("Button 10");
-		c151.addComponent(c161);
-		var c162 = new haxe_ui_components_Button();
-		c162.set_percentWidth(100.);
-		c162.set_text("Button 11");
-		c151.addComponent(c162);
-		var c163 = new haxe_ui_components_Button();
-		c163.set_percentWidth(100.);
-		c163.set_text("Button 12");
-		c151.addComponent(c163);
-		var c164 = new haxe_ui_components_Button();
-		c164.set_percentWidth(100.);
-		c164.set_text("Button 13");
-		c151.addComponent(c164);
-		var c165 = new haxe_ui_components_Button();
-		c165.set_percentWidth(100.);
-		c165.set_text("Button 14");
-		c151.addComponent(c165);
-		var c166 = new haxe_ui_components_Button();
-		c166.set_percentWidth(100.);
-		c166.set_text("Button 15");
-		c151.addComponent(c166);
-		var c167 = new haxe_ui_components_Button();
-		c167.set_percentWidth(100.);
-		c167.set_text("Button 16");
-		c151.addComponent(c167);
-		var c168 = new haxe_ui_components_Button();
-		c168.set_percentWidth(100.);
-		c168.set_text("Button 18");
-		c151.addComponent(c168);
-		var c169 = new haxe_ui_components_Button();
-		c169.set_percentWidth(100.);
-		c169.set_text("Button 19");
-		c151.addComponent(c169);
-		var c170 = new haxe_ui_components_Button();
-		c170.set_percentWidth(100.);
-		c170.set_text("Button 20");
-		c151.addComponent(c170);
-		c150.addComponent(c151);
-		c148.addComponent(c150);
-		var c171 = new haxe_ui_containers_VBox();
-		c171.set_percentWidth(100.);
-		c171.set_text("Page 3");
-		c148.addComponent(c171);
-		var c172 = new haxe_ui_containers_VBox();
-		c172.set_percentWidth(100.);
-		c172.set_text("Page 4");
-		c172.set_styleString("padding: 0;padding-bottom: 1px;");
-		c148.addComponent(c172);
-		var c173 = new haxe_ui_containers_VBox();
-		c173.set_percentWidth(100.);
-		c173.set_text("Page 5");
-		c173.set_styleString("padding: 0;padding-bottom: 1px;");
-		c148.addComponent(c173);
-		c17.addComponent(c148);
-		var c174 = new haxe_ui_containers_Accordion();
-		c174.set_width(200.);
-		c174.set_height(400.);
-		var c175 = new haxe_ui_containers_VBox();
-		c175.set_percentWidth(100.);
-		c175.set_text("Page 1");
-		c174.addComponent(c175);
-		var c176 = new haxe_ui_containers_VBox();
-		c176.set_id("page2");
-		c176.set_percentWidth(100.);
-		c176.set_text("Page 2");
-		c176.set_styleString("padding: 0px;");
-		var c177 = new haxe_ui_containers_ScrollView();
-		c177.set_percentWidth(100.);
-		c177.set_percentHeight(100.);
-		c177.set_percentContentWidth(100.);
-		var c178 = new haxe_ui_components_Button();
-		c178.set_percentWidth(100.);
-		c178.set_text("Button 1");
-		c177.addComponent(c178);
-		var c179 = new haxe_ui_components_Button();
-		c179.set_percentWidth(100.);
-		c179.set_text("Button 2");
-		c177.addComponent(c179);
-		var c180 = new haxe_ui_components_Button();
-		c180.set_percentWidth(100.);
-		c180.set_text("Button 3");
-		c177.addComponent(c180);
-		var c181 = new haxe_ui_components_Button();
-		c181.set_percentWidth(100.);
-		c181.set_text("Button 4");
-		c177.addComponent(c181);
-		var c182 = new haxe_ui_components_Button();
-		c182.set_percentWidth(100.);
-		c182.set_text("Button 5");
-		c177.addComponent(c182);
-		var c183 = new haxe_ui_components_Button();
-		c183.set_percentWidth(100.);
-		c183.set_text("Button 6");
-		c177.addComponent(c183);
-		var c184 = new haxe_ui_components_Button();
-		c184.set_percentWidth(100.);
-		c184.set_text("Button 7");
-		c177.addComponent(c184);
-		var c185 = new haxe_ui_components_Button();
-		c185.set_percentWidth(100.);
-		c185.set_text("Button 8");
-		c177.addComponent(c185);
-		var c186 = new haxe_ui_components_Button();
-		c186.set_percentWidth(100.);
-		c186.set_text("Button 9");
-		c177.addComponent(c186);
-		var c187 = new haxe_ui_components_Button();
-		c187.set_percentWidth(100.);
-		c187.set_text("Button 10");
-		c177.addComponent(c187);
-		var c188 = new haxe_ui_components_Button();
-		c188.set_percentWidth(100.);
-		c188.set_text("Button 11");
-		c177.addComponent(c188);
-		var c189 = new haxe_ui_components_Button();
-		c189.set_percentWidth(100.);
-		c189.set_text("Button 12");
-		c177.addComponent(c189);
-		var c190 = new haxe_ui_components_Button();
-		c190.set_percentWidth(100.);
-		c190.set_text("Button 13");
-		c177.addComponent(c190);
-		var c191 = new haxe_ui_components_Button();
-		c191.set_percentWidth(100.);
-		c191.set_text("Button 14");
-		c177.addComponent(c191);
-		var c192 = new haxe_ui_components_Button();
-		c192.set_percentWidth(100.);
-		c192.set_text("Button 15");
-		c177.addComponent(c192);
-		var c193 = new haxe_ui_components_Button();
-		c193.set_percentWidth(100.);
-		c193.set_text("Button 16");
-		c177.addComponent(c193);
-		var c194 = new haxe_ui_components_Button();
-		c194.set_percentWidth(100.);
-		c194.set_text("Button 18");
-		c177.addComponent(c194);
-		var c195 = new haxe_ui_components_Button();
-		c195.set_percentWidth(100.);
-		c195.set_text("Button 19");
-		c177.addComponent(c195);
-		var c196 = new haxe_ui_components_Button();
-		c196.set_percentWidth(100.);
-		c196.set_text("Button 20");
-		c177.addComponent(c196);
-		c176.addComponent(c177);
-		c174.addComponent(c176);
-		var c197 = new haxe_ui_containers_VBox();
-		c197.set_percentWidth(100.);
-		c197.set_text("Page 3");
-		c174.addComponent(c197);
-		var c198 = new haxe_ui_containers_VBox();
-		c198.set_percentWidth(100.);
-		c198.set_text("Page 4");
-		c198.set_styleString("padding: 0;padding-bottom: 1px;");
-		c174.addComponent(c198);
-		var c199 = new haxe_ui_containers_VBox();
-		c199.set_percentWidth(100.);
-		c199.set_text("Page 5");
-		c199.set_styleString("padding: 0;padding-bottom: 1px;");
-		c174.addComponent(c199);
-		c17.addComponent(c174);
-		c5.addComponent(c17);
-		var c200 = new haxe_ui_containers_HBox();
-		c200.set_percentWidth(100.);
-		c200.set_text("Video");
-		c200.set_continuous(true);
-		var c201 = new haxe_ui_containers_VBox();
-		c201.set_styleString("padding: 15px;");
-		var c202 = new haxe_ui_containers_HBox();
-		var c203 = new haxe_ui_components_Label();
-		c203.set_text("Frame Size:");
-		c202.addComponent(c203);
-		var c204 = new haxe_ui_components_HorizontalSlider();
-		c204.set_pos(500);
-		c204.set_min(200);
-		c204.set_max(500);
-		c202.addComponent(c204);
-		var c205 = new haxe_ui_components_HorizontalSlider();
-		c205.set_pos(400);
-		c205.set_min(200);
-		c205.set_max(500);
-		c202.addComponent(c205);
-		c201.addComponent(c202);
-		var c206 = new haxe_ui_containers_Grid();
-		c206.set_columns(3);
-		var c207 = new haxe_ui_containers_Frame();
-		c207.set_id("theFrame0");
-		c207.set_width(300.);
-		c207.set_height(200.);
-		c207.set_text("Test Video");
-		var c208 = new haxe_ui_containers_VBox();
-		c208.set_percentWidth(100.);
-		c208.set_percentHeight(100.);
-		var c209 = new custom_Video();
-		c209.set_id("theVideo");
-		c209.set_percentWidth(100.);
-		c209.set_percentHeight(100.);
-		c209.set_file("https://www.w3schools.com/html/mov_bbb.mp4");
-		c208.addComponent(c209);
-		var c210 = new haxe_ui_containers_HBox();
-		c210.set_percentWidth(100.);
-		var c211 = new haxe_ui_components_Button();
-		c211.set_percentWidth(100.);
-		c211.set_text("Play");
-		c210.addComponent(c211);
-		var c212 = new haxe_ui_components_Button();
-		c212.set_percentWidth(100.);
-		c212.set_text("Pause");
-		c210.addComponent(c212);
-		c208.addComponent(c210);
-		c207.addComponent(c208);
-		c206.addComponent(c207);
-		c201.addComponent(c206);
-		c200.addComponent(c201);
-		c5.addComponent(c200);
-		var c213 = new haxe_ui_containers_HBox();
-		c213.set_percentWidth(100.);
-		c213.set_text("Sensors");
-		c213.set_continuous(true);
-		var c214 = new haxe_ui_containers_VBox();
-		var c215 = new haxe_ui_containers_Grid();
-		var c216 = new haxe_ui_components_Label();
-		c216.set_text("Width:");
-		c216.set_verticalAlign("center");
-		c215.addComponent(c216);
-		var c217 = new haxe_ui_components_HorizontalSlider();
-		c217.set_pos(800);
-		c217.set_min(170);
-		c217.set_max(800);
-		c215.addComponent(c217);
-		var c218 = new haxe_ui_components_Label();
-		c218.set_text("Height:");
-		c218.set_verticalAlign("center");
-		c215.addComponent(c218);
-		var c219 = new haxe_ui_components_HorizontalSlider();
-		c219.set_pos(500);
-		c219.set_min(170);
-		c219.set_max(800);
-		c215.addComponent(c219);
-		c214.addComponent(c215);
-		var c220 = new haxe_ui_containers_Grid();
-		c220.set_id("grid1");
-		c220.set_styleString("border: 1px solid #ababab;padding: 5px;");
-		c220.set_columns(5);
-		var c221 = new haxe_ui_containers_Box();
-		c221.set_percentWidth(100.);
-		c221.set_percentHeight(100.);
-		c221.set_styleString("background-color: red;border:1px solid red;background-opacity: .5");
-		c220.addComponent(c221);
-		var c222 = new haxe_ui_containers_Box();
-		c222.set_percentWidth(100.);
-		c222.set_percentHeight(100.);
-		c222.set_styleString("background-color: red;border:1px solid red;background-opacity: .5");
-		c220.addComponent(c222);
-		var c223 = new haxe_ui_containers_Box();
-		c223.set_percentWidth(100.);
-		c223.set_percentHeight(100.);
-		c223.set_styleString("background-color: red;border:1px solid red;background-opacity: .5");
-		c220.addComponent(c223);
-		var c224 = new haxe_ui_containers_Box();
-		c224.set_percentWidth(100.);
-		c224.set_percentHeight(100.);
-		c224.set_styleString("background-color: red;border:1px solid red;background-opacity: .5");
-		c220.addComponent(c224);
-		var c225 = new haxe_ui_containers_Box();
-		c225.set_percentWidth(100.);
-		c225.set_percentHeight(100.);
-		c225.set_styleString("background-color: red;border:1px solid red;background-opacity: .5");
-		c220.addComponent(c225);
-		var c226 = new haxe_ui_containers_Box();
-		c226.set_percentWidth(100.);
-		c226.set_percentHeight(100.);
-		c226.set_styleString("background-color: green;border:1px solid green;background-opacity: .5");
-		c220.addComponent(c226);
-		var c227 = new haxe_ui_containers_Box();
-		c227.set_percentWidth(100.);
-		c227.set_percentHeight(100.);
-		c227.set_styleString("background-color: green;border:1px solid green;background-opacity: .5");
-		c220.addComponent(c227);
-		var c228 = new haxe_ui_containers_Box();
-		c228.set_percentWidth(100.);
-		c228.set_percentHeight(100.);
-		c228.set_styleString("background-color: green;border:1px solid green;background-opacity: .5");
-		c220.addComponent(c228);
-		var c229 = new haxe_ui_containers_Box();
-		c229.set_percentWidth(100.);
-		c229.set_percentHeight(100.);
-		c229.set_styleString("background-color: green;border:1px solid green;background-opacity: .5");
-		c220.addComponent(c229);
-		var c230 = new haxe_ui_containers_Box();
-		c230.set_percentWidth(100.);
-		c230.set_percentHeight(100.);
-		c230.set_styleString("background-color: green;border:1px solid green;background-opacity: .5");
-		c220.addComponent(c230);
-		var c231 = new haxe_ui_containers_Box();
-		c231.set_percentWidth(100.);
-		c231.set_percentHeight(100.);
-		c231.set_styleString("background-color: blue;border:1px solid blue;background-opacity: .5");
-		c220.addComponent(c231);
-		var c232 = new haxe_ui_containers_Box();
-		c232.set_percentWidth(100.);
-		c232.set_percentHeight(100.);
-		c232.set_styleString("background-color: blue;border:1px solid blue;background-opacity: .5");
-		c220.addComponent(c232);
-		var c233 = new haxe_ui_containers_Box();
-		c233.set_percentWidth(100.);
-		c233.set_percentHeight(100.);
-		c233.set_styleString("background-color: blue;border:1px solid blue;background-opacity: .5");
-		c220.addComponent(c233);
-		var c234 = new haxe_ui_containers_Box();
-		c234.set_percentWidth(100.);
-		c234.set_percentHeight(100.);
-		c234.set_styleString("background-color: blue;border:1px solid blue;background-opacity: .5");
-		c220.addComponent(c234);
-		var c235 = new haxe_ui_containers_Box();
-		c235.set_percentWidth(100.);
-		c235.set_percentHeight(100.);
-		c235.set_styleString("background-color: blue;border:1px solid blue;background-opacity: .5");
-		c220.addComponent(c235);
-		c214.addComponent(c220);
-		c213.addComponent(c214);
-		c5.addComponent(c213);
-		var c236 = new haxe_ui_containers_HBox();
-		c236.set_percentWidth(100.);
-		c236.set_text("Cameras");
-		c236.set_continuous(true);
-		var c237 = new haxe_ui_containers_VBox();
-		c237.set_styleString("padding: 15px;");
-		var c238 = new haxe_ui_containers_HBox();
-		var c239 = new haxe_ui_components_Label();
-		c239.set_text("Frame Size:");
-		c238.addComponent(c239);
-		var c240 = new haxe_ui_components_HorizontalSlider();
-		c240.set_pos(400);
-		c240.set_min(200);
-		c240.set_max(500);
-		c238.addComponent(c240);
-		var c241 = new haxe_ui_components_HorizontalSlider();
-		c241.set_pos(300);
-		c241.set_min(200);
-		c241.set_max(500);
-		c238.addComponent(c241);
-		c237.addComponent(c238);
-		var c242 = new haxe_ui_containers_Grid();
-		c242.set_columns(1);
-		var c243 = new haxe_ui_containers_Frame();
-		c243.set_id("theFrame");
-		c243.set_width(300.);
-		c243.set_height(300.);
-		c243.set_text("Camera 1");
-		var c244 = new haxe_ui_containers_VBox();
-		c244.set_percentWidth(100.);
-		c244.set_percentHeight(100.);
-		var c245 = new haxe_ui_containers_HBox();
-		c245.set_percentWidth(100.);
-		c244.addComponent(c245);
-		c243.addComponent(c244);
-		c242.addComponent(c243);
-		c237.addComponent(c242);
-		c236.addComponent(c237);
-		var c246 = new haxe_ui_containers_VBox();
-		c246.set_styleString("padding: 15px;");
-		var c247 = new haxe_ui_containers_HBox();
-		var c248 = new haxe_ui_components_Label();
-		c248.set_text("Frame Size:");
-		c247.addComponent(c248);
-		var c249 = new haxe_ui_components_HorizontalSlider();
-		c249.set_pos(400);
-		c249.set_min(200);
-		c249.set_max(500);
-		c247.addComponent(c249);
-		var c250 = new haxe_ui_components_HorizontalSlider();
-		c250.set_pos(300);
-		c250.set_min(200);
-		c250.set_max(500);
-		c247.addComponent(c250);
-		c246.addComponent(c247);
-		var c251 = new haxe_ui_containers_Grid();
-		c251.set_columns(1);
-		var c252 = new haxe_ui_containers_Frame();
-		c252.set_id("theFrame2");
-		c252.set_width(300.);
-		c252.set_height(300.);
-		c252.set_text("Camera 2 - Night Vision");
-		var c253 = new haxe_ui_containers_VBox();
-		c253.set_percentWidth(100.);
-		c253.set_percentHeight(100.);
-		var c254 = new haxe_ui_containers_HBox();
-		c254.set_percentWidth(100.);
-		c253.addComponent(c254);
-		c252.addComponent(c253);
-		c251.addComponent(c252);
-		c246.addComponent(c251);
-		c236.addComponent(c246);
-		c5.addComponent(c236);
-		var c255 = new haxe_ui_containers_HBox();
-		c255.set_percentWidth(100.);
-		c255.set_text("Servo Control");
-		c255.set_continuous(true);
-		var c256 = new haxe_ui_containers_VBox();
-		var c257 = new haxe_ui_containers_HBox();
-		c257.set_percentWidth(100.);
-		var c258 = new haxe_ui_containers_Accordion();
-		c258.set_width(200.);
-		c258.set_height(400.);
-		var c259 = new haxe_ui_containers_VBox();
-		c259.set_percentWidth(100.);
-		c259.set_text("Left Arm");
-		c258.addComponent(c259);
-		var c260 = new haxe_ui_containers_VBox();
-		c260.set_id("Shoulder");
-		c260.set_percentWidth(100.);
-		c260.set_text("Shoulder");
-		c260.set_styleString("padding: 0px;");
-		c258.addComponent(c260);
-		var c261 = new haxe_ui_containers_VBox();
-		c261.set_percentWidth(100.);
-		c261.set_text("Elbow");
-		c258.addComponent(c261);
-		var c262 = new haxe_ui_containers_VBox();
-		c262.set_percentWidth(100.);
-		c262.set_text("Wrist");
-		c262.set_styleString("padding: 0;padding-bottom: 1px;");
-		c258.addComponent(c262);
-		var c263 = new haxe_ui_containers_VBox();
-		c263.set_percentWidth(100.);
-		c263.set_text("Hand");
-		c263.set_styleString("padding: 0;padding-bottom: 1px;");
-		c258.addComponent(c263);
-		c257.addComponent(c258);
-		var c264 = new haxe_ui_containers_Accordion();
-		c264.set_width(200.);
-		c264.set_height(400.);
-		var c265 = new haxe_ui_containers_VBox();
-		c265.set_percentWidth(100.);
-		c265.set_text("Right Arm");
-		c264.addComponent(c265);
-		var c266 = new haxe_ui_containers_VBox();
-		c266.set_id("Shoulder");
-		c266.set_percentWidth(100.);
-		c266.set_text("Shoulder");
-		c266.set_styleString("padding: 0px;");
-		c264.addComponent(c266);
-		var c267 = new haxe_ui_containers_VBox();
-		c267.set_percentWidth(100.);
-		c267.set_text("Elbow");
-		c264.addComponent(c267);
-		var c268 = new haxe_ui_containers_VBox();
-		c268.set_percentWidth(100.);
-		c268.set_text("Wrist");
-		c268.set_styleString("padding: 0;padding-bottom: 1px;");
-		c264.addComponent(c268);
-		var c269 = new haxe_ui_containers_VBox();
-		c269.set_percentWidth(100.);
-		c269.set_text("Hand");
-		c269.set_styleString("padding: 0;padding-bottom: 1px;");
-		c264.addComponent(c269);
-		c257.addComponent(c264);
-		var c270 = new haxe_ui_containers_Accordion();
-		c270.set_width(200.);
-		c270.set_height(400.);
-		var c271 = new haxe_ui_containers_VBox();
-		c271.set_percentWidth(100.);
-		c271.set_text("Head");
-		c270.addComponent(c271);
-		var c272 = new haxe_ui_containers_VBox();
-		c272.set_id("Eyes");
-		c272.set_percentWidth(100.);
-		c272.set_text("Eyes");
-		c272.set_styleString("padding: 0px;");
-		c270.addComponent(c272);
-		var c273 = new haxe_ui_containers_VBox();
-		c273.set_percentWidth(100.);
-		c273.set_text("Mouth");
-		c270.addComponent(c273);
-		var c274 = new haxe_ui_containers_VBox();
-		c274.set_percentWidth(100.);
-		c274.set_text("Neck");
-		c274.set_styleString("padding: 0;padding-bottom: 1px;");
-		c270.addComponent(c274);
-		c257.addComponent(c270);
-		var c275 = new haxe_ui_containers_Accordion();
-		c275.set_width(200.);
-		c275.set_height(400.);
-		var c276 = new haxe_ui_containers_VBox();
-		c276.set_percentWidth(100.);
-		c276.set_text("Torso");
-		c275.addComponent(c276);
-		var c277 = new haxe_ui_containers_VBox();
-		c277.set_id("Chest");
-		c277.set_percentWidth(100.);
-		c277.set_text("Shoulder");
-		c277.set_styleString("padding: 0px;");
-		c275.addComponent(c277);
-		var c278 = new haxe_ui_containers_VBox();
-		c278.set_percentWidth(100.);
-		c278.set_text("Mid Stomach");
-		c275.addComponent(c278);
-		var c279 = new haxe_ui_containers_VBox();
-		c279.set_percentWidth(100.);
-		c279.set_text("Waist");
-		c279.set_styleString("padding: 0;padding-bottom: 1px;");
-		c275.addComponent(c279);
-		c257.addComponent(c275);
-		var c280 = new haxe_ui_containers_Accordion();
-		c280.set_width(200.);
-		c280.set_height(400.);
-		var c281 = new haxe_ui_containers_VBox();
-		c281.set_percentWidth(100.);
-		c281.set_text("Left Leg");
-		c280.addComponent(c281);
-		var c282 = new haxe_ui_containers_VBox();
-		c282.set_id("LHip");
-		c282.set_percentWidth(100.);
-		c282.set_text("Hip");
-		c282.set_styleString("padding: 0px;");
-		c280.addComponent(c282);
-		var c283 = new haxe_ui_containers_VBox();
-		c283.set_percentWidth(100.);
-		c283.set_text("Knee");
-		c280.addComponent(c283);
-		var c284 = new haxe_ui_containers_VBox();
-		c284.set_percentWidth(100.);
-		c284.set_text("Ankle");
-		c284.set_styleString("padding: 0;padding-bottom: 1px;");
-		c280.addComponent(c284);
-		var c285 = new haxe_ui_containers_VBox();
-		c285.set_percentWidth(100.);
-		c285.set_text("Foot");
-		c285.set_styleString("padding: 0;padding-bottom: 1px;");
-		c280.addComponent(c285);
-		c257.addComponent(c280);
-		var c286 = new haxe_ui_containers_Accordion();
-		c286.set_width(200.);
-		c286.set_height(400.);
-		var c287 = new haxe_ui_containers_VBox();
-		c287.set_percentWidth(100.);
-		c287.set_text("Right Leg");
-		c286.addComponent(c287);
-		var c288 = new haxe_ui_containers_VBox();
-		c288.set_id("RHip");
-		c288.set_percentWidth(100.);
-		c288.set_text("Hip");
-		c288.set_styleString("padding: 0px;");
-		c286.addComponent(c288);
-		var c289 = new haxe_ui_containers_VBox();
-		c289.set_percentWidth(100.);
-		c289.set_text("Knee");
-		c286.addComponent(c289);
-		var c290 = new haxe_ui_containers_VBox();
-		c290.set_percentWidth(100.);
-		c290.set_text("Ankle");
-		c290.set_styleString("padding: 0;padding-bottom: 1px;");
-		c286.addComponent(c290);
-		var c291 = new haxe_ui_containers_VBox();
-		c291.set_percentWidth(100.);
-		c291.set_text("Foot");
-		c291.set_styleString("padding: 0;padding-bottom: 1px;");
-		c286.addComponent(c291);
-		c257.addComponent(c286);
-		c256.addComponent(c257);
-		var c292 = new haxe_ui_containers_Box();
-		c292.set_width(800.);
-		c292.set_height(300.);
-		c292.set_styleString("border: 1px solid #ababab;padding: 5px;");
-		c256.addComponent(c292);
-		var c293 = new haxe_ui_containers_HBox();
-		var c294 = new haxe_ui_components_Label();
-		c294.set_text("Command:");
-		c294.set_verticalAlign("center");
-		c293.addComponent(c294);
-		var c295 = new haxe_ui_containers_VBox();
-		c295.set_width(600.);
-		c295.set_percentHeight(100.);
-		var c296 = new haxe_ui_components_TextField();
-		c296.set_percentWidth(100.);
-		c296.set_verticalAlign("bottom");
-		c296.set_placeholder("Enter some text");
-		c295.addComponent(c296);
-		c293.addComponent(c295);
-		c256.addComponent(c293);
-		c255.addComponent(c256);
-		c5.addComponent(c255);
-		var c297 = new haxe_ui_containers_HBox();
-		c297.set_percentWidth(100.);
-		c297.set_text("Guides");
-		c297.set_continuous(true);
-		c5.addComponent(c297);
-		var c298 = new haxe_ui_containers_HBox();
-		c298.set_percentWidth(100.);
-		c298.set_text("Chat");
-		c298.set_continuous(true);
-		var c299 = new haxe_ui_containers_ScrollView();
-		c299.set_percentWidth(100.);
-		c299.set_percentContentWidth(100.);
-		var c300 = new haxe_ui_containers_VBox();
-		c300.set_percentWidth(100.);
-		var c301 = new haxe_ui_components_Button();
-		c301.set_text("UserName");
-		c300.addComponent(c301);
-		var c302 = new haxe_ui_components_Button();
-		c302.set_text("UserName");
-		c300.addComponent(c302);
-		var c303 = new haxe_ui_components_Button();
-		c303.set_text("UserName");
-		c300.addComponent(c303);
-		var c304 = new haxe_ui_components_Button();
-		c304.set_text("UserName");
-		c300.addComponent(c304);
-		var c305 = new haxe_ui_components_Button();
-		c305.set_text("UserName");
-		c300.addComponent(c305);
-		var c306 = new haxe_ui_components_Button();
-		c306.set_text("UserName");
-		c300.addComponent(c306);
-		var c307 = new haxe_ui_components_Button();
-		c307.set_text("UserName");
-		c300.addComponent(c307);
-		var c308 = new haxe_ui_components_Button();
-		c308.set_text("UserName");
-		c300.addComponent(c308);
-		var c309 = new haxe_ui_components_Button();
-		c309.set_text("UserName");
-		c300.addComponent(c309);
-		var c310 = new haxe_ui_components_Button();
-		c310.set_text("UserName");
-		c300.addComponent(c310);
-		var c311 = new haxe_ui_components_Button();
-		c311.set_text("UserName");
-		c300.addComponent(c311);
-		c299.addComponent(c300);
-		c298.addComponent(c299);
-		var c312 = new haxe_ui_containers_HBox();
-		c312.set_percentWidth(100.);
-		var c313 = new haxe_ui_components_Label();
-		c313.set_text("Input:");
-		c313.set_verticalAlign("center");
-		c312.addComponent(c313);
-		var c314 = new haxe_ui_components_TextField();
-		c314.set_percentWidth(100.);
-		c314.set_placeholder("Enter some text");
-		c312.addComponent(c314);
-		var c315 = new haxe_ui_components_Button();
-		c315.set_text("Send");
-		c312.addComponent(c315);
-		c298.addComponent(c312);
-		c5.addComponent(c298);
-		var c316 = new haxe_ui_containers_HBox();
-		c316.set_percentWidth(100.);
-		c316.set_text("Tools");
-		c316.set_continuous(true);
-		var c317 = new haxe_ui_containers_Accordion();
-		c317.set_height(400.);
-		c317.set_percentWidth(100.);
-		var c318 = new haxe_ui_containers_VBox();
-		c318.set_percentWidth(100.);
-		c318.set_text("Calculator");
-		c317.addComponent(c318);
-		var c319 = new haxe_ui_containers_VBox();
-		c319.set_id("page2");
-		c319.set_percentWidth(100.);
-		c319.set_text("Terminal");
-		c319.set_styleString("padding: 0px;");
-		c317.addComponent(c319);
-		var c320 = new haxe_ui_containers_VBox();
-		c320.set_percentWidth(100.);
-		c320.set_text("Resistor Chart");
-		c317.addComponent(c320);
-		var c321 = new haxe_ui_containers_VBox();
-		c321.set_percentWidth(100.);
-		c321.set_text("-");
-		c321.set_styleString("padding: 0;padding-bottom: 1px;");
-		c317.addComponent(c321);
-		var c322 = new haxe_ui_containers_VBox();
-		c322.set_percentWidth(100.);
-		c322.set_text("-");
-		c322.set_styleString("padding: 0;padding-bottom: 1px;");
-		c317.addComponent(c322);
-		var c323 = new haxe_ui_containers_VBox();
-		c323.set_percentWidth(100.);
-		c323.set_text("RPi4 Pinout");
-		c323.set_styleString("padding: 0;padding-bottom: 1px;");
-		c317.addComponent(c323);
-		var c324 = new haxe_ui_containers_VBox();
-		c324.set_percentWidth(100.);
-		c324.set_text("Arduino Mega Pinout");
-		c324.set_styleString("padding: 0;padding-bottom: 1px;");
-		c317.addComponent(c324);
-		var c325 = new haxe_ui_containers_VBox();
-		c325.set_percentWidth(100.);
-		c325.set_text("Arduino Uno Pinout");
-		c325.set_styleString("padding: 0;padding-bottom: 1px;");
-		c317.addComponent(c325);
-		var c326 = new haxe_ui_containers_VBox();
-		c326.set_percentWidth(100.);
-		c326.set_text("Arduino Nano Pinout");
-		c326.set_styleString("padding: 0;padding-bottom: 1px;");
-		c317.addComponent(c326);
-		var c327 = new haxe_ui_containers_VBox();
-		c327.set_percentWidth(100.);
-		c327.set_text("Glossary");
-		c327.set_styleString("padding: 0;padding-bottom: 1px;");
-		c317.addComponent(c327);
-		c316.addComponent(c317);
-		c5.addComponent(c316);
-		var c328 = new haxe_ui_containers_HBox();
-		c328.set_percentWidth(100.);
-		c328.set_text("Social");
-		c328.set_continuous(true);
-		c5.addComponent(c328);
-		var c329 = new haxe_ui_containers_HBox();
-		c329.set_percentWidth(100.);
-		c329.set_text("Hosting");
-		c329.set_continuous(true);
-		c5.addComponent(c329);
-		c0.addComponent(c5);
-		var c330 = new haxe_ui_containers_HBox();
-		c330.set_percentWidth(100.);
-		c330.set_styleNames("footer");
-		var c331 = new haxe_ui_components_Label();
-		c331.set_percentWidth(100.);
-		c331.set_text("Shaun Holt - 2021");
-		c331.set_verticalAlign("center");
-		c330.addComponent(c331);
-		var c332 = new haxe_ui_components_Label();
-		c332.set_text("Made with Haxe and HaxeUI");
-		c332.set_verticalAlign("center");
-		c332.set_horizontalAlign("right");
-		c330.addComponent(c332);
-		c0.addComponent(c330);
-		rootComponent.addComponent(c0);
-		c204.registerEvent("change",function(event) {
-			var __this__ = c204;
-			var theVideo = c209;
-			var theFrame2 = c252;
-			var theFrame0 = c207;
-			var theFrame = c243;
-			var page2 = c319;
-			var main = c0;
-			var lorem2 = c11;
-			var lorem1 = c10;
-			var logo = c4;
-			var headerLabel = c3;
-			var grid1 = c220;
-			var Shoulder = c266;
-			var RHip = c288;
-			var LHip = c282;
-			var Eyes = c272;
-			var Chest = c277;
-			theFrame0.set_width(__this__.get_pos());
-		});
-		c205.registerEvent("change",function(event) {
-			var __this__ = c205;
-			var theVideo = c209;
-			var theFrame2 = c252;
-			var theFrame0 = c207;
-			var theFrame = c243;
-			var page2 = c319;
-			var main = c0;
-			var lorem2 = c11;
-			var lorem1 = c10;
-			var logo = c4;
-			var headerLabel = c3;
-			var grid1 = c220;
-			var Shoulder = c266;
-			var RHip = c288;
-			var LHip = c282;
-			var Eyes = c272;
-			var Chest = c277;
-			theFrame0.set_height(__this__.get_pos());
-		});
-		c211.registerEvent("click",function(event) {
-			var __this__ = c211;
-			var theVideo = c209;
-			var theFrame2 = c252;
-			var theFrame0 = c207;
-			var theFrame = c243;
-			var page2 = c319;
-			var main = c0;
-			var lorem2 = c11;
-			var lorem1 = c10;
-			var logo = c4;
-			var headerLabel = c3;
-			var grid1 = c220;
-			var Shoulder = c266;
-			var RHip = c288;
-			var LHip = c282;
-			var Eyes = c272;
-			var Chest = c277;
-			theVideo.play();
-		});
-		c212.registerEvent("click",function(event) {
-			var __this__ = c212;
-			var theVideo = c209;
-			var theFrame2 = c252;
-			var theFrame0 = c207;
-			var theFrame = c243;
-			var page2 = c319;
-			var main = c0;
-			var lorem2 = c11;
-			var lorem1 = c10;
-			var logo = c4;
-			var headerLabel = c3;
-			var grid1 = c220;
-			var Shoulder = c266;
-			var RHip = c288;
-			var LHip = c282;
-			var Eyes = c272;
-			var Chest = c277;
-			theVideo.pause();
-		});
-		c217.registerEvent("change",function(event) {
-			var __this__ = c217;
-			var theVideo = c209;
-			var theFrame2 = c252;
-			var theFrame0 = c207;
-			var theFrame = c243;
-			var page2 = c319;
-			var main = c0;
-			var lorem2 = c11;
-			var lorem1 = c10;
-			var logo = c4;
-			var headerLabel = c3;
-			var grid1 = c220;
-			var Shoulder = c266;
-			var RHip = c288;
-			var LHip = c282;
-			var Eyes = c272;
-			var Chest = c277;
-			grid1.set_width(__this__.get_value());
-		});
-		c219.registerEvent("change",function(event) {
-			var __this__ = c219;
-			var theVideo = c209;
-			var theFrame2 = c252;
-			var theFrame0 = c207;
-			var theFrame = c243;
-			var page2 = c319;
-			var main = c0;
-			var lorem2 = c11;
-			var lorem1 = c10;
-			var logo = c4;
-			var headerLabel = c3;
-			var grid1 = c220;
-			var Shoulder = c266;
-			var RHip = c288;
-			var LHip = c282;
-			var Eyes = c272;
-			var Chest = c277;
-			grid1.set_height(__this__.get_value());
-		});
-		c240.registerEvent("change",function(event) {
-			var __this__ = c240;
-			var theVideo = c209;
-			var theFrame2 = c252;
-			var theFrame0 = c207;
-			var theFrame = c243;
-			var page2 = c319;
-			var main = c0;
-			var lorem2 = c11;
-			var lorem1 = c10;
-			var logo = c4;
-			var headerLabel = c3;
-			var grid1 = c220;
-			var Shoulder = c266;
-			var RHip = c288;
-			var LHip = c282;
-			var Eyes = c272;
-			var Chest = c277;
-			theFrame.set_width(__this__.get_pos());
-		});
-		c241.registerEvent("change",function(event) {
-			var __this__ = c241;
-			var theVideo = c209;
-			var theFrame2 = c252;
-			var theFrame0 = c207;
-			var theFrame = c243;
-			var page2 = c319;
-			var main = c0;
-			var lorem2 = c11;
-			var lorem1 = c10;
-			var logo = c4;
-			var headerLabel = c3;
-			var grid1 = c220;
-			var Shoulder = c266;
-			var RHip = c288;
-			var LHip = c282;
-			var Eyes = c272;
-			var Chest = c277;
-			theFrame.set_height(__this__.get_pos());
-		});
-		c249.registerEvent("change",function(event) {
-			var __this__ = c249;
-			var theVideo = c209;
-			var theFrame2 = c252;
-			var theFrame0 = c207;
-			var theFrame = c243;
-			var page2 = c319;
-			var main = c0;
-			var lorem2 = c11;
-			var lorem1 = c10;
-			var logo = c4;
-			var headerLabel = c3;
-			var grid1 = c220;
-			var Shoulder = c266;
-			var RHip = c288;
-			var LHip = c282;
-			var Eyes = c272;
-			var Chest = c277;
-			theFrame2.set_width(__this__.get_pos());
-		});
-		c250.registerEvent("change",function(event) {
-			var __this__ = c250;
-			var theVideo = c209;
-			var theFrame2 = c252;
-			var theFrame0 = c207;
-			var theFrame = c243;
-			var page2 = c319;
-			var main = c0;
-			var lorem2 = c11;
-			var lorem1 = c10;
-			var logo = c4;
-			var headerLabel = c3;
-			var grid1 = c220;
-			var Shoulder = c266;
-			var RHip = c288;
-			var LHip = c282;
-			var Eyes = c272;
-			var Chest = c277;
-			theFrame2.set_height(__this__.get_pos());
-		});
-		rootComponent.bindingRoot = true;
-		var main = rootComponent;
-		app.addComponent(video);
-		app.addComponent(main);
-		app.start();
-	});
-};
-Math.__name__ = "Math";
-var Reflect = function() { };
-$hxClasses["Reflect"] = Reflect;
-Reflect.__name__ = "Reflect";
-Reflect.field = function(o,field) {
-	try {
-		return o[field];
-	} catch( _g ) {
-		return null;
-	}
-};
-Reflect.getProperty = function(o,field) {
-	var tmp;
-	if(o == null) {
-		return null;
-	} else {
-		var tmp1;
-		if(o.__properties__) {
-			tmp = o.__properties__["get_" + field];
-			tmp1 = tmp;
-		} else {
-			tmp1 = false;
-		}
-		if(tmp1) {
-			return o[tmp]();
-		} else {
-			return o[field];
-		}
-	}
-};
-Reflect.setProperty = function(o,field,value) {
-	var tmp;
-	var tmp1;
-	if(o.__properties__) {
-		tmp = o.__properties__["set_" + field];
-		tmp1 = tmp;
-	} else {
-		tmp1 = false;
-	}
-	if(tmp1) {
-		o[tmp](value);
-	} else {
-		o[field] = value;
-	}
-};
-Reflect.fields = function(o) {
-	var a = [];
-	if(o != null) {
-		var hasOwnProperty = Object.prototype.hasOwnProperty;
-		for( var f in o ) {
-		if(f != "__id__" && f != "hx__closures__" && hasOwnProperty.call(o,f)) {
-			a.push(f);
-		}
-		}
-	}
-	return a;
-};
-Reflect.isFunction = function(f) {
-	if(typeof(f) == "function") {
-		return !(f.__name__ || f.__ename__);
-	} else {
-		return false;
-	}
-};
-Reflect.compare = function(a,b) {
-	if(a == b) {
-		return 0;
-	} else if(a > b) {
-		return 1;
-	} else {
-		return -1;
-	}
-};
-Reflect.isObject = function(v) {
-	if(v == null) {
-		return false;
-	}
-	var t = typeof(v);
-	if(!(t == "string" || t == "object" && v.__enum__ == null)) {
-		if(t == "function") {
-			return (v.__name__ || v.__ename__) != null;
-		} else {
-			return false;
-		}
-	} else {
-		return true;
-	}
-};
-Reflect.isEnumValue = function(v) {
-	if(v != null) {
-		return v.__enum__ != null;
-	} else {
-		return false;
-	}
-};
-Reflect.makeVarArgs = function(f) {
-	return function() {
-		var a = Array.prototype.slice;
-		var a1 = arguments;
-		var a2 = a.call(a1);
-		return f(a2);
-	};
-};
-var Std = function() { };
-$hxClasses["Std"] = Std;
-Std.__name__ = "Std";
-Std.string = function(s) {
-	return js_Boot.__string_rec(s,"");
-};
-Std.parseInt = function(x) {
-	if(x != null) {
-		var _g = 0;
-		var _g1 = x.length;
-		while(_g < _g1) {
-			var i = _g++;
-			var c = x.charCodeAt(i);
-			if(c <= 8 || c >= 14 && c != 32 && c != 45) {
-				var nc = x.charCodeAt(i + 1);
-				var v = parseInt(x,nc == 120 || nc == 88 ? 16 : 10);
-				if(isNaN(v)) {
-					return null;
-				} else {
-					return v;
-				}
-			}
-		}
-	}
-	return null;
-};
-var StringTools = function() { };
-$hxClasses["StringTools"] = StringTools;
-StringTools.__name__ = "StringTools";
-StringTools.startsWith = function(s,start) {
-	if(s.length >= start.length) {
-		return s.lastIndexOf(start,0) == 0;
-	} else {
-		return false;
-	}
-};
-StringTools.endsWith = function(s,end) {
-	var elen = end.length;
-	var slen = s.length;
-	if(slen >= elen) {
-		return s.indexOf(end,slen - elen) == slen - elen;
-	} else {
-		return false;
-	}
-};
-StringTools.isSpace = function(s,pos) {
-	var c = HxOverrides.cca(s,pos);
-	if(!(c > 8 && c < 14)) {
-		return c == 32;
-	} else {
-		return true;
-	}
-};
-StringTools.ltrim = function(s) {
-	var l = s.length;
-	var r = 0;
-	while(r < l && StringTools.isSpace(s,r)) ++r;
-	if(r > 0) {
-		return HxOverrides.substr(s,r,l - r);
-	} else {
-		return s;
-	}
-};
-StringTools.rtrim = function(s) {
-	var l = s.length;
-	var r = 0;
-	while(r < l && StringTools.isSpace(s,l - r - 1)) ++r;
-	if(r > 0) {
-		return HxOverrides.substr(s,0,l - r);
-	} else {
-		return s;
-	}
-};
-StringTools.trim = function(s) {
-	return StringTools.ltrim(StringTools.rtrim(s));
-};
-StringTools.replace = function(s,sub,by) {
-	return s.split(sub).join(by);
-};
-StringTools.hex = function(n,digits) {
-	var s = "";
-	var hexChars = "0123456789ABCDEF";
-	while(true) {
-		s = hexChars.charAt(n & 15) + s;
-		n >>>= 4;
-		if(!(n > 0)) {
-			break;
-		}
-	}
-	if(digits != null) {
-		while(s.length < digits) s = "0" + s;
-	}
-	return s;
-};
-var ValueType = $hxEnums["ValueType"] = { __ename__:true,__constructs__:null
-	,TNull: {_hx_name:"TNull",_hx_index:0,__enum__:"ValueType",toString:$estr}
-	,TInt: {_hx_name:"TInt",_hx_index:1,__enum__:"ValueType",toString:$estr}
-	,TFloat: {_hx_name:"TFloat",_hx_index:2,__enum__:"ValueType",toString:$estr}
-	,TBool: {_hx_name:"TBool",_hx_index:3,__enum__:"ValueType",toString:$estr}
-	,TObject: {_hx_name:"TObject",_hx_index:4,__enum__:"ValueType",toString:$estr}
-	,TFunction: {_hx_name:"TFunction",_hx_index:5,__enum__:"ValueType",toString:$estr}
-	,TClass: ($_=function(c) { return {_hx_index:6,c:c,__enum__:"ValueType",toString:$estr}; },$_._hx_name="TClass",$_.__params__ = ["c"],$_)
-	,TEnum: ($_=function(e) { return {_hx_index:7,e:e,__enum__:"ValueType",toString:$estr}; },$_._hx_name="TEnum",$_.__params__ = ["e"],$_)
-	,TUnknown: {_hx_name:"TUnknown",_hx_index:8,__enum__:"ValueType",toString:$estr}
-};
-ValueType.__constructs__ = [ValueType.TNull,ValueType.TInt,ValueType.TFloat,ValueType.TBool,ValueType.TObject,ValueType.TFunction,ValueType.TClass,ValueType.TEnum,ValueType.TUnknown];
-var Type = function() { };
-$hxClasses["Type"] = Type;
-Type.__name__ = "Type";
-Type.createInstance = function(cl,args) {
-	var ctor = Function.prototype.bind.apply(cl,[null].concat(args));
-	return new (ctor);
-};
-Type.getInstanceFields = function(c) {
-	var a = [];
-	for(var i in c.prototype) a.push(i);
-	HxOverrides.remove(a,"__class__");
-	HxOverrides.remove(a,"__properties__");
-	return a;
-};
-Type.typeof = function(v) {
-	switch(typeof(v)) {
-	case "boolean":
-		return ValueType.TBool;
-	case "function":
-		if(v.__name__ || v.__ename__) {
-			return ValueType.TObject;
-		}
-		return ValueType.TFunction;
-	case "number":
-		if(Math.ceil(v) == v % 2147483648.0) {
-			return ValueType.TInt;
-		}
-		return ValueType.TFloat;
-	case "object":
-		if(v == null) {
-			return ValueType.TNull;
-		}
-		var e = v.__enum__;
-		if(e != null) {
-			return ValueType.TEnum($hxEnums[e]);
-		}
-		var c = js_Boot.getClass(v);
-		if(c != null) {
-			return ValueType.TClass(c);
-		}
-		return ValueType.TObject;
-	case "string":
-		return ValueType.TClass(String);
-	case "undefined":
-		return ValueType.TNull;
-	default:
-		return ValueType.TUnknown;
-	}
-};
-Type.enumEq = function(a,b) {
-	if(a == b) {
-		return true;
-	}
-	try {
-		var e = a.__enum__;
-		if(e == null || e != b.__enum__) {
-			return false;
-		}
-		if(a._hx_index != b._hx_index) {
-			return false;
-		}
-		var enm = $hxEnums[e];
-		var params = enm.__constructs__[a._hx_index].__params__;
-		var _g = 0;
-		while(_g < params.length) {
-			var f = params[_g];
-			++_g;
-			if(!Type.enumEq(a[f],b[f])) {
-				return false;
-			}
-		}
-	} catch( _g ) {
-		return false;
-	}
-	return true;
-};
-Type.enumParameters = function(e) {
-	var enm = $hxEnums[e.__enum__];
-	var params = enm.__constructs__[e._hx_index].__params__;
-	if(params != null) {
-		var _g = [];
-		var _g1 = 0;
-		while(_g1 < params.length) {
-			var p = params[_g1];
-			++_g1;
-			_g.push(e[p]);
-		}
-		return _g;
-	} else {
-		return [];
-	}
-};
 var haxe_ui_backend_ComponentSurface = function() {
 };
 $hxClasses["haxe.ui.backend.ComponentSurface"] = haxe_ui_backend_ComponentSurface;
@@ -6370,6 +4290,2270 @@ haxe_ui_containers_Box.prototype = $extend(haxe_ui_core_Component.prototype,{
 	,__class__: haxe_ui_containers_Box
 	,__properties__: $extend(haxe_ui_core_Component.prototype.__properties__,{set_icon:"set_icon",get_icon:"get_icon",set_layoutName:"set_layoutName",get_layoutName:"get_layoutName"})
 });
+var Audio = function() {
+	this._source = null;
+	this._audio = null;
+	haxe_ui_containers_Box.call(this);
+};
+$hxClasses["Audio"] = Audio;
+Audio.__name__ = "Audio";
+Audio.__super__ = haxe_ui_containers_Box;
+Audio.prototype = $extend(haxe_ui_containers_Box.prototype,{
+	_audio: null
+	,_source: null
+	,onReady: function() {
+		haxe_ui_containers_Box.prototype.onReady.call(this);
+		this._audio = window.document.createElement("audio");
+		this._audio.style.objectFit = "fill";
+		this.element.appendChild(this._audio);
+		if(!(this._layout == null || this._layoutLocked == true)) {
+			this.invalidateComponent("layout",false);
+		}
+		if(this._file != null && this._source == null) {
+			this.changeSource(this._file);
+		}
+	}
+	,play: function() {
+		if(this._audio != null) {
+			this._audio.play();
+		}
+	}
+	,pause: function() {
+		if(this._audio != null) {
+			this._audio.pause();
+		}
+	}
+	,_file: null
+	,get_file: function() {
+		return this._file;
+	}
+	,set_file: function(value) {
+		this._file = value;
+		if(this._audio != null) {
+			this.changeSource(this._file);
+		}
+		return value;
+	}
+	,changeSource: function(src) {
+		if(this._source != null) {
+			haxe_ui_backend_html5_HtmlUtils.removeElement(this._source);
+		}
+		this._source = window.document.createElement("source");
+		this._source.setAttribute("src",src);
+		this._audio.appendChild(this._source);
+	}
+	,validateComponentLayout: function() {
+		var b = haxe_ui_containers_Box.prototype.validateComponentLayout.call(this);
+		if(this._audio != null && this.get_width() > 0 && this.get_height() > 0) {
+			var tmp = "" + this.get_width() + "px";
+			this._audio.style.width = tmp;
+			var tmp = "" + this.get_height() + "px";
+			this._audio.style.height = tmp;
+		}
+		return b;
+	}
+	,registerBehaviours: function() {
+		haxe_ui_containers_Box.prototype.registerBehaviours.call(this);
+	}
+	,cloneComponent: function() {
+		var c = haxe_ui_containers_Box.prototype.cloneComponent.call(this);
+		if((this._children == null ? [] : this._children).length != (c._children == null ? [] : c._children).length) {
+			var _g = 0;
+			var _g1 = this._children == null ? [] : this._children;
+			while(_g < _g1.length) {
+				var child = _g1[_g];
+				++_g;
+				c.addComponent(child.cloneComponent());
+			}
+		}
+		return c;
+	}
+	,self: function() {
+		return new Audio();
+	}
+	,__class__: Audio
+	,__properties__: $extend(haxe_ui_containers_Box.prototype.__properties__,{set_file:"set_file",get_file:"get_file"})
+});
+var EReg = function(r,opt) {
+	this.r = new RegExp(r,opt.split("u").join(""));
+};
+$hxClasses["EReg"] = EReg;
+EReg.__name__ = "EReg";
+EReg.prototype = {
+	r: null
+	,match: function(s) {
+		if(this.r.global) {
+			this.r.lastIndex = 0;
+		}
+		this.r.m = this.r.exec(s);
+		this.r.s = s;
+		return this.r.m != null;
+	}
+	,matched: function(n) {
+		if(this.r.m != null && n >= 0 && n < this.r.m.length) {
+			return this.r.m[n];
+		} else {
+			throw haxe_Exception.thrown("EReg::matched");
+		}
+	}
+	,matchedPos: function() {
+		if(this.r.m == null) {
+			throw haxe_Exception.thrown("No string matched");
+		}
+		return { pos : this.r.m.index, len : this.r.m[0].length};
+	}
+	,matchSub: function(s,pos,len) {
+		if(len == null) {
+			len = -1;
+		}
+		if(this.r.global) {
+			this.r.lastIndex = pos;
+			this.r.m = this.r.exec(len < 0 ? s : HxOverrides.substr(s,0,pos + len));
+			var b = this.r.m != null;
+			if(b) {
+				this.r.s = s;
+			}
+			return b;
+		} else {
+			var b = this.match(len < 0 ? HxOverrides.substr(s,pos,null) : HxOverrides.substr(s,pos,len));
+			if(b) {
+				this.r.s = s;
+				this.r.m.index += pos;
+			}
+			return b;
+		}
+	}
+	,split: function(s) {
+		var d = "#__delim__#";
+		return s.replace(this.r,d).split(d);
+	}
+	,map: function(s,f) {
+		var offset = 0;
+		var buf_b = "";
+		while(true) {
+			if(offset >= s.length) {
+				break;
+			} else if(!this.matchSub(s,offset)) {
+				buf_b += Std.string(HxOverrides.substr(s,offset,null));
+				break;
+			}
+			var p = this.matchedPos();
+			buf_b += Std.string(HxOverrides.substr(s,offset,p.pos - offset));
+			buf_b += Std.string(f(this));
+			if(p.len == 0) {
+				buf_b += Std.string(HxOverrides.substr(s,p.pos,1));
+				offset = p.pos + 1;
+			} else {
+				offset = p.pos + p.len;
+			}
+			if(!this.r.global) {
+				break;
+			}
+		}
+		if(!this.r.global && offset > 0 && offset < s.length) {
+			buf_b += Std.string(HxOverrides.substr(s,offset,null));
+		}
+		return buf_b;
+	}
+	,__class__: EReg
+};
+var HxOverrides = function() { };
+$hxClasses["HxOverrides"] = HxOverrides;
+HxOverrides.__name__ = "HxOverrides";
+HxOverrides.cca = function(s,index) {
+	var x = s.charCodeAt(index);
+	if(x != x) {
+		return undefined;
+	}
+	return x;
+};
+HxOverrides.substr = function(s,pos,len) {
+	if(len == null) {
+		len = s.length;
+	} else if(len < 0) {
+		if(pos == 0) {
+			len = s.length + len;
+		} else {
+			return "";
+		}
+	}
+	return s.substr(pos,len);
+};
+HxOverrides.remove = function(a,obj) {
+	var i = a.indexOf(obj);
+	if(i == -1) {
+		return false;
+	}
+	a.splice(i,1);
+	return true;
+};
+HxOverrides.now = function() {
+	return Date.now();
+};
+var IntIterator = function(min,max) {
+	this.min = min;
+	this.max = max;
+};
+$hxClasses["IntIterator"] = IntIterator;
+IntIterator.__name__ = "IntIterator";
+IntIterator.prototype = {
+	min: null
+	,max: null
+	,hasNext: function() {
+		return this.min < this.max;
+	}
+	,next: function() {
+		return this.min++;
+	}
+	,__class__: IntIterator
+};
+var Main = function() { };
+$hxClasses["Main"] = Main;
+Main.__name__ = "Main";
+Main.main = function() {
+	var app = new haxe_ui_HaxeUIApp();
+	app.ready(function() {
+		var video = new Video();
+		var audio = new Audio();
+		haxe_ui_Toolkit.styleSheet.parse("\n.header {\r\n    background-color:#AAAACC;\r\n    padding: 5px;\r\n    filter: drop-shadow(1, 45, #000000, 0.5, 2, 2, 1, 3, false);\r\n}\r\n\r\n.footer {\r\n    background-color:#CCAACC;\r\n    padding: 5px;\r\n    filter: drop-shadow(1, 45, #000000, 0.5, 2, 2, 1, 3, false);\r\n}\r\n\r\n.header label {\r\n    font-size: 32px;\r\n    color: white;\r\n}\r\n\r\n.footer label {\r\n    font-size: 18px;\r\n    color: white;\r\n}\r\n\r\n.menu {\r\n    width: 100%;\r\n}\r\n\r\n.menu box {\r\n    width:100%;\r\n    background-color:#AACCCC;\r\n    padding: 5px;\r\n    filter: drop-shadow(1, 45, #000000, 0.5, 2, 2, 1, 3, false);\r\n}\r\n\r\n.menu label {\r\n    width:100%;\r\n    color: white;\r\n}\r\n\r\n.sidebar {\r\n    width: 100%;\r\n}\r\n\r\n.sidebar box {\r\n    width:100%;\r\n    background-color:#CCCCAA;\r\n    padding: 5px;\r\n    filter: drop-shadow(1, 45, #000000, 0.5, 2, 2, 1, 3, false);\r\n}\r\n\r\n.sidebar label {\r\n    width:100%;\r\n    color: white;\r\n}\r\n\r\n.content {\r\n    width:100%;\r\n    padding: 5px;\r\n}\r\n\r\n#logo {\r\n    resource: \"haxeui-core/styles/default/haxeui_tiny.png\";\r\n}\r\n\r\n#small {\r\n    hidden: false;\r\n}\r\n\r\n#medium {\r\n    hidden: true;\r\n}\r\n\r\n#large {\r\n    hidden: true;\r\n}\r\n\r\n#html5, #hxwidgets {\r\n    hidden: true;\r\n}\r\n\r\n@media (min-width: 500px) {\r\n    .menu {\r\n        width: 25%;\r\n    }\r\n\r\n    .content {\r\n        width: 75%;\r\n    }    \r\n    \r\n    #logo {\r\n        resource: \"haxeui-core/styles/default/haxeui_small.png\";\r\n    }\r\n    \r\n    #small {\r\n        hidden: true;\r\n    }\r\n\r\n    #medium {\r\n        hidden: false;\r\n    }\r\n\r\n    #large {\r\n        hidden: true;\r\n    }\r\n}\r\n\r\n@media (min-width: 800px) {\r\n    .menu {\r\n        width: 25%;\r\n    }\r\n\r\n    .sidebar {\r\n        width: 25%;\r\n    }\r\n\r\n    .content {\r\n        width: 50%;\r\n    }    \r\n    \r\n    #small {\r\n        hidden: true;\r\n    }\r\n\r\n    #medium {\r\n        hidden: true;\r\n    }\r\n\r\n    #large {\r\n        hidden: false;\r\n    }\r\n}\r\n\r\n@media (backend: html5) {\r\n    #html5 {\r\n        hidden: false;\r\n    }\r\n    \r\n    #hxwidgets {\r\n        hidden: true;\r\n    }\r\n}\r\n\r\n@media (backend: hxwidgets) {\r\n    #html5 {\r\n        hidden: true;\r\n    }\r\n    \r\n    #hxwidgets {\r\n        hidden: false;\r\n    }\r\n}\r\n","user");
+		var c0 = new haxe_ui_containers_ScrollView();
+		c0.set_styleSheet(new haxe_ui_styles_StyleSheet());
+		c0.set_percentWidth(100.);
+		c0.set_percentHeight(100.);
+		c0.set_percentContentWidth(100.);
+		c0.set_styleString("border-size:0;background-color: white;");
+		var rootComponent = c0;
+		var c0 = new haxe_ui_containers_VBox();
+		c0.set_id("main");
+		c0.set_percentWidth(100.);
+		c0.set_styleString("padding: 5px;");
+		var c1 = new haxe_ui_containers_Box();
+		c1.set_percentWidth(100.);
+		c1.set_styleNames("header");
+		var c2 = new haxe_ui_components_Image();
+		c2.set_id("logo");
+		c2.set_verticalAlign("center");
+		c2.set_horizontalAlign("left");
+		c1.addComponent(c2);
+		var c3 = new haxe_ui_components_Label();
+		c3.set_id("headerLabel");
+		c3.set_text("The Perspective Corner");
+		c3.set_verticalAlign("center");
+		c3.set_horizontalAlign("center");
+		c1.addComponent(c3);
+		var c4 = new haxe_ui_components_Image();
+		c4.set_id("logo");
+		c4.set_verticalAlign("center");
+		c4.set_horizontalAlign("right");
+		c1.addComponent(c4);
+		c0.addComponent(c1);
+		var c5 = new haxe_ui_containers_TabView();
+		c5.set_height(800.);
+		c5.set_percentWidth(100.);
+		var c6 = new haxe_ui_containers_HBox();
+		c6.set_percentWidth(100.);
+		c6.set_text("Home");
+		c6.set_continuous(true);
+		var c7 = new haxe_ui_containers_VBox();
+		c7.set_styleNames("image");
+		c7.set_verticalAlign("center");
+		c7.set_horizontalAlign("center");
+		var c8 = new haxe_ui_components_Image();
+		c8.set_width(200.);
+		c8.set_height(400.);
+		c8.set_styleString("border:0px solid #ababab");
+		c8.set_scaleMode("fitwidth");
+		c8.set_resource(haxe_ui_util_Variant.fromString("assets/img/profile.jpg"));
+		c7.addComponent(c8);
+		c6.addComponent(c7);
+		var c9 = new haxe_ui_containers_VBox();
+		c9.set_percentWidth(100.);
+		c9.set_styleNames("content");
+		c9.set_verticalAlign("center");
+		var c10 = new haxe_ui_components_Label();
+		c10.set_id("lorem1");
+		c10.set_percentWidth(100.);
+		c10.set_text("Welcome to my Perspective Corner");
+		c9.addComponent(c10);
+		var c11 = new haxe_ui_components_Label();
+		c11.set_id("lorem2");
+		c11.set_percentWidth(100.);
+		c11.set_text("This server is used for a number of purposes. From tools I use and videos I create to hosting robotic experiments. I call it the perspective corner because it is my own personal thinking spot within a world of half-assed perspectives.");
+		c9.addComponent(c11);
+		c6.addComponent(c9);
+		c5.addComponent(c6);
+		var c12 = new haxe_ui_containers_HBox();
+		c12.set_percentWidth(100.);
+		c12.set_text("Apps");
+		c12.set_continuous(true);
+		var c13 = new haxe_ui_components_Image();
+		c13.set_width(200.);
+		c13.set_height(200.);
+		c13.set_styleString("border:1px solid #ababab");
+		c13.set_resource(haxe_ui_util_Variant.fromString("haxeui-core/styles/default/haxeui.png"));
+		c12.addComponent(c13);
+		var c14 = new haxe_ui_components_Image();
+		c14.set_width(100.);
+		c14.set_height(200.);
+		c14.set_styleString("border:1px solid #ababab");
+		c14.set_resource(haxe_ui_util_Variant.fromString("haxeui-core/styles/default/haxeui.png"));
+		c12.addComponent(c14);
+		var c15 = new haxe_ui_components_Image();
+		c15.set_width(100.);
+		c15.set_height(200.);
+		c15.set_styleString("border:1px solid #ababab");
+		c15.set_scaleMode("fitwidth");
+		c15.set_resource(haxe_ui_util_Variant.fromString("haxeui-core/styles/default/haxeui.png"));
+		c12.addComponent(c15);
+		c5.addComponent(c12);
+		var c16 = new haxe_ui_containers_HBox();
+		c16.set_percentWidth(100.);
+		c16.set_text("Crypto");
+		c16.set_continuous(true);
+		c5.addComponent(c16);
+		var c17 = new haxe_ui_containers_HBox();
+		c17.set_percentWidth(100.);
+		c17.set_text("Audio");
+		c17.set_continuous(true);
+		var c18 = new haxe_ui_containers_Accordion();
+		c18.set_width(200.);
+		c18.set_height(400.);
+		var c19 = new haxe_ui_containers_VBox();
+		c19.set_percentWidth(100.);
+		c19.set_text("Animals");
+		c18.addComponent(c19);
+		var c20 = new haxe_ui_containers_VBox();
+		c20.set_id("page2");
+		c20.set_percentWidth(100.);
+		c20.set_text("Page 2");
+		c20.set_styleString("padding: 0px;");
+		var c21 = new haxe_ui_containers_ScrollView();
+		c21.set_percentWidth(100.);
+		c21.set_percentHeight(100.);
+		c21.set_percentContentWidth(100.);
+		var c22 = new haxe_ui_components_Button();
+		c22.set_percentWidth(100.);
+		c22.set_text("Button 1");
+		c21.addComponent(c22);
+		var c23 = new haxe_ui_components_Button();
+		c23.set_percentWidth(100.);
+		c23.set_text("Button 2");
+		c21.addComponent(c23);
+		var c24 = new haxe_ui_components_Button();
+		c24.set_percentWidth(100.);
+		c24.set_text("Button 3");
+		c21.addComponent(c24);
+		var c25 = new haxe_ui_components_Button();
+		c25.set_percentWidth(100.);
+		c25.set_text("Button 4");
+		c21.addComponent(c25);
+		var c26 = new haxe_ui_components_Button();
+		c26.set_percentWidth(100.);
+		c26.set_text("Button 5");
+		c21.addComponent(c26);
+		var c27 = new haxe_ui_components_Button();
+		c27.set_percentWidth(100.);
+		c27.set_text("Button 6");
+		c21.addComponent(c27);
+		var c28 = new haxe_ui_components_Button();
+		c28.set_percentWidth(100.);
+		c28.set_text("Button 7");
+		c21.addComponent(c28);
+		var c29 = new haxe_ui_components_Button();
+		c29.set_percentWidth(100.);
+		c29.set_text("Button 8");
+		c21.addComponent(c29);
+		var c30 = new haxe_ui_components_Button();
+		c30.set_percentWidth(100.);
+		c30.set_text("Button 9");
+		c21.addComponent(c30);
+		var c31 = new haxe_ui_components_Button();
+		c31.set_percentWidth(100.);
+		c31.set_text("Button 10");
+		c21.addComponent(c31);
+		var c32 = new haxe_ui_components_Button();
+		c32.set_percentWidth(100.);
+		c32.set_text("Button 11");
+		c21.addComponent(c32);
+		var c33 = new haxe_ui_components_Button();
+		c33.set_percentWidth(100.);
+		c33.set_text("Button 12");
+		c21.addComponent(c33);
+		var c34 = new haxe_ui_components_Button();
+		c34.set_percentWidth(100.);
+		c34.set_text("Button 13");
+		c21.addComponent(c34);
+		var c35 = new haxe_ui_components_Button();
+		c35.set_percentWidth(100.);
+		c35.set_text("Button 14");
+		c21.addComponent(c35);
+		var c36 = new haxe_ui_components_Button();
+		c36.set_percentWidth(100.);
+		c36.set_text("Button 15");
+		c21.addComponent(c36);
+		var c37 = new haxe_ui_components_Button();
+		c37.set_percentWidth(100.);
+		c37.set_text("Button 16");
+		c21.addComponent(c37);
+		var c38 = new haxe_ui_components_Button();
+		c38.set_percentWidth(100.);
+		c38.set_text("Button 18");
+		c21.addComponent(c38);
+		var c39 = new haxe_ui_components_Button();
+		c39.set_percentWidth(100.);
+		c39.set_text("Button 19");
+		c21.addComponent(c39);
+		var c40 = new haxe_ui_components_Button();
+		c40.set_percentWidth(100.);
+		c40.set_text("Button 20");
+		c21.addComponent(c40);
+		c20.addComponent(c21);
+		c18.addComponent(c20);
+		var c41 = new haxe_ui_containers_VBox();
+		c41.set_percentWidth(100.);
+		c41.set_text("Page 3");
+		c18.addComponent(c41);
+		var c42 = new haxe_ui_containers_VBox();
+		c42.set_percentWidth(100.);
+		c42.set_text("Page 4");
+		c42.set_styleString("padding: 0;padding-bottom: 1px;");
+		c18.addComponent(c42);
+		var c43 = new haxe_ui_containers_VBox();
+		c43.set_percentWidth(100.);
+		c43.set_text("Page 5");
+		c43.set_styleString("padding: 0;padding-bottom: 1px;");
+		c18.addComponent(c43);
+		c17.addComponent(c18);
+		var c44 = new haxe_ui_containers_Accordion();
+		c44.set_width(200.);
+		c44.set_height(400.);
+		var c45 = new haxe_ui_containers_VBox();
+		c45.set_percentWidth(100.);
+		c45.set_text("Alarms");
+		c44.addComponent(c45);
+		var c46 = new haxe_ui_containers_VBox();
+		c46.set_id("page2");
+		c46.set_percentWidth(100.);
+		c46.set_text("Page 2");
+		c46.set_styleString("padding: 0px;");
+		var c47 = new haxe_ui_containers_ScrollView();
+		c47.set_percentWidth(100.);
+		c47.set_percentHeight(100.);
+		c47.set_percentContentWidth(100.);
+		var c48 = new haxe_ui_components_Button();
+		c48.set_percentWidth(100.);
+		c48.set_text("Button 1");
+		c47.addComponent(c48);
+		var c49 = new haxe_ui_components_Button();
+		c49.set_percentWidth(100.);
+		c49.set_text("Button 2");
+		c47.addComponent(c49);
+		var c50 = new haxe_ui_components_Button();
+		c50.set_percentWidth(100.);
+		c50.set_text("Button 3");
+		c47.addComponent(c50);
+		var c51 = new haxe_ui_components_Button();
+		c51.set_percentWidth(100.);
+		c51.set_text("Button 4");
+		c47.addComponent(c51);
+		var c52 = new haxe_ui_components_Button();
+		c52.set_percentWidth(100.);
+		c52.set_text("Button 5");
+		c47.addComponent(c52);
+		var c53 = new haxe_ui_components_Button();
+		c53.set_percentWidth(100.);
+		c53.set_text("Button 6");
+		c47.addComponent(c53);
+		var c54 = new haxe_ui_components_Button();
+		c54.set_percentWidth(100.);
+		c54.set_text("Button 7");
+		c47.addComponent(c54);
+		var c55 = new haxe_ui_components_Button();
+		c55.set_percentWidth(100.);
+		c55.set_text("Button 8");
+		c47.addComponent(c55);
+		var c56 = new haxe_ui_components_Button();
+		c56.set_percentWidth(100.);
+		c56.set_text("Button 9");
+		c47.addComponent(c56);
+		var c57 = new haxe_ui_components_Button();
+		c57.set_percentWidth(100.);
+		c57.set_text("Button 10");
+		c47.addComponent(c57);
+		var c58 = new haxe_ui_components_Button();
+		c58.set_percentWidth(100.);
+		c58.set_text("Button 11");
+		c47.addComponent(c58);
+		var c59 = new haxe_ui_components_Button();
+		c59.set_percentWidth(100.);
+		c59.set_text("Button 12");
+		c47.addComponent(c59);
+		var c60 = new haxe_ui_components_Button();
+		c60.set_percentWidth(100.);
+		c60.set_text("Button 13");
+		c47.addComponent(c60);
+		var c61 = new haxe_ui_components_Button();
+		c61.set_percentWidth(100.);
+		c61.set_text("Button 14");
+		c47.addComponent(c61);
+		var c62 = new haxe_ui_components_Button();
+		c62.set_percentWidth(100.);
+		c62.set_text("Button 15");
+		c47.addComponent(c62);
+		var c63 = new haxe_ui_components_Button();
+		c63.set_percentWidth(100.);
+		c63.set_text("Button 16");
+		c47.addComponent(c63);
+		var c64 = new haxe_ui_components_Button();
+		c64.set_percentWidth(100.);
+		c64.set_text("Button 18");
+		c47.addComponent(c64);
+		var c65 = new haxe_ui_components_Button();
+		c65.set_percentWidth(100.);
+		c65.set_text("Button 19");
+		c47.addComponent(c65);
+		var c66 = new haxe_ui_components_Button();
+		c66.set_percentWidth(100.);
+		c66.set_text("Button 20");
+		c47.addComponent(c66);
+		c46.addComponent(c47);
+		c44.addComponent(c46);
+		var c67 = new haxe_ui_containers_VBox();
+		c67.set_percentWidth(100.);
+		c67.set_text("Page 3");
+		c44.addComponent(c67);
+		var c68 = new haxe_ui_containers_VBox();
+		c68.set_percentWidth(100.);
+		c68.set_text("Page 4");
+		c68.set_styleString("padding: 0;padding-bottom: 1px;");
+		c44.addComponent(c68);
+		var c69 = new haxe_ui_containers_VBox();
+		c69.set_percentWidth(100.);
+		c69.set_text("Page 5");
+		c69.set_styleString("padding: 0;padding-bottom: 1px;");
+		c44.addComponent(c69);
+		c17.addComponent(c44);
+		var c70 = new haxe_ui_containers_Accordion();
+		c70.set_width(200.);
+		c70.set_height(400.);
+		var c71 = new haxe_ui_containers_VBox();
+		c71.set_percentWidth(100.);
+		c71.set_text("Music");
+		c70.addComponent(c71);
+		var c72 = new haxe_ui_containers_VBox();
+		c72.set_id("page2");
+		c72.set_percentWidth(100.);
+		c72.set_text("Page 2");
+		c72.set_styleString("padding: 0px;");
+		var c73 = new haxe_ui_containers_ScrollView();
+		c73.set_percentWidth(100.);
+		c73.set_percentHeight(100.);
+		c73.set_percentContentWidth(100.);
+		var c74 = new haxe_ui_components_Button();
+		c74.set_percentWidth(100.);
+		c74.set_text("Button 1");
+		c73.addComponent(c74);
+		var c75 = new haxe_ui_components_Button();
+		c75.set_percentWidth(100.);
+		c75.set_text("Button 2");
+		c73.addComponent(c75);
+		var c76 = new haxe_ui_components_Button();
+		c76.set_percentWidth(100.);
+		c76.set_text("Button 3");
+		c73.addComponent(c76);
+		var c77 = new haxe_ui_components_Button();
+		c77.set_percentWidth(100.);
+		c77.set_text("Button 4");
+		c73.addComponent(c77);
+		var c78 = new haxe_ui_components_Button();
+		c78.set_percentWidth(100.);
+		c78.set_text("Button 5");
+		c73.addComponent(c78);
+		var c79 = new haxe_ui_components_Button();
+		c79.set_percentWidth(100.);
+		c79.set_text("Button 6");
+		c73.addComponent(c79);
+		var c80 = new haxe_ui_components_Button();
+		c80.set_percentWidth(100.);
+		c80.set_text("Button 7");
+		c73.addComponent(c80);
+		var c81 = new haxe_ui_components_Button();
+		c81.set_percentWidth(100.);
+		c81.set_text("Button 8");
+		c73.addComponent(c81);
+		var c82 = new haxe_ui_components_Button();
+		c82.set_percentWidth(100.);
+		c82.set_text("Button 9");
+		c73.addComponent(c82);
+		var c83 = new haxe_ui_components_Button();
+		c83.set_percentWidth(100.);
+		c83.set_text("Button 10");
+		c73.addComponent(c83);
+		var c84 = new haxe_ui_components_Button();
+		c84.set_percentWidth(100.);
+		c84.set_text("Button 11");
+		c73.addComponent(c84);
+		var c85 = new haxe_ui_components_Button();
+		c85.set_percentWidth(100.);
+		c85.set_text("Button 12");
+		c73.addComponent(c85);
+		var c86 = new haxe_ui_components_Button();
+		c86.set_percentWidth(100.);
+		c86.set_text("Button 13");
+		c73.addComponent(c86);
+		var c87 = new haxe_ui_components_Button();
+		c87.set_percentWidth(100.);
+		c87.set_text("Button 14");
+		c73.addComponent(c87);
+		var c88 = new haxe_ui_components_Button();
+		c88.set_percentWidth(100.);
+		c88.set_text("Button 15");
+		c73.addComponent(c88);
+		var c89 = new haxe_ui_components_Button();
+		c89.set_percentWidth(100.);
+		c89.set_text("Button 16");
+		c73.addComponent(c89);
+		var c90 = new haxe_ui_components_Button();
+		c90.set_percentWidth(100.);
+		c90.set_text("Button 18");
+		c73.addComponent(c90);
+		var c91 = new haxe_ui_components_Button();
+		c91.set_percentWidth(100.);
+		c91.set_text("Button 19");
+		c73.addComponent(c91);
+		var c92 = new haxe_ui_components_Button();
+		c92.set_percentWidth(100.);
+		c92.set_text("Button 20");
+		c73.addComponent(c92);
+		c72.addComponent(c73);
+		c70.addComponent(c72);
+		var c93 = new haxe_ui_containers_VBox();
+		c93.set_percentWidth(100.);
+		c93.set_text("Page 3");
+		c70.addComponent(c93);
+		var c94 = new haxe_ui_containers_VBox();
+		c94.set_percentWidth(100.);
+		c94.set_text("Page 4");
+		c94.set_styleString("padding: 0;padding-bottom: 1px;");
+		c70.addComponent(c94);
+		var c95 = new haxe_ui_containers_VBox();
+		c95.set_percentWidth(100.);
+		c95.set_text("Page 5");
+		c95.set_styleString("padding: 0;padding-bottom: 1px;");
+		c70.addComponent(c95);
+		c17.addComponent(c70);
+		var c96 = new haxe_ui_containers_Accordion();
+		c96.set_width(200.);
+		c96.set_height(400.);
+		var c97 = new haxe_ui_containers_VBox();
+		c97.set_percentWidth(100.);
+		c97.set_text("Page 1");
+		c96.addComponent(c97);
+		var c98 = new haxe_ui_containers_VBox();
+		c98.set_id("page2");
+		c98.set_percentWidth(100.);
+		c98.set_text("Page 2");
+		c98.set_styleString("padding: 0px;");
+		var c99 = new haxe_ui_containers_ScrollView();
+		c99.set_percentWidth(100.);
+		c99.set_percentHeight(100.);
+		c99.set_percentContentWidth(100.);
+		var c100 = new haxe_ui_components_Button();
+		c100.set_percentWidth(100.);
+		c100.set_text("Button 1");
+		c99.addComponent(c100);
+		var c101 = new haxe_ui_components_Button();
+		c101.set_percentWidth(100.);
+		c101.set_text("Button 2");
+		c99.addComponent(c101);
+		var c102 = new haxe_ui_components_Button();
+		c102.set_percentWidth(100.);
+		c102.set_text("Button 3");
+		c99.addComponent(c102);
+		var c103 = new haxe_ui_components_Button();
+		c103.set_percentWidth(100.);
+		c103.set_text("Button 4");
+		c99.addComponent(c103);
+		var c104 = new haxe_ui_components_Button();
+		c104.set_percentWidth(100.);
+		c104.set_text("Button 5");
+		c99.addComponent(c104);
+		var c105 = new haxe_ui_components_Button();
+		c105.set_percentWidth(100.);
+		c105.set_text("Button 6");
+		c99.addComponent(c105);
+		var c106 = new haxe_ui_components_Button();
+		c106.set_percentWidth(100.);
+		c106.set_text("Button 7");
+		c99.addComponent(c106);
+		var c107 = new haxe_ui_components_Button();
+		c107.set_percentWidth(100.);
+		c107.set_text("Button 8");
+		c99.addComponent(c107);
+		var c108 = new haxe_ui_components_Button();
+		c108.set_percentWidth(100.);
+		c108.set_text("Button 9");
+		c99.addComponent(c108);
+		var c109 = new haxe_ui_components_Button();
+		c109.set_percentWidth(100.);
+		c109.set_text("Button 10");
+		c99.addComponent(c109);
+		var c110 = new haxe_ui_components_Button();
+		c110.set_percentWidth(100.);
+		c110.set_text("Button 11");
+		c99.addComponent(c110);
+		var c111 = new haxe_ui_components_Button();
+		c111.set_percentWidth(100.);
+		c111.set_text("Button 12");
+		c99.addComponent(c111);
+		var c112 = new haxe_ui_components_Button();
+		c112.set_percentWidth(100.);
+		c112.set_text("Button 13");
+		c99.addComponent(c112);
+		var c113 = new haxe_ui_components_Button();
+		c113.set_percentWidth(100.);
+		c113.set_text("Button 14");
+		c99.addComponent(c113);
+		var c114 = new haxe_ui_components_Button();
+		c114.set_percentWidth(100.);
+		c114.set_text("Button 15");
+		c99.addComponent(c114);
+		var c115 = new haxe_ui_components_Button();
+		c115.set_percentWidth(100.);
+		c115.set_text("Button 16");
+		c99.addComponent(c115);
+		var c116 = new haxe_ui_components_Button();
+		c116.set_percentWidth(100.);
+		c116.set_text("Button 18");
+		c99.addComponent(c116);
+		var c117 = new haxe_ui_components_Button();
+		c117.set_percentWidth(100.);
+		c117.set_text("Button 19");
+		c99.addComponent(c117);
+		var c118 = new haxe_ui_components_Button();
+		c118.set_percentWidth(100.);
+		c118.set_text("Button 20");
+		c99.addComponent(c118);
+		c98.addComponent(c99);
+		c96.addComponent(c98);
+		var c119 = new haxe_ui_containers_VBox();
+		c119.set_percentWidth(100.);
+		c119.set_text("Page 3");
+		c96.addComponent(c119);
+		var c120 = new haxe_ui_containers_VBox();
+		c120.set_percentWidth(100.);
+		c120.set_text("Page 4");
+		c120.set_styleString("padding: 0;padding-bottom: 1px;");
+		c96.addComponent(c120);
+		var c121 = new haxe_ui_containers_VBox();
+		c121.set_percentWidth(100.);
+		c121.set_text("Page 5");
+		c121.set_styleString("padding: 0;padding-bottom: 1px;");
+		c96.addComponent(c121);
+		c17.addComponent(c96);
+		var c122 = new haxe_ui_containers_Accordion();
+		c122.set_width(200.);
+		c122.set_height(400.);
+		var c123 = new haxe_ui_containers_VBox();
+		c123.set_percentWidth(100.);
+		c123.set_text("Page 1");
+		c122.addComponent(c123);
+		var c124 = new haxe_ui_containers_VBox();
+		c124.set_id("page2");
+		c124.set_percentWidth(100.);
+		c124.set_text("Page 2");
+		c124.set_styleString("padding: 0px;");
+		var c125 = new haxe_ui_containers_ScrollView();
+		c125.set_percentWidth(100.);
+		c125.set_percentHeight(100.);
+		c125.set_percentContentWidth(100.);
+		var c126 = new haxe_ui_components_Button();
+		c126.set_percentWidth(100.);
+		c126.set_text("Button 1");
+		c125.addComponent(c126);
+		var c127 = new haxe_ui_components_Button();
+		c127.set_percentWidth(100.);
+		c127.set_text("Button 2");
+		c125.addComponent(c127);
+		var c128 = new haxe_ui_components_Button();
+		c128.set_percentWidth(100.);
+		c128.set_text("Button 3");
+		c125.addComponent(c128);
+		var c129 = new haxe_ui_components_Button();
+		c129.set_percentWidth(100.);
+		c129.set_text("Button 4");
+		c125.addComponent(c129);
+		var c130 = new haxe_ui_components_Button();
+		c130.set_percentWidth(100.);
+		c130.set_text("Button 5");
+		c125.addComponent(c130);
+		var c131 = new haxe_ui_components_Button();
+		c131.set_percentWidth(100.);
+		c131.set_text("Button 6");
+		c125.addComponent(c131);
+		var c132 = new haxe_ui_components_Button();
+		c132.set_percentWidth(100.);
+		c132.set_text("Button 7");
+		c125.addComponent(c132);
+		var c133 = new haxe_ui_components_Button();
+		c133.set_percentWidth(100.);
+		c133.set_text("Button 8");
+		c125.addComponent(c133);
+		var c134 = new haxe_ui_components_Button();
+		c134.set_percentWidth(100.);
+		c134.set_text("Button 9");
+		c125.addComponent(c134);
+		var c135 = new haxe_ui_components_Button();
+		c135.set_percentWidth(100.);
+		c135.set_text("Button 10");
+		c125.addComponent(c135);
+		var c136 = new haxe_ui_components_Button();
+		c136.set_percentWidth(100.);
+		c136.set_text("Button 11");
+		c125.addComponent(c136);
+		var c137 = new haxe_ui_components_Button();
+		c137.set_percentWidth(100.);
+		c137.set_text("Button 12");
+		c125.addComponent(c137);
+		var c138 = new haxe_ui_components_Button();
+		c138.set_percentWidth(100.);
+		c138.set_text("Button 13");
+		c125.addComponent(c138);
+		var c139 = new haxe_ui_components_Button();
+		c139.set_percentWidth(100.);
+		c139.set_text("Button 14");
+		c125.addComponent(c139);
+		var c140 = new haxe_ui_components_Button();
+		c140.set_percentWidth(100.);
+		c140.set_text("Button 15");
+		c125.addComponent(c140);
+		var c141 = new haxe_ui_components_Button();
+		c141.set_percentWidth(100.);
+		c141.set_text("Button 16");
+		c125.addComponent(c141);
+		var c142 = new haxe_ui_components_Button();
+		c142.set_percentWidth(100.);
+		c142.set_text("Button 18");
+		c125.addComponent(c142);
+		var c143 = new haxe_ui_components_Button();
+		c143.set_percentWidth(100.);
+		c143.set_text("Button 19");
+		c125.addComponent(c143);
+		var c144 = new haxe_ui_components_Button();
+		c144.set_percentWidth(100.);
+		c144.set_text("Button 20");
+		c125.addComponent(c144);
+		c124.addComponent(c125);
+		c122.addComponent(c124);
+		var c145 = new haxe_ui_containers_VBox();
+		c145.set_percentWidth(100.);
+		c145.set_text("Page 3");
+		c122.addComponent(c145);
+		var c146 = new haxe_ui_containers_VBox();
+		c146.set_percentWidth(100.);
+		c146.set_text("Page 4");
+		c146.set_styleString("padding: 0;padding-bottom: 1px;");
+		c122.addComponent(c146);
+		var c147 = new haxe_ui_containers_VBox();
+		c147.set_percentWidth(100.);
+		c147.set_text("Page 5");
+		c147.set_styleString("padding: 0;padding-bottom: 1px;");
+		c122.addComponent(c147);
+		c17.addComponent(c122);
+		var c148 = new haxe_ui_containers_Accordion();
+		c148.set_width(200.);
+		c148.set_height(400.);
+		var c149 = new haxe_ui_containers_VBox();
+		c149.set_percentWidth(100.);
+		c149.set_text("Page 1");
+		c148.addComponent(c149);
+		var c150 = new haxe_ui_containers_VBox();
+		c150.set_id("page2");
+		c150.set_percentWidth(100.);
+		c150.set_text("Page 2");
+		c150.set_styleString("padding: 0px;");
+		var c151 = new haxe_ui_containers_ScrollView();
+		c151.set_percentWidth(100.);
+		c151.set_percentHeight(100.);
+		c151.set_percentContentWidth(100.);
+		var c152 = new haxe_ui_components_Button();
+		c152.set_percentWidth(100.);
+		c152.set_text("Button 1");
+		c151.addComponent(c152);
+		var c153 = new haxe_ui_components_Button();
+		c153.set_percentWidth(100.);
+		c153.set_text("Button 2");
+		c151.addComponent(c153);
+		var c154 = new haxe_ui_components_Button();
+		c154.set_percentWidth(100.);
+		c154.set_text("Button 3");
+		c151.addComponent(c154);
+		var c155 = new haxe_ui_components_Button();
+		c155.set_percentWidth(100.);
+		c155.set_text("Button 4");
+		c151.addComponent(c155);
+		var c156 = new haxe_ui_components_Button();
+		c156.set_percentWidth(100.);
+		c156.set_text("Button 5");
+		c151.addComponent(c156);
+		var c157 = new haxe_ui_components_Button();
+		c157.set_percentWidth(100.);
+		c157.set_text("Button 6");
+		c151.addComponent(c157);
+		var c158 = new haxe_ui_components_Button();
+		c158.set_percentWidth(100.);
+		c158.set_text("Button 7");
+		c151.addComponent(c158);
+		var c159 = new haxe_ui_components_Button();
+		c159.set_percentWidth(100.);
+		c159.set_text("Button 8");
+		c151.addComponent(c159);
+		var c160 = new haxe_ui_components_Button();
+		c160.set_percentWidth(100.);
+		c160.set_text("Button 9");
+		c151.addComponent(c160);
+		var c161 = new haxe_ui_components_Button();
+		c161.set_percentWidth(100.);
+		c161.set_text("Button 10");
+		c151.addComponent(c161);
+		var c162 = new haxe_ui_components_Button();
+		c162.set_percentWidth(100.);
+		c162.set_text("Button 11");
+		c151.addComponent(c162);
+		var c163 = new haxe_ui_components_Button();
+		c163.set_percentWidth(100.);
+		c163.set_text("Button 12");
+		c151.addComponent(c163);
+		var c164 = new haxe_ui_components_Button();
+		c164.set_percentWidth(100.);
+		c164.set_text("Button 13");
+		c151.addComponent(c164);
+		var c165 = new haxe_ui_components_Button();
+		c165.set_percentWidth(100.);
+		c165.set_text("Button 14");
+		c151.addComponent(c165);
+		var c166 = new haxe_ui_components_Button();
+		c166.set_percentWidth(100.);
+		c166.set_text("Button 15");
+		c151.addComponent(c166);
+		var c167 = new haxe_ui_components_Button();
+		c167.set_percentWidth(100.);
+		c167.set_text("Button 16");
+		c151.addComponent(c167);
+		var c168 = new haxe_ui_components_Button();
+		c168.set_percentWidth(100.);
+		c168.set_text("Button 18");
+		c151.addComponent(c168);
+		var c169 = new haxe_ui_components_Button();
+		c169.set_percentWidth(100.);
+		c169.set_text("Button 19");
+		c151.addComponent(c169);
+		var c170 = new haxe_ui_components_Button();
+		c170.set_percentWidth(100.);
+		c170.set_text("Button 20");
+		c151.addComponent(c170);
+		c150.addComponent(c151);
+		c148.addComponent(c150);
+		var c171 = new haxe_ui_containers_VBox();
+		c171.set_percentWidth(100.);
+		c171.set_text("Page 3");
+		c148.addComponent(c171);
+		var c172 = new haxe_ui_containers_VBox();
+		c172.set_percentWidth(100.);
+		c172.set_text("Page 4");
+		c172.set_styleString("padding: 0;padding-bottom: 1px;");
+		c148.addComponent(c172);
+		var c173 = new haxe_ui_containers_VBox();
+		c173.set_percentWidth(100.);
+		c173.set_text("Page 5");
+		c173.set_styleString("padding: 0;padding-bottom: 1px;");
+		c148.addComponent(c173);
+		c17.addComponent(c148);
+		var c174 = new haxe_ui_containers_Accordion();
+		c174.set_width(200.);
+		c174.set_height(400.);
+		var c175 = new haxe_ui_containers_VBox();
+		c175.set_percentWidth(100.);
+		c175.set_text("Page 1");
+		c174.addComponent(c175);
+		var c176 = new haxe_ui_containers_VBox();
+		c176.set_id("page2");
+		c176.set_percentWidth(100.);
+		c176.set_text("Page 2");
+		c176.set_styleString("padding: 0px;");
+		var c177 = new haxe_ui_containers_ScrollView();
+		c177.set_percentWidth(100.);
+		c177.set_percentHeight(100.);
+		c177.set_percentContentWidth(100.);
+		var c178 = new haxe_ui_components_Button();
+		c178.set_percentWidth(100.);
+		c178.set_text("Button 1");
+		c177.addComponent(c178);
+		var c179 = new haxe_ui_components_Button();
+		c179.set_percentWidth(100.);
+		c179.set_text("Button 2");
+		c177.addComponent(c179);
+		var c180 = new haxe_ui_components_Button();
+		c180.set_percentWidth(100.);
+		c180.set_text("Button 3");
+		c177.addComponent(c180);
+		var c181 = new haxe_ui_components_Button();
+		c181.set_percentWidth(100.);
+		c181.set_text("Button 4");
+		c177.addComponent(c181);
+		var c182 = new haxe_ui_components_Button();
+		c182.set_percentWidth(100.);
+		c182.set_text("Button 5");
+		c177.addComponent(c182);
+		var c183 = new haxe_ui_components_Button();
+		c183.set_percentWidth(100.);
+		c183.set_text("Button 6");
+		c177.addComponent(c183);
+		var c184 = new haxe_ui_components_Button();
+		c184.set_percentWidth(100.);
+		c184.set_text("Button 7");
+		c177.addComponent(c184);
+		var c185 = new haxe_ui_components_Button();
+		c185.set_percentWidth(100.);
+		c185.set_text("Button 8");
+		c177.addComponent(c185);
+		var c186 = new haxe_ui_components_Button();
+		c186.set_percentWidth(100.);
+		c186.set_text("Button 9");
+		c177.addComponent(c186);
+		var c187 = new haxe_ui_components_Button();
+		c187.set_percentWidth(100.);
+		c187.set_text("Button 10");
+		c177.addComponent(c187);
+		var c188 = new haxe_ui_components_Button();
+		c188.set_percentWidth(100.);
+		c188.set_text("Button 11");
+		c177.addComponent(c188);
+		var c189 = new haxe_ui_components_Button();
+		c189.set_percentWidth(100.);
+		c189.set_text("Button 12");
+		c177.addComponent(c189);
+		var c190 = new haxe_ui_components_Button();
+		c190.set_percentWidth(100.);
+		c190.set_text("Button 13");
+		c177.addComponent(c190);
+		var c191 = new haxe_ui_components_Button();
+		c191.set_percentWidth(100.);
+		c191.set_text("Button 14");
+		c177.addComponent(c191);
+		var c192 = new haxe_ui_components_Button();
+		c192.set_percentWidth(100.);
+		c192.set_text("Button 15");
+		c177.addComponent(c192);
+		var c193 = new haxe_ui_components_Button();
+		c193.set_percentWidth(100.);
+		c193.set_text("Button 16");
+		c177.addComponent(c193);
+		var c194 = new haxe_ui_components_Button();
+		c194.set_percentWidth(100.);
+		c194.set_text("Button 18");
+		c177.addComponent(c194);
+		var c195 = new haxe_ui_components_Button();
+		c195.set_percentWidth(100.);
+		c195.set_text("Button 19");
+		c177.addComponent(c195);
+		var c196 = new haxe_ui_components_Button();
+		c196.set_percentWidth(100.);
+		c196.set_text("Button 20");
+		c177.addComponent(c196);
+		c176.addComponent(c177);
+		c174.addComponent(c176);
+		var c197 = new haxe_ui_containers_VBox();
+		c197.set_percentWidth(100.);
+		c197.set_text("Page 3");
+		c174.addComponent(c197);
+		var c198 = new haxe_ui_containers_VBox();
+		c198.set_percentWidth(100.);
+		c198.set_text("Page 4");
+		c198.set_styleString("padding: 0;padding-bottom: 1px;");
+		c174.addComponent(c198);
+		var c199 = new haxe_ui_containers_VBox();
+		c199.set_percentWidth(100.);
+		c199.set_text("Page 5");
+		c199.set_styleString("padding: 0;padding-bottom: 1px;");
+		c174.addComponent(c199);
+		c17.addComponent(c174);
+		var c200 = new haxe_ui_containers_VBox();
+		c200.set_styleString("padding: 15px;");
+		var c201 = new haxe_ui_containers_Grid();
+		c201.set_columns(1);
+		var c202 = new haxe_ui_containers_Frame();
+		c202.set_id("theFrameaudio");
+		c202.set_width(300.);
+		c202.set_height(200.);
+		c202.set_text("Test Audio");
+		var c203 = new haxe_ui_containers_VBox();
+		c203.set_percentWidth(100.);
+		c203.set_percentHeight(100.);
+		var c204 = new custom_Audio();
+		c204.set_id("theAudio");
+		c204.set_percentWidth(100.);
+		c204.set_percentHeight(100.);
+		c204.set_file("https://www.w3schools.com/html/mov_bbb.mp4");
+		c203.addComponent(c204);
+		var c205 = new haxe_ui_containers_HBox();
+		c205.set_percentWidth(100.);
+		var c206 = new haxe_ui_components_Button();
+		c206.set_percentWidth(100.);
+		c206.set_text("Play");
+		c205.addComponent(c206);
+		var c207 = new haxe_ui_components_Button();
+		c207.set_percentWidth(100.);
+		c207.set_text("Pause");
+		c205.addComponent(c207);
+		c203.addComponent(c205);
+		c202.addComponent(c203);
+		c201.addComponent(c202);
+		c200.addComponent(c201);
+		c17.addComponent(c200);
+		c5.addComponent(c17);
+		var c208 = new haxe_ui_containers_HBox();
+		c208.set_percentWidth(100.);
+		c208.set_text("Video");
+		c208.set_continuous(true);
+		var c209 = new haxe_ui_containers_VBox();
+		c209.set_styleString("padding: 15px;");
+		var c210 = new haxe_ui_containers_HBox();
+		var c211 = new haxe_ui_components_Label();
+		c211.set_text("Frame Size:");
+		c210.addComponent(c211);
+		var c212 = new haxe_ui_components_HorizontalSlider();
+		c212.set_pos(500);
+		c212.set_min(200);
+		c212.set_max(500);
+		c210.addComponent(c212);
+		var c213 = new haxe_ui_components_HorizontalSlider();
+		c213.set_pos(400);
+		c213.set_min(200);
+		c213.set_max(500);
+		c210.addComponent(c213);
+		c209.addComponent(c210);
+		var c214 = new haxe_ui_containers_Grid();
+		c214.set_columns(3);
+		var c215 = new haxe_ui_containers_Frame();
+		c215.set_id("theFrame0");
+		c215.set_width(300.);
+		c215.set_height(200.);
+		c215.set_text("Test Video");
+		var c216 = new haxe_ui_containers_VBox();
+		c216.set_percentWidth(100.);
+		c216.set_percentHeight(100.);
+		var c217 = new custom_Video();
+		c217.set_id("theVideo");
+		c217.set_percentWidth(100.);
+		c217.set_percentHeight(100.);
+		c217.set_file("https://www.w3schools.com/html/mov_bbb.mp4");
+		c216.addComponent(c217);
+		var c218 = new haxe_ui_containers_HBox();
+		c218.set_percentWidth(100.);
+		var c219 = new haxe_ui_components_Button();
+		c219.set_percentWidth(100.);
+		c219.set_text("Play");
+		c218.addComponent(c219);
+		var c220 = new haxe_ui_components_Button();
+		c220.set_percentWidth(100.);
+		c220.set_text("Pause");
+		c218.addComponent(c220);
+		c216.addComponent(c218);
+		c215.addComponent(c216);
+		c214.addComponent(c215);
+		c209.addComponent(c214);
+		c208.addComponent(c209);
+		c5.addComponent(c208);
+		var c221 = new haxe_ui_containers_HBox();
+		c221.set_percentWidth(100.);
+		c221.set_text("Sensors");
+		c221.set_continuous(true);
+		var c222 = new haxe_ui_containers_VBox();
+		var c223 = new haxe_ui_containers_Grid();
+		var c224 = new haxe_ui_components_Label();
+		c224.set_text("Width:");
+		c224.set_verticalAlign("center");
+		c223.addComponent(c224);
+		var c225 = new haxe_ui_components_HorizontalSlider();
+		c225.set_pos(800);
+		c225.set_min(170);
+		c225.set_max(800);
+		c223.addComponent(c225);
+		var c226 = new haxe_ui_components_Label();
+		c226.set_text("Height:");
+		c226.set_verticalAlign("center");
+		c223.addComponent(c226);
+		var c227 = new haxe_ui_components_HorizontalSlider();
+		c227.set_pos(500);
+		c227.set_min(170);
+		c227.set_max(800);
+		c223.addComponent(c227);
+		c222.addComponent(c223);
+		var c228 = new haxe_ui_containers_Grid();
+		c228.set_id("grid1");
+		c228.set_styleString("border: 1px solid #ababab;padding: 5px;");
+		c228.set_columns(5);
+		var c229 = new haxe_ui_containers_Box();
+		c229.set_percentWidth(100.);
+		c229.set_percentHeight(100.);
+		c229.set_styleString("background-color: red;border:1px solid red;background-opacity: .5");
+		c228.addComponent(c229);
+		var c230 = new haxe_ui_containers_Box();
+		c230.set_percentWidth(100.);
+		c230.set_percentHeight(100.);
+		c230.set_styleString("background-color: red;border:1px solid red;background-opacity: .5");
+		c228.addComponent(c230);
+		var c231 = new haxe_ui_containers_Box();
+		c231.set_percentWidth(100.);
+		c231.set_percentHeight(100.);
+		c231.set_styleString("background-color: red;border:1px solid red;background-opacity: .5");
+		c228.addComponent(c231);
+		var c232 = new haxe_ui_containers_Box();
+		c232.set_percentWidth(100.);
+		c232.set_percentHeight(100.);
+		c232.set_styleString("background-color: red;border:1px solid red;background-opacity: .5");
+		c228.addComponent(c232);
+		var c233 = new haxe_ui_containers_Box();
+		c233.set_percentWidth(100.);
+		c233.set_percentHeight(100.);
+		c233.set_styleString("background-color: red;border:1px solid red;background-opacity: .5");
+		c228.addComponent(c233);
+		var c234 = new haxe_ui_containers_Box();
+		c234.set_percentWidth(100.);
+		c234.set_percentHeight(100.);
+		c234.set_styleString("background-color: green;border:1px solid green;background-opacity: .5");
+		c228.addComponent(c234);
+		var c235 = new haxe_ui_containers_Box();
+		c235.set_percentWidth(100.);
+		c235.set_percentHeight(100.);
+		c235.set_styleString("background-color: green;border:1px solid green;background-opacity: .5");
+		c228.addComponent(c235);
+		var c236 = new haxe_ui_containers_Box();
+		c236.set_percentWidth(100.);
+		c236.set_percentHeight(100.);
+		c236.set_styleString("background-color: green;border:1px solid green;background-opacity: .5");
+		c228.addComponent(c236);
+		var c237 = new haxe_ui_containers_Box();
+		c237.set_percentWidth(100.);
+		c237.set_percentHeight(100.);
+		c237.set_styleString("background-color: green;border:1px solid green;background-opacity: .5");
+		c228.addComponent(c237);
+		var c238 = new haxe_ui_containers_Box();
+		c238.set_percentWidth(100.);
+		c238.set_percentHeight(100.);
+		c238.set_styleString("background-color: green;border:1px solid green;background-opacity: .5");
+		c228.addComponent(c238);
+		var c239 = new haxe_ui_containers_Box();
+		c239.set_percentWidth(100.);
+		c239.set_percentHeight(100.);
+		c239.set_styleString("background-color: blue;border:1px solid blue;background-opacity: .5");
+		c228.addComponent(c239);
+		var c240 = new haxe_ui_containers_Box();
+		c240.set_percentWidth(100.);
+		c240.set_percentHeight(100.);
+		c240.set_styleString("background-color: blue;border:1px solid blue;background-opacity: .5");
+		c228.addComponent(c240);
+		var c241 = new haxe_ui_containers_Box();
+		c241.set_percentWidth(100.);
+		c241.set_percentHeight(100.);
+		c241.set_styleString("background-color: blue;border:1px solid blue;background-opacity: .5");
+		c228.addComponent(c241);
+		var c242 = new haxe_ui_containers_Box();
+		c242.set_percentWidth(100.);
+		c242.set_percentHeight(100.);
+		c242.set_styleString("background-color: blue;border:1px solid blue;background-opacity: .5");
+		c228.addComponent(c242);
+		var c243 = new haxe_ui_containers_Box();
+		c243.set_percentWidth(100.);
+		c243.set_percentHeight(100.);
+		c243.set_styleString("background-color: blue;border:1px solid blue;background-opacity: .5");
+		c228.addComponent(c243);
+		c222.addComponent(c228);
+		c221.addComponent(c222);
+		c5.addComponent(c221);
+		var c244 = new haxe_ui_containers_HBox();
+		c244.set_percentWidth(100.);
+		c244.set_text("Cameras");
+		c244.set_continuous(true);
+		var c245 = new haxe_ui_containers_VBox();
+		c245.set_styleString("padding: 15px;");
+		var c246 = new haxe_ui_containers_HBox();
+		var c247 = new haxe_ui_components_Label();
+		c247.set_text("Frame Size:");
+		c246.addComponent(c247);
+		var c248 = new haxe_ui_components_HorizontalSlider();
+		c248.set_pos(400);
+		c248.set_min(200);
+		c248.set_max(500);
+		c246.addComponent(c248);
+		var c249 = new haxe_ui_components_HorizontalSlider();
+		c249.set_pos(300);
+		c249.set_min(200);
+		c249.set_max(500);
+		c246.addComponent(c249);
+		c245.addComponent(c246);
+		var c250 = new haxe_ui_containers_Grid();
+		c250.set_columns(1);
+		var c251 = new haxe_ui_containers_Frame();
+		c251.set_id("theFrame");
+		c251.set_width(300.);
+		c251.set_height(300.);
+		c251.set_text("Camera 1");
+		var c252 = new haxe_ui_containers_VBox();
+		c252.set_percentWidth(100.);
+		c252.set_percentHeight(100.);
+		var c253 = new haxe_ui_containers_HBox();
+		c253.set_percentWidth(100.);
+		c252.addComponent(c253);
+		c251.addComponent(c252);
+		c250.addComponent(c251);
+		c245.addComponent(c250);
+		c244.addComponent(c245);
+		var c254 = new haxe_ui_containers_VBox();
+		c254.set_styleString("padding: 15px;");
+		var c255 = new haxe_ui_containers_HBox();
+		var c256 = new haxe_ui_components_Label();
+		c256.set_text("Frame Size:");
+		c255.addComponent(c256);
+		var c257 = new haxe_ui_components_HorizontalSlider();
+		c257.set_pos(400);
+		c257.set_min(200);
+		c257.set_max(500);
+		c255.addComponent(c257);
+		var c258 = new haxe_ui_components_HorizontalSlider();
+		c258.set_pos(300);
+		c258.set_min(200);
+		c258.set_max(500);
+		c255.addComponent(c258);
+		c254.addComponent(c255);
+		var c259 = new haxe_ui_containers_Grid();
+		c259.set_columns(1);
+		var c260 = new haxe_ui_containers_Frame();
+		c260.set_id("theFrame2");
+		c260.set_width(300.);
+		c260.set_height(300.);
+		c260.set_text("Camera 2 - Night Vision");
+		var c261 = new haxe_ui_containers_VBox();
+		c261.set_percentWidth(100.);
+		c261.set_percentHeight(100.);
+		var c262 = new haxe_ui_containers_HBox();
+		c262.set_percentWidth(100.);
+		c261.addComponent(c262);
+		c260.addComponent(c261);
+		c259.addComponent(c260);
+		c254.addComponent(c259);
+		c244.addComponent(c254);
+		c5.addComponent(c244);
+		var c263 = new haxe_ui_containers_HBox();
+		c263.set_percentWidth(100.);
+		c263.set_text("Servo Control");
+		c263.set_continuous(true);
+		var c264 = new haxe_ui_containers_VBox();
+		var c265 = new haxe_ui_containers_HBox();
+		c265.set_percentWidth(100.);
+		var c266 = new haxe_ui_containers_Accordion();
+		c266.set_width(200.);
+		c266.set_height(400.);
+		var c267 = new haxe_ui_containers_VBox();
+		c267.set_percentWidth(100.);
+		c267.set_text("Left Arm");
+		c266.addComponent(c267);
+		var c268 = new haxe_ui_containers_VBox();
+		c268.set_id("Shoulder");
+		c268.set_percentWidth(100.);
+		c268.set_text("Shoulder");
+		c268.set_styleString("padding: 0px;");
+		c266.addComponent(c268);
+		var c269 = new haxe_ui_containers_VBox();
+		c269.set_percentWidth(100.);
+		c269.set_text("Elbow");
+		c266.addComponent(c269);
+		var c270 = new haxe_ui_containers_VBox();
+		c270.set_percentWidth(100.);
+		c270.set_text("Wrist");
+		c270.set_styleString("padding: 0;padding-bottom: 1px;");
+		c266.addComponent(c270);
+		var c271 = new haxe_ui_containers_VBox();
+		c271.set_percentWidth(100.);
+		c271.set_text("Hand");
+		c271.set_styleString("padding: 0;padding-bottom: 1px;");
+		c266.addComponent(c271);
+		c265.addComponent(c266);
+		var c272 = new haxe_ui_containers_Accordion();
+		c272.set_width(200.);
+		c272.set_height(400.);
+		var c273 = new haxe_ui_containers_VBox();
+		c273.set_percentWidth(100.);
+		c273.set_text("Right Arm");
+		c272.addComponent(c273);
+		var c274 = new haxe_ui_containers_VBox();
+		c274.set_id("Shoulder");
+		c274.set_percentWidth(100.);
+		c274.set_text("Shoulder");
+		c274.set_styleString("padding: 0px;");
+		c272.addComponent(c274);
+		var c275 = new haxe_ui_containers_VBox();
+		c275.set_percentWidth(100.);
+		c275.set_text("Elbow");
+		c272.addComponent(c275);
+		var c276 = new haxe_ui_containers_VBox();
+		c276.set_percentWidth(100.);
+		c276.set_text("Wrist");
+		c276.set_styleString("padding: 0;padding-bottom: 1px;");
+		c272.addComponent(c276);
+		var c277 = new haxe_ui_containers_VBox();
+		c277.set_percentWidth(100.);
+		c277.set_text("Hand");
+		c277.set_styleString("padding: 0;padding-bottom: 1px;");
+		c272.addComponent(c277);
+		c265.addComponent(c272);
+		var c278 = new haxe_ui_containers_Accordion();
+		c278.set_width(200.);
+		c278.set_height(400.);
+		var c279 = new haxe_ui_containers_VBox();
+		c279.set_percentWidth(100.);
+		c279.set_text("Head");
+		c278.addComponent(c279);
+		var c280 = new haxe_ui_containers_VBox();
+		c280.set_id("Eyes");
+		c280.set_percentWidth(100.);
+		c280.set_text("Eyes");
+		c280.set_styleString("padding: 0px;");
+		c278.addComponent(c280);
+		var c281 = new haxe_ui_containers_VBox();
+		c281.set_percentWidth(100.);
+		c281.set_text("Mouth");
+		c278.addComponent(c281);
+		var c282 = new haxe_ui_containers_VBox();
+		c282.set_percentWidth(100.);
+		c282.set_text("Neck");
+		c282.set_styleString("padding: 0;padding-bottom: 1px;");
+		c278.addComponent(c282);
+		c265.addComponent(c278);
+		var c283 = new haxe_ui_containers_Accordion();
+		c283.set_width(200.);
+		c283.set_height(400.);
+		var c284 = new haxe_ui_containers_VBox();
+		c284.set_percentWidth(100.);
+		c284.set_text("Torso");
+		c283.addComponent(c284);
+		var c285 = new haxe_ui_containers_VBox();
+		c285.set_id("Chest");
+		c285.set_percentWidth(100.);
+		c285.set_text("Shoulder");
+		c285.set_styleString("padding: 0px;");
+		c283.addComponent(c285);
+		var c286 = new haxe_ui_containers_VBox();
+		c286.set_percentWidth(100.);
+		c286.set_text("Mid Stomach");
+		c283.addComponent(c286);
+		var c287 = new haxe_ui_containers_VBox();
+		c287.set_percentWidth(100.);
+		c287.set_text("Waist");
+		c287.set_styleString("padding: 0;padding-bottom: 1px;");
+		c283.addComponent(c287);
+		c265.addComponent(c283);
+		var c288 = new haxe_ui_containers_Accordion();
+		c288.set_width(200.);
+		c288.set_height(400.);
+		var c289 = new haxe_ui_containers_VBox();
+		c289.set_percentWidth(100.);
+		c289.set_text("Left Leg");
+		c288.addComponent(c289);
+		var c290 = new haxe_ui_containers_VBox();
+		c290.set_id("LHip");
+		c290.set_percentWidth(100.);
+		c290.set_text("Hip");
+		c290.set_styleString("padding: 0px;");
+		c288.addComponent(c290);
+		var c291 = new haxe_ui_containers_VBox();
+		c291.set_percentWidth(100.);
+		c291.set_text("Knee");
+		c288.addComponent(c291);
+		var c292 = new haxe_ui_containers_VBox();
+		c292.set_percentWidth(100.);
+		c292.set_text("Ankle");
+		c292.set_styleString("padding: 0;padding-bottom: 1px;");
+		c288.addComponent(c292);
+		var c293 = new haxe_ui_containers_VBox();
+		c293.set_percentWidth(100.);
+		c293.set_text("Foot");
+		c293.set_styleString("padding: 0;padding-bottom: 1px;");
+		c288.addComponent(c293);
+		c265.addComponent(c288);
+		var c294 = new haxe_ui_containers_Accordion();
+		c294.set_width(200.);
+		c294.set_height(400.);
+		var c295 = new haxe_ui_containers_VBox();
+		c295.set_percentWidth(100.);
+		c295.set_text("Right Leg");
+		c294.addComponent(c295);
+		var c296 = new haxe_ui_containers_VBox();
+		c296.set_id("RHip");
+		c296.set_percentWidth(100.);
+		c296.set_text("Hip");
+		c296.set_styleString("padding: 0px;");
+		c294.addComponent(c296);
+		var c297 = new haxe_ui_containers_VBox();
+		c297.set_percentWidth(100.);
+		c297.set_text("Knee");
+		c294.addComponent(c297);
+		var c298 = new haxe_ui_containers_VBox();
+		c298.set_percentWidth(100.);
+		c298.set_text("Ankle");
+		c298.set_styleString("padding: 0;padding-bottom: 1px;");
+		c294.addComponent(c298);
+		var c299 = new haxe_ui_containers_VBox();
+		c299.set_percentWidth(100.);
+		c299.set_text("Foot");
+		c299.set_styleString("padding: 0;padding-bottom: 1px;");
+		c294.addComponent(c299);
+		c265.addComponent(c294);
+		c264.addComponent(c265);
+		var c300 = new haxe_ui_containers_Box();
+		c300.set_width(800.);
+		c300.set_height(300.);
+		c300.set_styleString("border: 1px solid #ababab;padding: 5px;");
+		c264.addComponent(c300);
+		var c301 = new haxe_ui_containers_HBox();
+		var c302 = new haxe_ui_components_Label();
+		c302.set_text("Command:");
+		c302.set_verticalAlign("center");
+		c301.addComponent(c302);
+		var c303 = new haxe_ui_containers_VBox();
+		c303.set_width(600.);
+		c303.set_percentHeight(100.);
+		var c304 = new haxe_ui_components_TextField();
+		c304.set_percentWidth(100.);
+		c304.set_verticalAlign("bottom");
+		c304.set_placeholder("Enter some text");
+		c303.addComponent(c304);
+		c301.addComponent(c303);
+		c264.addComponent(c301);
+		c263.addComponent(c264);
+		c5.addComponent(c263);
+		var c305 = new haxe_ui_containers_HBox();
+		c305.set_percentWidth(100.);
+		c305.set_text("Guides");
+		c305.set_continuous(true);
+		c5.addComponent(c305);
+		var c306 = new haxe_ui_containers_HBox();
+		c306.set_percentWidth(100.);
+		c306.set_text("Chat");
+		c306.set_continuous(true);
+		var c307 = new haxe_ui_containers_ScrollView();
+		c307.set_percentWidth(100.);
+		c307.set_percentContentWidth(100.);
+		var c308 = new haxe_ui_containers_VBox();
+		c308.set_percentWidth(100.);
+		var c309 = new haxe_ui_components_Button();
+		c309.set_text("UserName");
+		c308.addComponent(c309);
+		var c310 = new haxe_ui_components_Button();
+		c310.set_text("UserName");
+		c308.addComponent(c310);
+		var c311 = new haxe_ui_components_Button();
+		c311.set_text("UserName");
+		c308.addComponent(c311);
+		var c312 = new haxe_ui_components_Button();
+		c312.set_text("UserName");
+		c308.addComponent(c312);
+		var c313 = new haxe_ui_components_Button();
+		c313.set_text("UserName");
+		c308.addComponent(c313);
+		var c314 = new haxe_ui_components_Button();
+		c314.set_text("UserName");
+		c308.addComponent(c314);
+		var c315 = new haxe_ui_components_Button();
+		c315.set_text("UserName");
+		c308.addComponent(c315);
+		var c316 = new haxe_ui_components_Button();
+		c316.set_text("UserName");
+		c308.addComponent(c316);
+		var c317 = new haxe_ui_components_Button();
+		c317.set_text("UserName");
+		c308.addComponent(c317);
+		var c318 = new haxe_ui_components_Button();
+		c318.set_text("UserName");
+		c308.addComponent(c318);
+		var c319 = new haxe_ui_components_Button();
+		c319.set_text("UserName");
+		c308.addComponent(c319);
+		c307.addComponent(c308);
+		c306.addComponent(c307);
+		var c320 = new haxe_ui_containers_HBox();
+		c320.set_percentWidth(100.);
+		var c321 = new haxe_ui_components_Label();
+		c321.set_text("Input:");
+		c321.set_verticalAlign("center");
+		c320.addComponent(c321);
+		var c322 = new haxe_ui_components_TextField();
+		c322.set_percentWidth(100.);
+		c322.set_placeholder("Enter some text");
+		c320.addComponent(c322);
+		var c323 = new haxe_ui_components_Button();
+		c323.set_text("Send");
+		c320.addComponent(c323);
+		c306.addComponent(c320);
+		c5.addComponent(c306);
+		var c324 = new haxe_ui_containers_HBox();
+		c324.set_percentWidth(100.);
+		c324.set_text("Tools");
+		c324.set_continuous(true);
+		var c325 = new haxe_ui_containers_Accordion();
+		c325.set_height(400.);
+		c325.set_percentWidth(100.);
+		var c326 = new haxe_ui_containers_VBox();
+		c326.set_percentWidth(100.);
+		c326.set_text("Calculator");
+		c325.addComponent(c326);
+		var c327 = new haxe_ui_containers_VBox();
+		c327.set_id("page2");
+		c327.set_percentWidth(100.);
+		c327.set_text("Terminal");
+		c327.set_styleString("padding: 0px;");
+		c325.addComponent(c327);
+		var c328 = new haxe_ui_containers_VBox();
+		c328.set_percentWidth(100.);
+		c328.set_text("Resistor Chart");
+		c325.addComponent(c328);
+		var c329 = new haxe_ui_containers_VBox();
+		c329.set_percentWidth(100.);
+		c329.set_text("-");
+		c329.set_styleString("padding: 0;padding-bottom: 1px;");
+		c325.addComponent(c329);
+		var c330 = new haxe_ui_containers_VBox();
+		c330.set_percentWidth(100.);
+		c330.set_text("-");
+		c330.set_styleString("padding: 0;padding-bottom: 1px;");
+		c325.addComponent(c330);
+		var c331 = new haxe_ui_containers_VBox();
+		c331.set_percentWidth(100.);
+		c331.set_text("RPi4 Pinout");
+		c331.set_styleString("padding: 0;padding-bottom: 1px;");
+		c325.addComponent(c331);
+		var c332 = new haxe_ui_containers_VBox();
+		c332.set_percentWidth(100.);
+		c332.set_text("Arduino Mega Pinout");
+		c332.set_styleString("padding: 0;padding-bottom: 1px;");
+		c325.addComponent(c332);
+		var c333 = new haxe_ui_containers_VBox();
+		c333.set_percentWidth(100.);
+		c333.set_text("Arduino Uno Pinout");
+		c333.set_styleString("padding: 0;padding-bottom: 1px;");
+		c325.addComponent(c333);
+		var c334 = new haxe_ui_containers_VBox();
+		c334.set_percentWidth(100.);
+		c334.set_text("Arduino Nano Pinout");
+		c334.set_styleString("padding: 0;padding-bottom: 1px;");
+		c325.addComponent(c334);
+		var c335 = new haxe_ui_containers_VBox();
+		c335.set_percentWidth(100.);
+		c335.set_text("Glossary");
+		c335.set_styleString("padding: 0;padding-bottom: 1px;");
+		c325.addComponent(c335);
+		c324.addComponent(c325);
+		c5.addComponent(c324);
+		var c336 = new haxe_ui_containers_HBox();
+		c336.set_percentWidth(100.);
+		c336.set_text("Social");
+		c336.set_continuous(true);
+		c5.addComponent(c336);
+		var c337 = new haxe_ui_containers_HBox();
+		c337.set_percentWidth(100.);
+		c337.set_text("Hosting");
+		c337.set_continuous(true);
+		c5.addComponent(c337);
+		c0.addComponent(c5);
+		var c338 = new haxe_ui_containers_HBox();
+		c338.set_percentWidth(100.);
+		c338.set_styleNames("footer");
+		var c339 = new haxe_ui_components_Label();
+		c339.set_percentWidth(100.);
+		c339.set_text("Shaun Holt - 2021");
+		c339.set_verticalAlign("center");
+		c338.addComponent(c339);
+		var c340 = new haxe_ui_components_Label();
+		c340.set_text("Made with Haxe and HaxeUI");
+		c340.set_verticalAlign("center");
+		c340.set_horizontalAlign("right");
+		c338.addComponent(c340);
+		c0.addComponent(c338);
+		rootComponent.addComponent(c0);
+		c206.registerEvent("click",function(event) {
+			var __this__ = c206;
+			var theVideo = c217;
+			var theFrameaudio = c202;
+			var theFrame2 = c260;
+			var theFrame0 = c215;
+			var theFrame = c251;
+			var theAudio = c204;
+			var page2 = c327;
+			var main = c0;
+			var lorem2 = c11;
+			var lorem1 = c10;
+			var logo = c4;
+			var headerLabel = c3;
+			var grid1 = c228;
+			var Shoulder = c274;
+			var RHip = c296;
+			var LHip = c290;
+			var Eyes = c280;
+			var Chest = c285;
+			theAudio.play();
+		});
+		c207.registerEvent("click",function(event) {
+			var __this__ = c207;
+			var theVideo = c217;
+			var theFrameaudio = c202;
+			var theFrame2 = c260;
+			var theFrame0 = c215;
+			var theFrame = c251;
+			var theAudio = c204;
+			var page2 = c327;
+			var main = c0;
+			var lorem2 = c11;
+			var lorem1 = c10;
+			var logo = c4;
+			var headerLabel = c3;
+			var grid1 = c228;
+			var Shoulder = c274;
+			var RHip = c296;
+			var LHip = c290;
+			var Eyes = c280;
+			var Chest = c285;
+			theAudio.pause();
+		});
+		c212.registerEvent("change",function(event) {
+			var __this__ = c212;
+			var theVideo = c217;
+			var theFrameaudio = c202;
+			var theFrame2 = c260;
+			var theFrame0 = c215;
+			var theFrame = c251;
+			var theAudio = c204;
+			var page2 = c327;
+			var main = c0;
+			var lorem2 = c11;
+			var lorem1 = c10;
+			var logo = c4;
+			var headerLabel = c3;
+			var grid1 = c228;
+			var Shoulder = c274;
+			var RHip = c296;
+			var LHip = c290;
+			var Eyes = c280;
+			var Chest = c285;
+			theFrame0.set_width(__this__.get_pos());
+		});
+		c213.registerEvent("change",function(event) {
+			var __this__ = c213;
+			var theVideo = c217;
+			var theFrameaudio = c202;
+			var theFrame2 = c260;
+			var theFrame0 = c215;
+			var theFrame = c251;
+			var theAudio = c204;
+			var page2 = c327;
+			var main = c0;
+			var lorem2 = c11;
+			var lorem1 = c10;
+			var logo = c4;
+			var headerLabel = c3;
+			var grid1 = c228;
+			var Shoulder = c274;
+			var RHip = c296;
+			var LHip = c290;
+			var Eyes = c280;
+			var Chest = c285;
+			theFrame0.set_height(__this__.get_pos());
+		});
+		c219.registerEvent("click",function(event) {
+			var __this__ = c219;
+			var theVideo = c217;
+			var theFrameaudio = c202;
+			var theFrame2 = c260;
+			var theFrame0 = c215;
+			var theFrame = c251;
+			var theAudio = c204;
+			var page2 = c327;
+			var main = c0;
+			var lorem2 = c11;
+			var lorem1 = c10;
+			var logo = c4;
+			var headerLabel = c3;
+			var grid1 = c228;
+			var Shoulder = c274;
+			var RHip = c296;
+			var LHip = c290;
+			var Eyes = c280;
+			var Chest = c285;
+			theVideo.play();
+		});
+		c220.registerEvent("click",function(event) {
+			var __this__ = c220;
+			var theVideo = c217;
+			var theFrameaudio = c202;
+			var theFrame2 = c260;
+			var theFrame0 = c215;
+			var theFrame = c251;
+			var theAudio = c204;
+			var page2 = c327;
+			var main = c0;
+			var lorem2 = c11;
+			var lorem1 = c10;
+			var logo = c4;
+			var headerLabel = c3;
+			var grid1 = c228;
+			var Shoulder = c274;
+			var RHip = c296;
+			var LHip = c290;
+			var Eyes = c280;
+			var Chest = c285;
+			theVideo.pause();
+		});
+		c225.registerEvent("change",function(event) {
+			var __this__ = c225;
+			var theVideo = c217;
+			var theFrameaudio = c202;
+			var theFrame2 = c260;
+			var theFrame0 = c215;
+			var theFrame = c251;
+			var theAudio = c204;
+			var page2 = c327;
+			var main = c0;
+			var lorem2 = c11;
+			var lorem1 = c10;
+			var logo = c4;
+			var headerLabel = c3;
+			var grid1 = c228;
+			var Shoulder = c274;
+			var RHip = c296;
+			var LHip = c290;
+			var Eyes = c280;
+			var Chest = c285;
+			grid1.set_width(__this__.get_value());
+		});
+		c227.registerEvent("change",function(event) {
+			var __this__ = c227;
+			var theVideo = c217;
+			var theFrameaudio = c202;
+			var theFrame2 = c260;
+			var theFrame0 = c215;
+			var theFrame = c251;
+			var theAudio = c204;
+			var page2 = c327;
+			var main = c0;
+			var lorem2 = c11;
+			var lorem1 = c10;
+			var logo = c4;
+			var headerLabel = c3;
+			var grid1 = c228;
+			var Shoulder = c274;
+			var RHip = c296;
+			var LHip = c290;
+			var Eyes = c280;
+			var Chest = c285;
+			grid1.set_height(__this__.get_value());
+		});
+		c248.registerEvent("change",function(event) {
+			var __this__ = c248;
+			var theVideo = c217;
+			var theFrameaudio = c202;
+			var theFrame2 = c260;
+			var theFrame0 = c215;
+			var theFrame = c251;
+			var theAudio = c204;
+			var page2 = c327;
+			var main = c0;
+			var lorem2 = c11;
+			var lorem1 = c10;
+			var logo = c4;
+			var headerLabel = c3;
+			var grid1 = c228;
+			var Shoulder = c274;
+			var RHip = c296;
+			var LHip = c290;
+			var Eyes = c280;
+			var Chest = c285;
+			theFrame.set_width(__this__.get_pos());
+		});
+		c249.registerEvent("change",function(event) {
+			var __this__ = c249;
+			var theVideo = c217;
+			var theFrameaudio = c202;
+			var theFrame2 = c260;
+			var theFrame0 = c215;
+			var theFrame = c251;
+			var theAudio = c204;
+			var page2 = c327;
+			var main = c0;
+			var lorem2 = c11;
+			var lorem1 = c10;
+			var logo = c4;
+			var headerLabel = c3;
+			var grid1 = c228;
+			var Shoulder = c274;
+			var RHip = c296;
+			var LHip = c290;
+			var Eyes = c280;
+			var Chest = c285;
+			theFrame.set_height(__this__.get_pos());
+		});
+		c257.registerEvent("change",function(event) {
+			var __this__ = c257;
+			var theVideo = c217;
+			var theFrameaudio = c202;
+			var theFrame2 = c260;
+			var theFrame0 = c215;
+			var theFrame = c251;
+			var theAudio = c204;
+			var page2 = c327;
+			var main = c0;
+			var lorem2 = c11;
+			var lorem1 = c10;
+			var logo = c4;
+			var headerLabel = c3;
+			var grid1 = c228;
+			var Shoulder = c274;
+			var RHip = c296;
+			var LHip = c290;
+			var Eyes = c280;
+			var Chest = c285;
+			theFrame2.set_width(__this__.get_pos());
+		});
+		c258.registerEvent("change",function(event) {
+			var __this__ = c258;
+			var theVideo = c217;
+			var theFrameaudio = c202;
+			var theFrame2 = c260;
+			var theFrame0 = c215;
+			var theFrame = c251;
+			var theAudio = c204;
+			var page2 = c327;
+			var main = c0;
+			var lorem2 = c11;
+			var lorem1 = c10;
+			var logo = c4;
+			var headerLabel = c3;
+			var grid1 = c228;
+			var Shoulder = c274;
+			var RHip = c296;
+			var LHip = c290;
+			var Eyes = c280;
+			var Chest = c285;
+			theFrame2.set_height(__this__.get_pos());
+		});
+		rootComponent.bindingRoot = true;
+		var main = rootComponent;
+		app.addComponent(video);
+		app.addComponent(audio);
+		app.addComponent(main);
+		app.start();
+	});
+};
+Math.__name__ = "Math";
+var Reflect = function() { };
+$hxClasses["Reflect"] = Reflect;
+Reflect.__name__ = "Reflect";
+Reflect.field = function(o,field) {
+	try {
+		return o[field];
+	} catch( _g ) {
+		return null;
+	}
+};
+Reflect.getProperty = function(o,field) {
+	var tmp;
+	if(o == null) {
+		return null;
+	} else {
+		var tmp1;
+		if(o.__properties__) {
+			tmp = o.__properties__["get_" + field];
+			tmp1 = tmp;
+		} else {
+			tmp1 = false;
+		}
+		if(tmp1) {
+			return o[tmp]();
+		} else {
+			return o[field];
+		}
+	}
+};
+Reflect.setProperty = function(o,field,value) {
+	var tmp;
+	var tmp1;
+	if(o.__properties__) {
+		tmp = o.__properties__["set_" + field];
+		tmp1 = tmp;
+	} else {
+		tmp1 = false;
+	}
+	if(tmp1) {
+		o[tmp](value);
+	} else {
+		o[field] = value;
+	}
+};
+Reflect.fields = function(o) {
+	var a = [];
+	if(o != null) {
+		var hasOwnProperty = Object.prototype.hasOwnProperty;
+		for( var f in o ) {
+		if(f != "__id__" && f != "hx__closures__" && hasOwnProperty.call(o,f)) {
+			a.push(f);
+		}
+		}
+	}
+	return a;
+};
+Reflect.isFunction = function(f) {
+	if(typeof(f) == "function") {
+		return !(f.__name__ || f.__ename__);
+	} else {
+		return false;
+	}
+};
+Reflect.compare = function(a,b) {
+	if(a == b) {
+		return 0;
+	} else if(a > b) {
+		return 1;
+	} else {
+		return -1;
+	}
+};
+Reflect.isObject = function(v) {
+	if(v == null) {
+		return false;
+	}
+	var t = typeof(v);
+	if(!(t == "string" || t == "object" && v.__enum__ == null)) {
+		if(t == "function") {
+			return (v.__name__ || v.__ename__) != null;
+		} else {
+			return false;
+		}
+	} else {
+		return true;
+	}
+};
+Reflect.isEnumValue = function(v) {
+	if(v != null) {
+		return v.__enum__ != null;
+	} else {
+		return false;
+	}
+};
+Reflect.makeVarArgs = function(f) {
+	return function() {
+		var a = Array.prototype.slice;
+		var a1 = arguments;
+		var a2 = a.call(a1);
+		return f(a2);
+	};
+};
+var Std = function() { };
+$hxClasses["Std"] = Std;
+Std.__name__ = "Std";
+Std.string = function(s) {
+	return js_Boot.__string_rec(s,"");
+};
+Std.parseInt = function(x) {
+	if(x != null) {
+		var _g = 0;
+		var _g1 = x.length;
+		while(_g < _g1) {
+			var i = _g++;
+			var c = x.charCodeAt(i);
+			if(c <= 8 || c >= 14 && c != 32 && c != 45) {
+				var nc = x.charCodeAt(i + 1);
+				var v = parseInt(x,nc == 120 || nc == 88 ? 16 : 10);
+				if(isNaN(v)) {
+					return null;
+				} else {
+					return v;
+				}
+			}
+		}
+	}
+	return null;
+};
+var StringTools = function() { };
+$hxClasses["StringTools"] = StringTools;
+StringTools.__name__ = "StringTools";
+StringTools.startsWith = function(s,start) {
+	if(s.length >= start.length) {
+		return s.lastIndexOf(start,0) == 0;
+	} else {
+		return false;
+	}
+};
+StringTools.endsWith = function(s,end) {
+	var elen = end.length;
+	var slen = s.length;
+	if(slen >= elen) {
+		return s.indexOf(end,slen - elen) == slen - elen;
+	} else {
+		return false;
+	}
+};
+StringTools.isSpace = function(s,pos) {
+	var c = HxOverrides.cca(s,pos);
+	if(!(c > 8 && c < 14)) {
+		return c == 32;
+	} else {
+		return true;
+	}
+};
+StringTools.ltrim = function(s) {
+	var l = s.length;
+	var r = 0;
+	while(r < l && StringTools.isSpace(s,r)) ++r;
+	if(r > 0) {
+		return HxOverrides.substr(s,r,l - r);
+	} else {
+		return s;
+	}
+};
+StringTools.rtrim = function(s) {
+	var l = s.length;
+	var r = 0;
+	while(r < l && StringTools.isSpace(s,l - r - 1)) ++r;
+	if(r > 0) {
+		return HxOverrides.substr(s,0,l - r);
+	} else {
+		return s;
+	}
+};
+StringTools.trim = function(s) {
+	return StringTools.ltrim(StringTools.rtrim(s));
+};
+StringTools.replace = function(s,sub,by) {
+	return s.split(sub).join(by);
+};
+StringTools.hex = function(n,digits) {
+	var s = "";
+	var hexChars = "0123456789ABCDEF";
+	while(true) {
+		s = hexChars.charAt(n & 15) + s;
+		n >>>= 4;
+		if(!(n > 0)) {
+			break;
+		}
+	}
+	if(digits != null) {
+		while(s.length < digits) s = "0" + s;
+	}
+	return s;
+};
+var ValueType = $hxEnums["ValueType"] = { __ename__:true,__constructs__:null
+	,TNull: {_hx_name:"TNull",_hx_index:0,__enum__:"ValueType",toString:$estr}
+	,TInt: {_hx_name:"TInt",_hx_index:1,__enum__:"ValueType",toString:$estr}
+	,TFloat: {_hx_name:"TFloat",_hx_index:2,__enum__:"ValueType",toString:$estr}
+	,TBool: {_hx_name:"TBool",_hx_index:3,__enum__:"ValueType",toString:$estr}
+	,TObject: {_hx_name:"TObject",_hx_index:4,__enum__:"ValueType",toString:$estr}
+	,TFunction: {_hx_name:"TFunction",_hx_index:5,__enum__:"ValueType",toString:$estr}
+	,TClass: ($_=function(c) { return {_hx_index:6,c:c,__enum__:"ValueType",toString:$estr}; },$_._hx_name="TClass",$_.__params__ = ["c"],$_)
+	,TEnum: ($_=function(e) { return {_hx_index:7,e:e,__enum__:"ValueType",toString:$estr}; },$_._hx_name="TEnum",$_.__params__ = ["e"],$_)
+	,TUnknown: {_hx_name:"TUnknown",_hx_index:8,__enum__:"ValueType",toString:$estr}
+};
+ValueType.__constructs__ = [ValueType.TNull,ValueType.TInt,ValueType.TFloat,ValueType.TBool,ValueType.TObject,ValueType.TFunction,ValueType.TClass,ValueType.TEnum,ValueType.TUnknown];
+var Type = function() { };
+$hxClasses["Type"] = Type;
+Type.__name__ = "Type";
+Type.createInstance = function(cl,args) {
+	var ctor = Function.prototype.bind.apply(cl,[null].concat(args));
+	return new (ctor);
+};
+Type.getInstanceFields = function(c) {
+	var a = [];
+	for(var i in c.prototype) a.push(i);
+	HxOverrides.remove(a,"__class__");
+	HxOverrides.remove(a,"__properties__");
+	return a;
+};
+Type.typeof = function(v) {
+	switch(typeof(v)) {
+	case "boolean":
+		return ValueType.TBool;
+	case "function":
+		if(v.__name__ || v.__ename__) {
+			return ValueType.TObject;
+		}
+		return ValueType.TFunction;
+	case "number":
+		if(Math.ceil(v) == v % 2147483648.0) {
+			return ValueType.TInt;
+		}
+		return ValueType.TFloat;
+	case "object":
+		if(v == null) {
+			return ValueType.TNull;
+		}
+		var e = v.__enum__;
+		if(e != null) {
+			return ValueType.TEnum($hxEnums[e]);
+		}
+		var c = js_Boot.getClass(v);
+		if(c != null) {
+			return ValueType.TClass(c);
+		}
+		return ValueType.TObject;
+	case "string":
+		return ValueType.TClass(String);
+	case "undefined":
+		return ValueType.TNull;
+	default:
+		return ValueType.TUnknown;
+	}
+};
+Type.enumEq = function(a,b) {
+	if(a == b) {
+		return true;
+	}
+	try {
+		var e = a.__enum__;
+		if(e == null || e != b.__enum__) {
+			return false;
+		}
+		if(a._hx_index != b._hx_index) {
+			return false;
+		}
+		var enm = $hxEnums[e];
+		var params = enm.__constructs__[a._hx_index].__params__;
+		var _g = 0;
+		while(_g < params.length) {
+			var f = params[_g];
+			++_g;
+			if(!Type.enumEq(a[f],b[f])) {
+				return false;
+			}
+		}
+	} catch( _g ) {
+		return false;
+	}
+	return true;
+};
+Type.enumParameters = function(e) {
+	var enm = $hxEnums[e.__enum__];
+	var params = enm.__constructs__[e._hx_index].__params__;
+	if(params != null) {
+		var _g = [];
+		var _g1 = 0;
+		while(_g1 < params.length) {
+			var p = params[_g1];
+			++_g1;
+			_g.push(e[p]);
+		}
+		return _g;
+	} else {
+		return [];
+	}
+};
 var Video = function() {
 	this._source = null;
 	this._video = null;
@@ -6452,6 +6636,90 @@ Video.prototype = $extend(haxe_ui_containers_Box.prototype,{
 		return new Video();
 	}
 	,__class__: Video
+	,__properties__: $extend(haxe_ui_containers_Box.prototype.__properties__,{set_file:"set_file",get_file:"get_file"})
+});
+var custom_Audio = function() {
+	this._source = null;
+	this._audio = null;
+	haxe_ui_containers_Box.call(this);
+};
+$hxClasses["custom.Audio"] = custom_Audio;
+custom_Audio.__name__ = "custom.Audio";
+custom_Audio.__super__ = haxe_ui_containers_Box;
+custom_Audio.prototype = $extend(haxe_ui_containers_Box.prototype,{
+	_audio: null
+	,_source: null
+	,onReady: function() {
+		haxe_ui_containers_Box.prototype.onReady.call(this);
+		this._audio = window.document.createElement("audio");
+		this._audio.style.objectFit = "fill";
+		this.element.appendChild(this._audio);
+		if(!(this._layout == null || this._layoutLocked == true)) {
+			this.invalidateComponent("layout",false);
+		}
+		if(this._file != null && this._source == null) {
+			this.changeSource(this._file);
+		}
+	}
+	,play: function() {
+		if(this._audio != null) {
+			this._audio.play();
+		}
+	}
+	,pause: function() {
+		if(this._audio != null) {
+			this._audio.pause();
+		}
+	}
+	,_file: null
+	,get_file: function() {
+		return this._file;
+	}
+	,set_file: function(value) {
+		this._file = value;
+		if(this._audio != null) {
+			this.changeSource(this._file);
+		}
+		return value;
+	}
+	,changeSource: function(src) {
+		if(this._source != null) {
+			haxe_ui_backend_html5_HtmlUtils.removeElement(this._source);
+		}
+		this._source = window.document.createElement("source");
+		this._source.setAttribute("src",src);
+		this._audio.appendChild(this._source);
+	}
+	,validateComponentLayout: function() {
+		var b = haxe_ui_containers_Box.prototype.validateComponentLayout.call(this);
+		if(this._audio != null && this.get_width() > 0 && this.get_height() > 0) {
+			var tmp = "" + this.get_width() + "px";
+			this._audio.style.width = tmp;
+			var tmp = "" + this.get_height() + "px";
+			this._audio.style.height = tmp;
+		}
+		return b;
+	}
+	,registerBehaviours: function() {
+		haxe_ui_containers_Box.prototype.registerBehaviours.call(this);
+	}
+	,cloneComponent: function() {
+		var c = haxe_ui_containers_Box.prototype.cloneComponent.call(this);
+		if((this._children == null ? [] : this._children).length != (c._children == null ? [] : c._children).length) {
+			var _g = 0;
+			var _g1 = this._children == null ? [] : this._children;
+			while(_g < _g1.length) {
+				var child = _g1[_g];
+				++_g;
+				c.addComponent(child.cloneComponent());
+			}
+		}
+		return c;
+	}
+	,self: function() {
+		return new custom_Audio();
+	}
+	,__class__: custom_Audio
 	,__properties__: $extend(haxe_ui_containers_Box.prototype.__properties__,{set_file:"set_file",get_file:"get_file"})
 });
 var custom_Video = function() {
