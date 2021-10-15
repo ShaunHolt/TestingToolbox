@@ -9,6 +9,7 @@
         </script>
         
         <box styleName="header" width="100%" >
+            <image id="logo" verticalAlign="center" horizontalAlign="left" />
             <label id="headerLabel" text="The Perspective Corner" verticalAlign="center" horizontalAlign="center" />
             <image id="logo" verticalAlign="center" horizontalAlign="right" />
         </box>
