@@ -1,4 +1,4 @@
-<scrollview width="100%" height="100%" contentWidth="100%" style="border-size:0;background-color: white;">
+<scrollview width="100%" height="100%" contentWidth="100%" style="border-size:0;background-color: black;">
     <vbox id="main" width="100%" style="padding: 5px;">
         <style source="main.css" />
         
@@ -14,9 +14,9 @@
             <image id="logo" verticalAlign="center" horizontalAlign="right" />
         </box>
         
-<tabview width="100%" height="800px">
+<tabview width="100%" height="800px" >
 
-        <hbox text="Home" width="100%" continuous="true">
+        <hbox text="Home" width="100%" continuous="true" >
             <vbox styleName="image" verticalAlign="center" horizontalAlign="center">
 
 				<image resource="assets/img/profile.jpg"  width="200" height="400" scaleMode="fitwidth" style="border:0px solid #ababab" />
