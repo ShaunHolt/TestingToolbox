@@ -1,4 +1,4 @@
-<module>
+<module preload="all">
 	<components>
     	<component class="custom.Video" alias="video" />
         <!-- alternative method for entire package (without aliases)
